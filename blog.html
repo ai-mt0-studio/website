@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI MT0 Studio ブログ。AI・副業・Web開発の最新情報を発信中。" />
+  <title>ブログ | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .blog-hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(155,89,245,0.12), transparent 70%);
+      pointer-events: none;
+    }
+    .blog-hero .section-eyebrow { margin-bottom: 16px; }
+    .blog-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .blog-hero p { color: var(--c-text-sub); font-size: 1rem; }
+    .blog-hero .article-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 6px 16px;
+      backdrop-filter: var(--glass-blur);
+    }
+
+    .blog-page-body { padding: 0 0 120px; }
+
+    .blog-page-categories {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .blog-page-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    /* ローディング表示 */
+    .blog-loading {
+      text-align: center;
+      padding: 80px 0;
+      color: var(--c-text-sub);
+      font-size: 0.95rem;
+    }
+    .blog-loading::after {
+      content: '';
+      display: block;
+      width: 32px; height: 32px;
+      border: 2px solid var(--glass-border);
+      border-top-color: var(--c-blue);
+      border-radius: 50%;
+      margin: 16px auto 0;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="blog.html" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="contact.html" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="blog-hero">
+    <div class="container">
+      <span class="section-eyebrow">BLOG</span>
+      <h1>ブログ</h1>
+      <p>AI・副業・Web開発の最新情報を発信中</p>
+      <div class="article-meta">
+        <span>📝</span>
+        <span>全 <strong id="article-count">—</strong> 記事</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOG LIST ========== -->
+  <section class="blog-page-body">
+    <div class="container">
+
+      <div class="blog-page-categories blog-categories">
+        <button class="cat-btn active" data-cat="all">すべて</button>
+        <button class="cat-btn" data-cat="ai">AI</button>
+        <button class="cat-btn" data-cat="side">副業</button>
+        <button class="cat-btn" data-cat="web">Web開発</button>
+        <button class="cat-btn" data-cat="tools">ツール紹介</button>
+        <button class="cat-btn" data-cat="update">アップデート</button>
+      </div>
+
+      <div class="blog-page-grid blog-grid" id="blog-grid">
+        <div class="blog-loading">記事を読み込み中...</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/tora22101643233?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="blog.html">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="index.html#consult">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="blog.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      initBlogList();
+    });
+  </script>
+</body>
+</html>

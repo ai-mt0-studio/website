@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AIで、あなたの困りごとを解決。業務効率化・AIツール開発・経理サポートなどAIを活用したサービスを提供。" />
+  <meta name="google-site-verification" content="3VwhbJJWhvCyWuBEZ2WHAWxBClQ0ohFieIqHAmLcUCQ" />
+  <title>AI MT0 Studio | AIで、あなたの困りごとを解決。</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#services" class="nav-link">サービス</a>
+        <a href="#tools" class="nav-link">AIツール</a>
+        <a href="#blog" class="nav-link">ブログ</a>
+        <a href="#roadmap" class="nav-link">開発予定</a>
+        <a href="contact.html" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <canvas id="particles"></canvas>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        AIサービス稼働中
+      </div>
+      <h1 class="hero-title">
+        AIで、あなたの<br /><span class="gradient-text">困りごとを解決。</span>
+      </h1>
+      <p class="hero-sub">
+        業務効率化・ツール開発・経理サポートまで。<br />
+        AIの力で、個人も企業も、もっと自由に。
+      </p>
+      <div class="hero-actions">
+        <a href="#services" class="btn btn-primary">サービスを見る</a>
+        <a href="#contact" class="btn btn-glass">無料相談する</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">7+</span>
+          <span class="stat-label">サービス種別</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">24h</span>
+          <span class="stat-label">迅速対応</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">オーダーメイド</span>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ========== PHILOSOPHY ========== -->
+  <section class="philosophy" id="philosophy">
+    <div class="container">
+      <div class="philosophy-inner glass-card">
+        <div class="philosophy-icon">💡</div>
+        <h2 class="philosophy-title">事業理念</h2>
+        <p class="philosophy-body">
+          AIはまだ多くの人にとって「難しい」「遠い」存在です。<br />
+          私たちはその距離をなくし、誰もがAIの恩恵を受けられる社会をつくります。<br />
+          個人の悩みから企業の課題まで、AIを使った最適な解決策を、一緒に考えます。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SERVICES ========== -->
+  <section class="services section" id="services">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">SERVICES</span>
+        <h2 class="section-title">提供サービス</h2>
+        <p class="section-sub">AIを活用した多様なサポートを提供します</p>
+      </div>
+      <div class="services-grid">
+
+        <div class="service-card glass-card active">
+          <div class="service-icon">🤖</div>
+          <div class="service-status status-active">販売中</div>
+          <h3>AIツール開発</h3>
+          <p>業務に合わせたオリジナルAIツールを設計・開発。すぐに使えるWebアプリから本格システムまで対応。</p>
+        </div>
+
+        <div class="service-card glass-card coming">
+          <div class="service-icon">⚡</div>
+          <div class="service-status status-coming">準備中</div>
+          <h3>業務効率化サポート</h3>
+          <p>日常業務の繰り返し作業をAIで自動化。時間を生み出し、本来の仕事に集中できる環境を構築します。</p>
+        </div>
+
+        <div class="service-card glass-card coming">
+          <div class="service-icon">📊</div>
+          <div class="service-status status-coming">準備中</div>
+          <h3>経理・帳簿の効率化</h3>
+          <p>仕訳・帳簿整理・確定申告サポートをAIで効率化。個人事業主から法人まで対応。</p>
+        </div>
+
+        <div class="service-card glass-card coming">
+          <div class="service-icon">📱</div>
+          <div class="service-status status-coming">準備中</div>
+          <h3>SNS投稿の自動化</h3>
+          <p>YouTube・Twitter・InstagramなどSNS投稿の生成・スケジューリングを自動化します。</p>
+        </div>
+
+        <div class="service-card glass-card coming">
+          <div class="service-icon">💬</div>
+          <div class="service-status status-coming">準備中</div>
+          <h3>チャットボット構築</h3>
+          <p>問い合わせ対応・FAQ応答・予約受付など、24時間稼働のAIチャットボットを構築。</p>
+        </div>
+
+        <div class="service-card glass-card coming">
+          <div class="service-icon">📝</div>
+          <div class="service-status status-coming">準備中</div>
+          <h3>資料・文章作成支援</h3>
+          <p>提案書・議事録・ブログ記事など、AIを使った高品質なコンテンツ制作を支援。</p>
+        </div>
+
+        <div class="service-card glass-card coming">
+          <div class="service-icon">🔗</div>
+          <div class="service-status status-coming">準備中</div>
+          <h3>ツール連携支援</h3>
+          <p>Notion・Googleスプレッドシート・各種SaaSとAIを連携。既存の業務フローをそのままスマート化。</p>
+        </div>
+
+        <div class="service-card glass-card coming">
+          <div class="service-icon">🛠️</div>
+          <div class="service-status status-coming">準備中</div>
+          <h3>オーダーメイドAI開発</h3>
+          <p>要件定義から開発・運用まで一貫対応。企業様向けのフルカスタムAIシステムを構築します。</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== AI TOOLS ========== -->
+  <section class="tools section" id="tools">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">AI TOOLS</span>
+        <h2 class="section-title">AIツール一覧</h2>
+        <p class="section-sub">すぐに使えるAIツールを販売・公開中</p>
+      </div>
+      <div class="tools-grid" id="tools-grid">
+
+        <div class="tool-card glass-card">
+          <div class="tool-badge">NEW</div>
+          <div class="tool-icon">💰</div>
+          <h3 class="tool-name">AI収益管理ツール</h3>
+          <p class="tool-desc">収入・支出を入力するだけでAIが自動分析。グラフ表示・節税アドバイスも。</p>
+          <div class="tool-tags">
+            <span class="tag">経理</span>
+            <span class="tag">自動化</span>
+          </div>
+          <div class="tool-price">
+            <p class="price-original"><s>通常価格 1,480円</s></p>
+            <p class="price-sale">🎉 公開記念価格 <span class="price-amount">980円</span></p>
+            <p class="price-note">期間限定・予告なく終了する場合があります</p>
+          </div>
+          <a href="contact.html" class="btn btn-glass btn-sm">詳細・購入</a>
+        </div>
+
+        <div class="tool-card glass-card">
+          <div class="tool-badge">NEW</div>
+          <div class="tool-icon">🎙️</div>
+          <h3 class="tool-name">AI議事録ツール</h3>
+          <p class="tool-desc">会議の録音や文字起こしをAIが自動で要約・整形。すぐ共有できる議事録に。</p>
+          <div class="tool-tags">
+            <span class="tag">業務効率化</span>
+            <span class="tag">文書作成</span>
+          </div>
+          <div class="tool-price">
+            <p class="price-original"><s>通常価格 1,480円</s></p>
+            <p class="price-sale">🎉 公開記念価格 <span class="price-amount">980円</span></p>
+            <p class="price-note">期間限定・予告なく終了する場合があります</p>
+          </div>
+          <a href="contact.html" class="btn btn-glass btn-sm">詳細・購入</a>
+        </div>
+
+        <!-- 追加カード（将来的にJSで動的追加も可） -->
+        <div class="tool-card glass-card tool-placeholder">
+          <div class="tool-icon">＋</div>
+          <h3 class="tool-name">近日公開予定</h3>
+          <p class="tool-desc">新しいAIツールを開発中です。お楽しみに。</p>
+        </div>
+
+      </div>
+      <div class="tools-note">
+        <a href="https://note.com" target="_blank" class="note-link">
+          📝 noteでも販売中 →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONSULTATION ========== -->
+  <section class="consult section" id="consult">
+    <div class="container">
+      <div class="consult-inner glass-card">
+        <div class="consult-text">
+          <span class="section-eyebrow">AI CONSULTATION</span>
+          <h2 class="section-title" style="text-align:left;">AI相談（開発中）</h2>
+          <p>「どこから始めればいい？」「こんな自動化はできる？」など、AIに関するお悩みをお気軽にご相談ください。まずはメールでご連絡を。</p>
+          <ul class="consult-list">
+            <li>✅ 初回相談無料</li>
+            <li>✅ 個人・法人どちらでも対応</li>
+            <li>✅ オンライン対応可</li>
+          </ul>
+          <button class="btn btn-glass" disabled style="opacity:0.45; cursor:not-allowed;">近日公開予定</button>
+        </div>
+        <div class="consult-visual">
+          <div class="chat-bubble cb-1 glass-card">「経費の仕訳を自動化したい」</div>
+          <div class="chat-bubble cb-2 glass-card">「SNS投稿を毎日自動で出したい」</div>
+          <div class="chat-bubble cb-3 glass-card">「問い合わせ対応をボットにしたい」</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BLOG ========== -->
+  <section class="blog section" id="blog">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">BLOG</span>
+        <h2 class="section-title">最新記事</h2>
+        <p class="section-sub">AI・副業・Web開発の最新情報を発信中</p>
+      </div>
+      <div class="blog-categories">
+        <button class="cat-btn active" data-cat="all">すべて</button>
+        <button class="cat-btn" data-cat="ai">AI</button>
+        <button class="cat-btn" data-cat="side">副業</button>
+        <button class="cat-btn" data-cat="web">Web開発</button>
+        <button class="cat-btn" data-cat="tools">ツール紹介</button>
+        <button class="cat-btn" data-cat="update">アップデート</button>
+      </div>
+      <div class="blog-grid" id="blog-grid"></div>
+      <div style="text-align:center;margin-top:40px;">
+        <a href="blog.html" class="btn btn-glass">すべての記事を見る →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ROADMAP ========== -->
+  <section class="roadmap section" id="roadmap">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">ROADMAP</span>
+        <h2 class="section-title">今後の開発予定</h2>
+        <p class="section-sub">サービスはまだ始まったばかり。これからどんどん進化します。</p>
+      </div>
+      <div class="roadmap-list">
+        <div class="roadmap-item glass-card done">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-content">
+            <span class="roadmap-phase">Phase 1 ✅</span>
+            <h3>サービスサイト公開・AIツール販売開始</h3>
+            <p>基本サービスの提供開始、noteでのツール販売スタート</p>
+          </div>
+        </div>
+        <div class="roadmap-item glass-card current">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-content">
+            <span class="roadmap-phase">Phase 2 🔄 進行中</span>
+            <h3>AI相談プラットフォームの構築</h3>
+            <p>会員登録・相談履歴・マイページ機能の追加</p>
+          </div>
+        </div>
+        <div class="roadmap-item glass-card">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-content">
+            <span class="roadmap-phase">Phase 3</span>
+            <h3>AIチャット・通知・お気に入り機能</h3>
+            <p>よりインタラクティブなAI相談体験を提供</p>
+          </div>
+        </div>
+        <div class="roadmap-item glass-card">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-content">
+            <span class="roadmap-phase">Phase 4</span>
+            <h3>AIツール検索・管理画面・多言語対応</h3>
+            <p>カテゴリ検索・ダッシュボード・英語対応でグローバル展開</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section class="contact section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">CONTACT</span>
+        <h2 class="section-title">お問い合わせ</h2>
+        <p class="section-sub">お気軽にご連絡ください。通常24時間以内に返信します。</p>
+      </div>
+      <div class="contact-inner">
+        <form class="contact-form glass-card" id="contact-form">
+          <div class="form-group">
+            <label for="name">お名前 <span class="required">*</span></label>
+            <input type="text" id="name" name="name" placeholder="山田 太郎" required />
+          </div>
+          <div class="form-group">
+            <label for="email">メールアドレス <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="example@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="category">お問い合わせ種別</label>
+            <select id="category" name="category">
+              <option value="">選択してください</option>
+              <option value="service">サービスについて</option>
+              <option value="tool">AIツールについて</option>
+              <option value="consult">AI相談</option>
+              <option value="other">その他</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">メッセージ <span class="required">*</span></label>
+            <textarea id="message" name="message" rows="5" placeholder="お気軽にご相談ください..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">送信する</button>
+          <p class="form-note">※ 現在フォームは準備中です。下記メールへ直接ご連絡ください。</p>
+        </form>
+        <div class="contact-info">
+          <div class="contact-item glass-card">
+            <div class="contact-icon">📧</div>
+            <div>
+              <p class="contact-label">メール</p>
+              <a href="mailto:toranohimatsubushi66@gmail.com" class="contact-value">toranohimatsubushi66@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item glass-card">
+            <div class="contact-icon">📝</div>
+            <div>
+              <p class="contact-label">note</p>
+              <a href="https://note.com/safe_acacia2730/portal" target="_blank" class="contact-value">note.com/safe_acacia2730</a>
+            </div>
+          </div>
+          <div class="contact-sns">
+            <p class="contact-label">SNS</p>
+            <div class="sns-links">
+              <a href="https://x.com/tora22101643233?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X(Twitter)">𝕏</a>
+              <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+              <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/tora22101643233?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="#services">AIツール開発</a>
+          <a href="#services">業務効率化</a>
+          <a href="#services">経理サポート</a>
+          <a href="#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="#blog">ブログ</a>
+          <a href="#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="#consult">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+          <!-- 特定商取引法は準備でき次第追加 -->
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="blog.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      initIndexBlog();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI MT0 Studioのプライバシーポリシー。収集する個人情報、利用目的、サードパーティAIの使用について説明します。" />
+  <title>プライバシーポリシー | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .policy-hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .policy-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(79,142,247,0.12), transparent 70%);
+      pointer-events: none;
+    }
+    .policy-hero .section-eyebrow { margin-bottom: 16px; }
+    .policy-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .policy-hero p {
+      color: var(--c-text-sub);
+      font-size: 0.95rem;
+    }
+    .policy-body { padding: 0 0 120px; }
+    .policy-card {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 56px 64px;
+    }
+    .policy-section { margin-bottom: 48px; }
+    .policy-section:last-child { margin-bottom: 0; }
+    .policy-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .policy-section h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 18px;
+      background: var(--grad-primary);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .policy-section p {
+      font-size: 0.92rem;
+      color: var(--c-text-sub);
+      line-height: 1.9;
+      margin-bottom: 12px;
+    }
+    .policy-section p:last-child { margin-bottom: 0; }
+    .policy-section ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .policy-section ul li {
+      font-size: 0.92rem;
+      color: var(--c-text-sub);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.8;
+    }
+    .policy-section ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--c-blue);
+      font-size: 0.75rem;
+      top: 4px;
+    }
+    .policy-note {
+      background: rgba(79,142,247,0.06);
+      border: 1px solid rgba(79,142,247,0.2);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin-top: 16px;
+    }
+    .policy-note p {
+      font-size: 0.88rem;
+      color: var(--c-text-sub);
+      margin: 0;
+    }
+    .policy-updated {
+      text-align: right;
+      font-size: 0.82rem;
+      color: var(--c-text-sub);
+      margin-bottom: 40px;
+    }
+    @media (max-width: 768px) {
+      .policy-card { padding: 36px 24px; }
+      .policy-hero { padding: 140px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="index.html#blog" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="index.html#contact" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="policy-hero">
+    <div class="container">
+      <span class="section-eyebrow">PRIVACY POLICY</span>
+      <h1>プライバシーポリシー</h1>
+      <p>個人情報の取り扱いについて</p>
+    </div>
+  </section>
+
+  <!-- ========== POLICY CONTENT ========== -->
+  <section class="policy-body">
+    <div class="container">
+      <div class="policy-card glass-card">
+
+        <p class="policy-updated">最終更新日：2025年6月27日</p>
+
+        <div class="policy-section">
+          <p>AI MT0 Studio（以下「当サービス」）は、AIツール開発・業務効率化・AI相談サービスを提供する個人事業として、お客様の個人情報の保護を重要な責務と考えております。本プライバシーポリシーでは、当サービスにおける個人情報の収集・利用・管理に関する方針をご説明します。</p>
+        </div>
+
+        <div class="policy-section">
+          <h2>収集する個人情報</h2>
+          <p>当サービスは、お問い合わせフォームを通じて以下の情報のみを収集します。</p>
+          <ul>
+            <li>お名前</li>
+            <li>メールアドレス</li>
+            <li>お問い合わせ内容（メッセージ）</li>
+          </ul>
+          <p style="margin-top:16px;">上記以外の個人情報（住所・電話番号・クレジットカード情報など）は収集しておりません。また、Cookie・アクセス解析ツール等による自動収集は現時点では行っておりません。</p>
+        </div>
+
+        <div class="policy-section">
+          <h2>個人情報の利用目的</h2>
+          <p>収集した個人情報は、以下の目的のためにのみ利用します。</p>
+          <ul>
+            <li>お問い合わせへの返信・対応</li>
+            <li>サービスに関するご案内やご連絡</li>
+            <li>サービス品質の向上のための参考</li>
+          </ul>
+          <p style="margin-top:16px;">上記以外の目的で個人情報を利用することはありません。</p>
+        </div>
+
+        <div class="policy-section">
+          <h2>サードパーティAIの使用について</h2>
+          <p>当サービスでは、サービス提供の一環としてAnthropicが提供するAI「Claude」をはじめとするサードパーティのAIツールを使用することがあります。</p>
+          <ul>
+            <li>Claude（Anthropic社）</li>
+            <li>ChatGPT（OpenAI社）</li>
+            <li>その他の生成AIサービス</li>
+          </ul>
+          <div class="policy-note">
+            <p>重要：お客様からお預かりしたお問い合わせ内容をAIツールに入力して回答を作成する場合があります。その際、個人を特定できる情報（氏名・メールアドレス等）は入力せず、業務内容に関する部分のみを参照します。各AIサービスのプライバシーポリシーについては、各社のウェブサイトをご確認ください。</p>
+          </div>
+        </div>
+
+        <div class="policy-section">
+          <h2>第三者への提供</h2>
+          <p>当サービスは、以下の場合を除き、お客様の個人情報を第三者に提供・開示することはありません。</p>
+          <ul>
+            <li>お客様ご本人の同意がある場合</li>
+            <li>法令に基づき開示が必要な場合</li>
+            <li>人の生命・身体・財産の保護のために必要な場合</li>
+          </ul>
+        </div>
+
+        <div class="policy-section">
+          <h2>個人情報の管理・保護</h2>
+          <p>収集した個人情報は、不正アクセス・紛失・破壊・改ざんおよび漏洩を防ぐため、適切な安全管理措置を講じます。個人情報へのアクセスは、業務上必要な範囲に限定します。</p>
+          <p>個人情報は、お問い合わせへの対応が完了した後、合理的な期間内に削除いたします。</p>
+        </div>
+
+        <div class="policy-section">
+          <h2>個人情報の開示・訂正・削除</h2>
+          <p>お客様は、ご自身の個人情報について、開示・訂正・削除を請求する権利を有します。ご希望の場合は、下記のお問い合わせ先までご連絡ください。本人確認のうえ、合理的な期間内に対応いたします。</p>
+        </div>
+
+        <div class="policy-section">
+          <h2>プライバシーポリシーの変更</h2>
+          <p>本ポリシーは、法令の改正やサービス内容の変更に伴い、予告なく改定することがあります。重要な変更を行う場合は、サービスサイト上でお知らせします。改定後も継続してサービスをご利用いただいた場合、改定後のポリシーに同意したものとみなします。</p>
+        </div>
+
+        <div class="policy-section">
+          <h2>お問い合わせ</h2>
+          <p>本プライバシーポリシーに関するご質問・ご意見は、下記までお問い合わせください。</p>
+          <ul>
+            <li>事業名：AI MT0 Studio</li>
+            <li>メールアドレス：your@email.com</li>
+            <li>お問い合わせフォーム：<a href="index.html#contact" style="color: var(--c-blue);">こちら</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="#" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="#" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="index.html#blog">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="index.html#contact">お問い合わせ</a>
+          <a href="index.html#consult">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // サブページではヘッダーを常にscrolledスタイルに
+    document.getElementById('header').classList.add('scrolled');
+  </script>
+</body>
+</html>

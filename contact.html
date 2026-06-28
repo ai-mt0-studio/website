@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI MT0 Studioへのお問い合わせ。AIツール開発・業務効率化・AI相談など、お気軽にご連絡ください。通常24時間以内に返信します。" />
+  <title>お問い合わせ | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ========== PAGE HERO ========== */
+    .contact-hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(79,142,247,0.13), transparent 70%);
+      pointer-events: none;
+    }
+    .contact-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; right: 10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(155,89,245,0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .contact-hero .section-eyebrow { margin-bottom: 16px; }
+    .contact-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .contact-hero p {
+      color: var(--c-text-sub);
+      font-size: 1rem;
+    }
+
+    /* ========== CONTACT BODY ========== */
+    .contact-page-body { padding: 0 0 120px; }
+
+    .contact-page-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* ========== LEFT: INFO ========== */
+    .contact-page-info {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 96px;
+    }
+
+    .contact-info-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 22px 24px;
+    }
+    .contact-info-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .contact-info-label {
+      font-size: 0.78rem;
+      color: var(--c-text-sub);
+      margin-bottom: 4px;
+    }
+    .contact-info-value {
+      font-size: 0.95rem;
+      color: #fff;
+      transition: var(--transition);
+    }
+    .contact-info-value:hover { color: var(--c-blue); }
+
+    .contact-sns-card {
+      padding: 22px 24px;
+    }
+    .contact-sns-card .contact-info-label { margin-bottom: 12px; }
+    .sns-links { display: flex; gap: 10px; }
+    .sns-btn {
+      width: 44px; height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      color: var(--c-text-sub);
+      transition: var(--transition);
+    }
+    .sns-btn:hover {
+      color: #fff;
+      border-color: var(--c-blue);
+      background: rgba(79,142,247,0.1);
+      transform: translateY(-2px);
+    }
+
+    .contact-respond-card {
+      padding: 22px 24px;
+      border-color: rgba(79,142,247,0.2);
+    }
+    .respond-title {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .respond-body {
+      font-size: 0.82rem;
+      color: var(--c-text-sub);
+      line-height: 1.7;
+    }
+    .respond-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #22c55e;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 50px;
+      padding: 3px 10px;
+      margin-bottom: 10px;
+    }
+    .respond-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px #22c55e;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ========== RIGHT: FORM ========== */
+    .contact-form-card {
+      padding: 40px;
+    }
+    .form-card-header {
+      margin-bottom: 28px;
+    }
+    .form-card-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .form-card-sub {
+      font-size: 0.88rem;
+      color: var(--c-text-sub);
+    }
+
+    /* iFrame wrapper */
+    .gform-wrapper {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--glass-border);
+    }
+    .gform-wrapper iframe {
+      display: block;
+      width: 100%;
+      height: 820px;
+      border: none;
+      color-scheme: light; /* Googleフォームは白背景のため */
+    }
+
+    /* フォーム下注記 */
+    .form-footer-note {
+      margin-top: 20px;
+      padding: 16px 20px;
+      background: rgba(79,142,247,0.05);
+      border: 1px solid rgba(79,142,247,0.15);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--c-text-sub);
+      line-height: 1.7;
+    }
+    .form-footer-note a { color: var(--c-blue); }
+    .form-footer-note a:hover { color: var(--c-purple2); }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 900px) {
+      .contact-page-grid {
+        grid-template-columns: 1fr;
+      }
+      .contact-page-info {
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .contact-respond-card { grid-column: 1 / -1; }
+    }
+    @media (max-width: 600px) {
+      .contact-page-info { grid-template-columns: 1fr; }
+      .contact-form-card { padding: 24px 16px; }
+      .gform-wrapper iframe { height: 900px; }
+      .contact-hero { padding: 140px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="index.html#blog" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="contact.html" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="contact-hero">
+    <div class="container">
+      <span class="section-eyebrow">CONTACT</span>
+      <h1>お問い合わせ</h1>
+      <p>AIに関するご相談・サービスのご依頼など、お気軽にどうぞ。</p>
+    </div>
+  </section>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <section class="contact-page-body">
+    <div class="container">
+      <div class="contact-page-grid">
+
+        <!-- LEFT: 連絡先情報 -->
+        <div class="contact-page-info">
+
+          <div class="contact-respond-card glass-card">
+            <div class="respond-badge">
+              <span class="respond-dot"></span>
+              受付中
+            </div>
+            <p class="respond-title">通常24時間以内に返信</p>
+            <p class="respond-body">お急ぎの場合はメールに直接ご連絡ください。土日祝は返信が遅れる場合があります。</p>
+          </div>
+
+          <div class="contact-info-card glass-card">
+            <div class="contact-info-icon">📧</div>
+            <div>
+              <p class="contact-info-label">メールアドレス</p>
+              <a href="mailto:toranohimatsubushi66@gmail.com" class="contact-info-value">toranohimatsubushi66@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="contact-info-card glass-card">
+            <div class="contact-info-icon">📝</div>
+            <div>
+              <p class="contact-info-label">note</p>
+              <a href="https://note.com/safe_acacia2730/portal" target="_blank" class="contact-info-value">note.com/safe_acacia2730</a>
+            </div>
+          </div>
+
+          <div class="contact-sns-card glass-card">
+            <p class="contact-info-label">SNS</p>
+            <div class="sns-links">
+              <a href="https://x.com/tora22101643233?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X(Twitter)">𝕏</a>
+              <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+              <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Googleフォーム -->
+        <div>
+          <div class="contact-form-card glass-card">
+            <div class="form-card-header">
+              <h2 class="form-card-title">お問い合わせフォーム</h2>
+              <p class="form-card-sub">フォームに入力して送信してください。折り返しご連絡いたします。</p>
+            </div>
+
+            <div class="gform-wrapper">
+              <iframe
+                src="https://docs.google.com/forms/d/e/1FAIpQLSfwtBqspNWWsdzW-WdN6Tq4iZ7B_RQvRFuIC2w9wONDOx3CRw/viewform?embedded=true"
+                title="お問い合わせフォーム"
+                loading="lazy"
+              >読み込んでいます…</iframe>
+            </div>
+
+            <p class="form-footer-note">
+              送信いただいた情報はお問い合わせへの返信にのみ使用します。詳しくは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/tora22101643233?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="index.html#blog">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="index.html#consult">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
