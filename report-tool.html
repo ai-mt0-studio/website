@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日報生成ツール</title>
+  <style>
+    :root {
+      --bg: #06061a;
+      --purple-900: #3b0764;
+      --purple-700: #7c3aed;
+      --purple-400: #a78bfa;
+      --blue-700: #1d4ed8;
+      --blue-400: #60a5fa;
+      --blue-300: #93c5fd;
+      --green-400: #34d399;
+      --red-400: #f87171;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --glass: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --input-bg: rgba(0, 0, 0, 0.35);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.2)   0%, transparent 70%);
+      min-height: 100vh;
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      padding: 2.5rem 1rem 4rem;
+    }
+
+    /* floating orbs */
+    .orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(90px); opacity: 0.12;
+      pointer-events: none; z-index: 0;
+    }
+    .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+    .orb-2 { width: 380px; height: 380px; background: var(--blue-700);   bottom: 50px; left: -120px; }
+
+    .container { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+
+    /* ── header ── */
+    header { text-align: center; margin-bottom: 2.5rem; }
+    header h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 0.4rem;
+    }
+    header p { color: var(--muted); font-size: 0.95rem; }
+
+    .date-badge {
+      display: inline-block;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.3);
+      color: var(--purple-400);
+      font-size: 0.8rem; padding: 0.25rem 0.9rem;
+      border-radius: 999px; margin-top: 0.6rem;
+    }
+
+    /* ── glass card ── */
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.07);
+      transition: border-color 0.3s;
+    }
+    .card:hover { border-color: rgba(124,58,237,0.28); }
+    .card.api-card { border-color: rgba(124,58,237,0.2); background: rgba(124,58,237,0.05); }
+
+    /* ── section label ── */
+    .label {
+      font-size: 0.78rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--muted); margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .label-bar {
+      width: 3px; height: 14px; border-radius: 2px;
+      background: linear-gradient(var(--purple-700), var(--blue-700));
+      flex-shrink: 0;
+    }
+
+    /* ── inputs ── */
+    input, textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      color: var(--text);
+      font-size: 0.9rem; font-family: inherit;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--purple-700);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.18);
+    }
+    input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.5); }
+    textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+
+    /* api key row */
+    .api-row { position: relative; }
+    .api-row input { padding-right: 2.8rem; font-family: 'Courier New', monospace; letter-spacing: 0.04em; }
+    .toggle-btn {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 1rem; padding: 4px;
+      transition: color 0.2s;
+    }
+    .toggle-btn:hover { color: var(--text); }
+
+    /* ── task list ── */
+    .task-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .task-row { display: flex; gap: 0.5rem; align-items: center; }
+    .task-row input { flex: 1; }
+
+    .task-num {
+      min-width: 24px; height: 24px;
+      background: rgba(124,58,237,0.25);
+      border: 1px solid rgba(124,58,237,0.4);
+      border-radius: 6px;
+      font-size: 0.75rem; font-weight: 700; color: var(--purple-400);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .btn-remove {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.25);
+      color: var(--red-400);
+      width: 32px; height: 32px; border-radius: 8px;
+      cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.2s;
+    }
+    .btn-remove:hover { background: rgba(239,68,68,0.2); }
+
+    .btn-add {
+      width: 100%; margin-top: 0.6rem;
+      background: rgba(59,130,246,0.07);
+      border: 1px dashed rgba(59,130,246,0.35);
+      color: var(--blue-300);
+      padding: 0.55rem 1rem; border-radius: 10px;
+      cursor: pointer; font-size: 0.85rem; font-family: inherit;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-add:hover { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.55); }
+
+    /* hours row */
+    .hours-row { display: flex; align-items: center; gap: 0.75rem; }
+    .hours-row input { width: 110px; text-align: center; }
+    .hours-unit { color: var(--muted); font-size: 0.9rem; }
+
+    /* ── generate button ── */
+    .btn-generate {
+      width: 100%; padding: 1rem 2rem;
+      background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+      border: none; border-radius: 14px;
+      color: #fff; font-size: 1.05rem; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      position: relative; overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      margin-bottom: 1.25rem;
+    }
+    .btn-generate::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      transition: left 0.55s;
+    }
+    .btn-generate:hover:not(:disabled)::after { left: 100%; }
+    .btn-generate:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(124,58,237,0.45);
+    }
+    .btn-generate:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* ── loading ── */
+    .loading { display: none; text-align: center; padding: 1.5rem 1rem; }
+    .spinner {
+      width: 44px; height: 44px; margin: 0 auto 0.85rem;
+      border: 3px solid rgba(124,58,237,0.2);
+      border-top-color: var(--purple-700);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    .loading p { color: var(--muted); font-size: 0.9rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── error ── */
+    .error-box {
+      display: none;
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 12px; padding: 1rem 1.2rem;
+      color: var(--red-400); font-size: 0.85rem;
+      line-height: 1.6; white-space: pre-wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── result ── */
+    .result-card { display: none; }
+    .result-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1rem;
+    }
+    .result-header .label { margin-bottom: 0; }
+
+    .btn-copy {
+      background: rgba(52,211,153,0.1);
+      border: 1px solid rgba(52,211,153,0.3);
+      color: var(--green-400);
+      padding: 0.45rem 1rem; border-radius: 8px;
+      cursor: pointer; font-size: 0.82rem; font-family: inherit;
+      display: flex; align-items: center; gap: 0.35rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-copy:hover { background: rgba(52,211,153,0.2); }
+    .btn-copy.copied {
+      background: rgba(52,211,153,0.25);
+      border-color: rgba(52,211,153,0.6);
+    }
+
+    .result-body {
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 1.25rem;
+      font-size: 0.9rem; line-height: 1.85;
+      white-space: pre-wrap; color: var(--text);
+      min-height: 180px;
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="container">
+    <header>
+      <h1>日報生成ツール</h1>
+      <p>業務内容を入力して、Claude AI がビジネス文章に整形します</p>
+      <div class="date-badge" id="dateBadge"></div>
+    </header>
+
+    <!-- API Key -->
+    <div class="card api-card">
+      <div class="label"><div class="label-bar"></div>Claude API 設定</div>
+      <div class="api-row">
+        <input type="password" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off" />
+        <button class="toggle-btn" id="toggleBtn" onclick="toggleKey()" title="表示 / 非表示">👁</button>
+      </div>
+    </div>
+
+    <!-- Today's work -->
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>今日の業務内容</div>
+      <div class="task-list" id="taskList">
+        <div class="task-row">
+          <span class="task-num">1</span>
+          <input type="text" placeholder="例：〇〇機能の実装" />
+          <button class="btn-remove" onclick="removeTask(this)" title="削除">×</button>
+        </div>
+      </div>
+      <button class="btn-add" onclick="addTask()">＋ 項目を追加</button>
+    </div>
+
+    <!-- Work hours -->
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>作業時間</div>
+      <div class="hours-row">
+        <input type="number" id="workHours" placeholder="8" min="0" max="24" step="0.5" />
+        <span class="hours-unit">時間</span>
+      </div>
+    </div>
+
+    <!-- Tomorrow -->
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>明日の予定</div>
+      <textarea id="tomorrowPlan" placeholder="例：〇〇のレビュー対応、△△ミーティング参加"></textarea>
+    </div>
+
+    <!-- Issues -->
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>課題・困っていること</div>
+      <textarea id="issues" placeholder="例：〇〇の仕様が不明瞭で進捗が遅れています（なければ空欄 OK）"></textarea>
+    </div>
+
+    <!-- Generate -->
+    <button class="btn-generate" id="generateBtn" onclick="generateReport()">
+      ✦ 報告書を生成する
+    </button>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Claude AI が報告書を作成中です…</p>
+    </div>
+
+    <!-- Error -->
+    <div class="error-box" id="errorBox"></div>
+
+    <!-- Result -->
+    <div class="card result-card" id="resultCard">
+      <div class="result-header">
+        <div class="label" style="margin-bottom:0"><div class="label-bar"></div>生成された報告書</div>
+        <button class="btn-copy" id="copyBtn" onclick="copyReport()">📋 コピー</button>
+      </div>
+      <div class="result-body" id="resultBody"></div>
+    </div>
+  </div>
+
+  <script>
+    // ── date ──
+    const today = new Date();
+    const fmt = (d) => d.toLocaleDateString('ja-JP', { year:'numeric', month:'long', day:'numeric', weekday:'long' });
+    document.getElementById('dateBadge').textContent = fmt(today);
+
+    // ── api key toggle ──
+    function toggleKey() {
+      const inp = document.getElementById('apiKey');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    // ── task management ──
+    function renumber() {
+      document.querySelectorAll('#taskList .task-num').forEach((el, i) => { el.textContent = i + 1; });
+    }
+
+    function addTask() {
+      const list = document.getElementById('taskList');
+      const row = document.createElement('div');
+      row.className = 'task-row';
+      row.innerHTML = `
+        <span class="task-num">${list.children.length + 1}</span>
+        <input type="text" placeholder="業務内容を入力してください" />
+        <button class="btn-remove" onclick="removeTask(this)" title="削除">×</button>
+      `;
+      list.appendChild(row);
+      row.querySelector('input').focus();
+    }
+
+    function removeTask(btn) {
+      const list = document.getElementById('taskList');
+      if (list.children.length === 1) {
+        list.querySelector('input').value = '';
+        return;
+      }
+      btn.closest('.task-row').remove();
+      renumber();
+    }
+
+    // ── generate ──
+    async function generateReport() {
+      const apiKey = document.getElementById('apiKey').value.trim();
+      if (!apiKey) { showError('APIキーを入力してください。'); return; }
+
+      const tasks = [...document.querySelectorAll('#taskList .task-row input')]
+        .map(i => i.value.trim()).filter(Boolean);
+      if (!tasks.length) { showError('今日の業務内容を1件以上入力してください。'); return; }
+
+      const hours    = document.getElementById('workHours').value;
+      const tomorrow = document.getElementById('tomorrowPlan').value.trim();
+      const issues   = document.getElementById('issues').value.trim();
+      const dateStr  = fmt(today);
+
+      const prompt = `以下の情報をもとに、上司や同僚に送る日本語の日報を作成してください。
+丁寧で簡潔なビジネス文体で、見やすく整理して出力してください。
+
+【日付】${dateStr}
+【本日の業務内容】
+${tasks.map((t, i) => `${i + 1}. ${t}`).join('\n')}
+【作業時間】${hours ? hours + ' 時間' : '未入力'}
+【明日の予定】${tomorrow || '特になし'}
+【課題・困っていること】${issues || '特になし'}`;
+
+      setLoading(true);
+      hideAll();
+
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-calls': 'true',
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-6',
+            max_tokens: 1024,
+            system: 'あなたはビジネス文書の専門家です。提供された業務情報を、プロフェッショナルで読みやすい日本語の日報に整形してください。余計な前置きは不要です。報告書本文のみを出力してください。',
+            messages: [{ role: 'user', content: prompt }]
+          })
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err?.error?.message || `HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+        const text = data?.content?.[0]?.text ?? '';
+        showResult(text);
+
+      } catch (e) {
+        let msg = e.message || String(e);
+        if (/fetch|network|cors/i.test(msg)) {
+          msg = 'ネットワークエラーが発生しました。\n\nブラウザの CORS 制限により直接 API を呼び出せない場合があります。ローカルサーバー経由（例：Live Server 拡張）でファイルを開いてお試しください。\n\n詳細: ' + msg;
+        }
+        showError(msg);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // ── ui helpers ──
+    function setLoading(on) {
+      document.getElementById('loading').style.display      = on ? 'block' : 'none';
+      document.getElementById('generateBtn').disabled       = on;
+    }
+
+    function hideAll() {
+      document.getElementById('errorBox').style.display   = 'none';
+      document.getElementById('resultCard').style.display = 'none';
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorBox');
+      el.textContent  = '⚠ ' + msg;
+      el.style.display = 'block';
+    }
+
+    function showResult(text) {
+      document.getElementById('resultBody').textContent  = text;
+      const card = document.getElementById('resultCard');
+      card.style.display = 'block';
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function copyReport() {
+      const text = document.getElementById('resultBody').textContent;
+      const btn  = document.getElementById('copyBtn');
+
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '✓ コピーしました';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = '📋 コピー'; btn.classList.remove('copied'); }, 2200);
+      }).catch(() => {
+        // fallback for older browsers
+        const sel = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(document.getElementById('resultBody'));
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('copy');
+        sel.removeAllRanges();
+        btn.textContent = '✓ コピーしました';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = '📋 コピー'; btn.classList.remove('copied'); }, 2200);
+      });
+    }
+  </script>
+</body>
+</html>
