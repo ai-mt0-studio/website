@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>資料・文章作成ツール</title>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.18) 0%, transparent 70%);
+    min-height: 100vh;
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 50px; left: -120px; }
+
+  .container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+
+  .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab {
+    padding: 0.55rem 1.2rem; border-radius: 10px; cursor: pointer; font-size: 0.88rem; font-weight: 600;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted); transition: all 0.2s;
+    font-family: inherit; -webkit-tap-highlight-color: transparent;
+  }
+  .tab.active { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border-color: transparent; color: #fff; }
+  .tab:hover:not(.active) { border-color: rgba(124,58,237,0.4); color: var(--text); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .card.api-card { border-color: rgba(124,58,237,0.2); background: rgba(124,58,237,0.05); }
+
+  .label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .label-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); flex-shrink: 0; }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.85rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group label { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+  input, select, textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.65rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.45); }
+  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  select option { background: #1a1a3e; }
+
+  .toggle-row { display: flex; align-items: center; gap: 0.75rem; }
+  .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0; background: rgba(255,255,255,0.1); border-radius: 999px;
+    cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.15);
+  }
+  .toggle-slider::before {
+    content: ''; position: absolute; width: 18px; height: 18px; background: #fff;
+    border-radius: 50%; left: 2px; top: 2px; transition: 0.3s;
+  }
+  .toggle input:checked + .toggle-slider { background: var(--purple-700); border-color: var(--purple-700); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+  .toggle-label { font-size: 0.85rem; color: var(--text); }
+
+  .btn-generate {
+    width: 100%; padding: 1rem; border-radius: 14px; border: none; cursor: pointer;
+    font-size: 1rem; font-weight: 700; font-family: inherit; color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    margin-top: 0.75rem;
+  }
+  .btn-generate::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  .btn-generate:hover:not(:disabled)::after { left: 100%; }
+  .btn-generate:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(124,58,237,0.4); }
+  .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-secondary {
+    padding: 0.7rem 1.25rem; border-radius: 12px; border: 1px solid rgba(96,165,250,0.3);
+    background: rgba(96,165,250,0.08); color: var(--blue-300); cursor: pointer;
+    font-size: 0.88rem; font-weight: 600; font-family: inherit; transition: all 0.2s;
+  }
+  .btn-secondary:hover:not(:disabled) { background: rgba(96,165,250,0.18); }
+  .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-copy {
+    background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green-400);
+    padding: 0.4rem 0.85rem; border-radius: 8px; cursor: pointer; font-size: 0.78rem; font-family: inherit;
+    transition: background 0.2s;
+  }
+  .btn-copy:hover { background: rgba(52,211,153,0.2); }
+  .btn-copy.copied { background: rgba(52,211,153,0.25); border-color: rgba(52,211,153,0.6); }
+
+  .btn-fav {
+    background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); color: var(--yellow-400);
+    padding: 0.4rem 0.85rem; border-radius: 8px; cursor: pointer; font-size: 0.78rem; font-family: inherit;
+    transition: background 0.2s;
+  }
+  .btn-fav:hover { background: rgba(251,191,36,0.2); }
+  .btn-fav.active { background: rgba(251,191,36,0.25); border-color: rgba(251,191,36,0.6); }
+
+  .btn-sm {
+    padding: 0.35rem 0.75rem; border-radius: 7px; border: none; cursor: pointer;
+    font-size: 0.75rem; font-weight: 600; font-family: inherit; transition: all 0.2s;
+  }
+  .btn-edit { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-400); }
+  .btn-edit:hover { background: rgba(96,165,250,0.2); }
+  .btn-del { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--red-400); }
+  .btn-del:hover { background: rgba(248,113,113,0.2); }
+
+  .api-row { position: relative; }
+  .api-row input { padding-right: 2.8rem; font-family: monospace; letter-spacing: 0.04em; }
+  .toggle-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1rem; }
+  .toggle-btn:hover { color: var(--text); }
+
+  .loading { display: none; text-align: center; padding: 1.5rem; }
+  .spinner {
+    width: 44px; height: 44px; margin: 0 auto 0.75rem;
+    border: 3px solid rgba(124,58,237,0.2); border-top-color: var(--purple-700);
+    border-radius: 50%; animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading p { color: var(--muted); font-size: 0.88rem; }
+
+  .error-box {
+    display: none; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3);
+    border-radius: 12px; padding: 1rem; color: var(--red-400); font-size: 0.85rem;
+    white-space: pre-wrap; margin-bottom: 1rem;
+  }
+
+  .result-section { display: none; }
+  .pattern-tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .pattern-tab {
+    padding: 0.4rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 700;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted); transition: all 0.2s;
+    font-family: inherit;
+  }
+  .pattern-tab.active { background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.5); color: var(--purple-400); }
+
+  .result-box {
+    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;
+  }
+  .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem; }
+  .char-count { font-size: 0.72rem; color: var(--muted); }
+  .result-text {
+    font-size: 0.9rem; line-height: 1.85; color: var(--text);
+    white-space: pre-wrap; word-break: break-word;
+  }
+
+  .title-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+  .title-item {
+    background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.18);
+    border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.88rem;
+    display: flex; justify-content: space-between; align-items: center; gap: 0.75rem;
+  }
+
+  .template-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.6rem; }
+  .template-item {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px;
+    padding: 0.85rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+    text-align: center; transition: all 0.2s; color: var(--text);
+  }
+  .template-item:hover { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.08); color: var(--purple-400); }
+
+  .history-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .history-item {
+    background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 1rem 1.25rem; transition: border-color 0.2s;
+  }
+  .history-item:hover { border-color: rgba(124,58,237,0.3); }
+  .history-item.is-fav { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.03); }
+  .history-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; gap: 0.75rem; }
+  .history-theme { font-size: 0.9rem; font-weight: 700; color: var(--text); flex: 1; }
+  .history-meta { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.5rem; }
+  .history-preview { font-size: 0.82rem; color: var(--muted); line-height: 1.6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .history-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+  .fav-star { color: var(--yellow-400); font-size: 0.8rem; }
+  .empty { text-align: center; color: var(--muted); padding: 2rem; font-size: 0.85rem; }
+
+  .filter-tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .filter-tab {
+    padding: 0.35rem 0.85rem; border-radius: 8px; cursor: pointer; font-size: 0.78rem;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted); transition: all 0.2s;
+    font-family: inherit;
+  }
+  .filter-tab.active { background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.4); color: var(--purple-400); font-weight: 700; }
+
+  textarea#rewriteInput, textarea#checkInput, textarea#summaryInput, textarea#translateInput {
+    min-height: 160px;
+  }
+
+  @media(max-width:640px) {
+    .form-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <header>
+    <h1>✦ 資料・文章作成ツール</h1>
+    <p>目的を選ぶだけでAIがビジネス文章を自動作成</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('generate')">✦ 作成</button>
+    <button class="tab" onclick="switchTab('rewrite')">✏️ リライト</button>
+    <button class="tab" onclick="switchTab('check')">🔍 誤字脱字</button>
+    <button class="tab" onclick="switchTab('summary')">📋 要約</button>
+    <button class="tab" onclick="switchTab('translate')">🌐 翻訳</button>
+    <button class="tab" onclick="switchTab('history')">📁 履歴</button>
+    <button class="tab" onclick="switchTab('favorites')">⭐ お気に入り</button>
+  </div>
+
+  <!-- API Key (common) -->
+  <div class="card api-card">
+    <div class="label"><div class="label-bar"></div>Claude API 設定</div>
+    <div class="api-row">
+      <input type="password" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off" />
+      <button class="toggle-btn" onclick="toggleKey()">👁</button>
+    </div>
+  </div>
+
+  <!-- ===== 作成タブ ===== -->
+  <div class="tab-content active" id="tab-generate">
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>テンプレートから選ぶ</div>
+      <div class="template-grid">
+        <div class="template-item" onclick="applyTemplate('お礼メール')">📩 お礼メール</div>
+        <div class="template-item" onclick="applyTemplate('お詫びメール')">🙇 お詫びメール</div>
+        <div class="template-item" onclick="applyTemplate('営業メール')">💼 営業メール</div>
+        <div class="template-item" onclick="applyTemplate('SNS告知')">📣 SNS告知</div>
+        <div class="template-item" onclick="applyTemplate('note販売')">📝 note販売</div>
+        <div class="template-item" onclick="applyTemplate('YouTube概要欄')">▶️ YouTube概要欄</div>
+        <div class="template-item" onclick="applyTemplate('ブログ導入文')">📰 ブログ導入文</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>① 作成したいもの</div>
+      <select id="docType">
+        <option>メール</option>
+        <option>ビジネス文書</option>
+        <option>お知らせ</option>
+        <option>ブログ記事</option>
+        <option>note記事</option>
+        <option>YouTube台本</option>
+        <option>SNS投稿</option>
+        <option>商品説明</option>
+        <option>議事録</option>
+        <option>提案書</option>
+        <option>お礼文</option>
+        <option>謝罪文</option>
+        <option>自己紹介</option>
+        <option>求人募集</option>
+        <option>その他</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>② テーマ・内容</div>
+      <textarea id="theme" placeholder="例：新しいAIツールをリリースしました。業務効率化に役立つ機能です。"></textarea>
+    </div>
+
+    <div class="card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>③ 相手</label>
+          <select id="target">
+            <option>一般</option>
+            <option>お客様</option>
+            <option>上司</option>
+            <option>取引先</option>
+            <option>社員</option>
+            <option>フォロワー</option>
+            <option>その他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>④ 文体</label>
+          <select id="tone">
+            <option>丁寧</option>
+            <option>カジュアル</option>
+            <option>ビジネス</option>
+            <option>熱量高め</option>
+            <option>シンプル</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>⑤ 文字数</label>
+          <select id="length">
+            <option>短め</option>
+            <option selected>普通</option>
+            <option>長め</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap">
+        <label class="toggle-row">
+          <span class="toggle"><input type="checkbox" id="useBullet"><span class="toggle-slider"></span></span>
+          <span class="toggle-label">⑥ 箇条書きにする</span>
+        </label>
+      </div>
+      <div style="margin-top:1rem">
+        <label class="toggle-row" style="margin-bottom:0.5rem">
+          <span class="toggle"><input type="checkbox" id="useCta" onchange="toggleCtaInput()"><span class="toggle-slider"></span></span>
+          <span class="toggle-label">⑦ CTAを付ける</span>
+        </label>
+        <input type="text" id="ctaText" placeholder="例：詳しくはこちら / お気軽にお問い合わせください" style="display:none" />
+      </div>
+    </div>
+
+    <button class="btn-generate" id="generateBtn" onclick="generateDoc()">✦ 文章を生成する（A・B・Cの3パターン）</button>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Claude AI が文章を作成中です…</p>
+    </div>
+    <div class="error-box" id="errorBox"></div>
+
+    <div class="result-section" id="resultSection">
+      <div class="card">
+        <div class="label"><div class="label-bar"></div>タイトル候補（10案）</div>
+        <div class="title-list" id="titleList"></div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem">
+          <div class="label" style="margin-bottom:0"><div class="label-bar"></div>生成された文章</div>
+          <div style="display:flex;gap:0.5rem;align-items:center">
+            <button class="btn-fav" id="favBtn" onclick="toggleFav()">⭐ お気に入り</button>
+            <button class="btn-sm btn-edit" onclick="saveToHistory()">💾 履歴に保存</button>
+          </div>
+        </div>
+        <div class="pattern-tabs">
+          <div class="pattern-tab active" onclick="showPattern(0)">パターン A</div>
+          <div class="pattern-tab" onclick="showPattern(1)">パターン B</div>
+          <div class="pattern-tab" onclick="showPattern(2)">パターン C</div>
+        </div>
+        <div id="patternContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== リライトタブ ===== -->
+  <div class="tab-content" id="tab-rewrite">
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>既存文章を貼り付け</div>
+      <textarea id="rewriteInput" placeholder="リライトしたい文章を貼り付けてください"></textarea>
+      <div class="form-grid" style="margin-top:0.85rem">
+        <div class="form-group">
+          <label>変換スタイル</label>
+          <select id="rewriteStyle">
+            <option>丁寧に</option>
+            <option>短く</option>
+            <option>長く</option>
+            <option>読みやすく</option>
+            <option>ビジネス向け</option>
+            <option>SNS向け</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-generate" id="rewriteBtn" onclick="runRewrite()">✏️ リライトする</button>
+      <div class="loading" id="rewriteLoading"><div class="spinner"></div><p>リライト中…</p></div>
+      <div class="error-box" id="rewriteError"></div>
+      <div class="result-box" id="rewriteResultBox" style="display:none">
+        <div class="result-header">
+          <span class="char-count" id="rewriteCharCount"></span>
+          <button class="btn-copy" onclick="copyResult('rewriteResult', this)">📋 コピー</button>
+        </div>
+        <div class="result-text" id="rewriteResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 誤字脱字チェックタブ ===== -->
+  <div class="tab-content" id="tab-check">
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>文章を貼り付け</div>
+      <textarea id="checkInput" placeholder="誤字脱字をチェックしたい文章を貼り付けてください"></textarea>
+      <button class="btn-generate" id="checkBtn" onclick="runCheck()">🔍 チェックする</button>
+      <div class="loading" id="checkLoading"><div class="spinner"></div><p>チェック中…</p></div>
+      <div class="error-box" id="checkError"></div>
+      <div class="result-box" id="checkResultBox" style="display:none">
+        <div class="result-header">
+          <span class="char-count">修正済み文章</span>
+          <button class="btn-copy" onclick="copyResult('checkResult', this)">📋 コピー</button>
+        </div>
+        <div class="result-text" id="checkResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 要約タブ ===== -->
+  <div class="tab-content" id="tab-summary">
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>長文を貼り付け</div>
+      <textarea id="summaryInput" placeholder="要約したい長文を貼り付けてください"></textarea>
+      <div class="form-grid" style="margin-top:0.85rem">
+        <div class="form-group">
+          <label>要約形式</label>
+          <select id="summaryStyle">
+            <option value="3行">3行で要約</option>
+            <option value="5行">5行で要約</option>
+            <option value="箇条書き">箇条書きで要約</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-generate" id="summaryBtn" onclick="runSummary()">📋 要約する</button>
+      <div class="loading" id="summaryLoading"><div class="spinner"></div><p>要約中…</p></div>
+      <div class="error-box" id="summaryError"></div>
+      <div class="result-box" id="summaryResultBox" style="display:none">
+        <div class="result-header">
+          <span class="char-count">要約結果</span>
+          <button class="btn-copy" onclick="copyResult('summaryResult', this)">📋 コピー</button>
+        </div>
+        <div class="result-text" id="summaryResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 翻訳タブ ===== -->
+  <div class="tab-content" id="tab-translate">
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>翻訳したい文章</div>
+      <div class="form-grid" style="margin-bottom:0.85rem">
+        <div class="form-group">
+          <label>翻訳方向</label>
+          <select id="translateDir">
+            <option value="ja-en">日本語 → 英語</option>
+            <option value="en-ja">英語 → 日本語</option>
+          </select>
+        </div>
+      </div>
+      <textarea id="translateInput" placeholder="翻訳したい文章を貼り付けてください"></textarea>
+      <button class="btn-generate" id="translateBtn" onclick="runTranslate()">🌐 翻訳する</button>
+      <div class="loading" id="translateLoading"><div class="spinner"></div><p>翻訳中…</p></div>
+      <div class="error-box" id="translateError"></div>
+      <div class="result-box" id="translateResultBox" style="display:none">
+        <div class="result-header">
+          <span class="char-count">翻訳結果</span>
+          <button class="btn-copy" onclick="copyResult('translateResult', this)">📋 コピー</button>
+        </div>
+        <div class="result-text" id="translateResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 履歴タブ ===== -->
+  <div class="tab-content" id="tab-history">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+        <div class="label" style="margin-bottom:0"><div class="label-bar"></div>作成履歴</div>
+        <button class="btn-sm btn-del" onclick="clearAllHistory()">🗑 全て削除</button>
+      </div>
+      <div class="filter-tabs">
+        <div class="filter-tab active" onclick="setFilter('all')">すべて</div>
+        <div class="filter-tab" onclick="setFilter('fav')">⭐ お気に入りのみ</div>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- ===== お気に入りタブ ===== -->
+  <div class="tab-content" id="tab-favorites">
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>お気に入り</div>
+      <div class="history-list" id="favList"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── データ ──
+  let history = JSON.parse(localStorage.getItem('doc_history') || '[]');
+  let currentResult = null;
+  let currentFav = false;
+  let activePattern = 0;
+  let historyFilter = 'all';
+
+  function saveHistory() { localStorage.setItem('doc_history', JSON.stringify(history)); }
+
+  // ── タブ切り替え ──
+  function switchTab(name) {
+    const names = ['generate','rewrite','check','summary','translate','history','favorites'];
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', names[i] === name));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    if (name === 'history') renderHistory();
+    if (name === 'favorites') renderFavorites();
+  }
+
+  function toggleKey() {
+    const inp = document.getElementById('apiKey');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  }
+
+  function getApiKey() {
+    const k = document.getElementById('apiKey').value.trim();
+    return k;
+  }
+
+  function toggleCtaInput() {
+    document.getElementById('ctaText').style.display = document.getElementById('useCta').checked ? 'block' : 'none';
+  }
+
+  // ── テンプレート ──
+  const templates = {
+    'お礼メール': { docType: 'メール', theme: 'お世話になった相手へのお礼の気持ちを伝える', target: 'お客様', tone: '丁寧' },
+    'お詫びメール': { docType: 'メール', theme: '不手際があったことに対するお詫び', target: 'お客様', tone: '丁寧' },
+    '営業メール': { docType: 'メール', theme: '新サービスの紹介と商談のご案内', target: '取引先', tone: 'ビジネス' },
+    'SNS告知': { docType: 'SNS投稿', theme: '新商品・サービスのリリース告知', target: 'フォロワー', tone: '熱量高め' },
+    'note販売': { docType: 'note記事', theme: 'noteで販売するコンテンツの紹介文', target: '一般', tone: 'カジュアル' },
+    'YouTube概要欄': { docType: 'YouTube台本', theme: '動画の内容紹介と概要欄用テキスト', target: '一般', tone: 'カジュアル' },
+    'ブログ導入文': { docType: 'ブログ記事', theme: '読者の興味を引くブログ記事の導入部分', target: '一般', tone: 'シンプル' },
+  };
+
+  function applyTemplate(name) {
+    const t = templates[name];
+    if (!t) return;
+    document.getElementById('docType').value = t.docType;
+    document.getElementById('theme').value = t.theme;
+    document.getElementById('target').value = t.target;
+    document.getElementById('tone').value = t.tone;
+    document.getElementById('theme').focus();
+  }
+
+  // ── Claude API 呼び出し共通 ──
+  async function callClaude(prompt, systemPrompt, maxTokens) {
+    const apiKey = getApiKey();
+    if (!apiKey) throw new Error('APIキーを入力してください。\nconsole.anthropic.com から取得できます。');
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-calls': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: maxTokens || 1500,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err?.error?.message || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    return data?.content?.[0]?.text ?? '';
+  }
+
+  // ── 文章生成 ──
+  async function generateDoc() {
+    const theme = document.getElementById('theme').value.trim();
+    if (!theme) { showErr('errorBox', 'テーマ・内容を入力してください。'); return; }
+
+    const docType  = document.getElementById('docType').value;
+    const target   = document.getElementById('target').value;
+    const tone     = document.getElementById('tone').value;
+    const length   = document.getElementById('length').value;
+    const bullet   = document.getElementById('useBullet').checked;
+    const useCta   = document.getElementById('useCta').checked;
+    const ctaText  = document.getElementById('ctaText').value.trim();
+
+    document.getElementById('generateBtn').disabled = true;
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('errorBox').style.display = 'none';
+
+    const prompt = `以下の条件で文章を作成してください。
+
+【作成したいもの】${docType}
+【テーマ・内容】${theme}
+【相手】${target}
+【文体】${tone}
+【文字数】${length}
+【箇条書き】${bullet ? '使用する' : '使用しない'}
+【CTA】${useCta ? (ctaText || '行動喚起を含める') : 'なし'}
+
+以下のJSON形式で返してください：
+{
+  "titles": ["タイトル案1〜10個まで配列で"],
+  "patterns": [
+    {"label": "A", "text": "文章本文"},
+    {"label": "B", "text": "文章本文（別アプローチ）"},
+    {"label": "C", "text": "文章本文（さらに別アプローチ）"}
+  ]
+}
+JSONのみ返してください。`;
+
+    try {
+      const text = await callClaude(prompt, 'あなたはプロのビジネスライターです。目的・相手・文体に応じた高品質な文章を作成してください。必ずJSONのみ返してください。', 2500);
+      const clean = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+
+      currentResult = { docType, theme, target, tone, parsed, date: new Date().toISOString() };
+      currentFav = false;
+      activePattern = 0;
+
+      renderTitles(parsed.titles);
+      showPattern(0);
+
+      document.getElementById('resultSection').style.display = 'block';
+      document.getElementById('favBtn').classList.remove('active');
+      document.getElementById('favBtn').textContent = '⭐ お気に入り';
+      document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+    } catch(e) {
+      showErr('errorBox', 'エラーが発生しました。\n' + (e.message || String(e)));
+    } finally {
+      document.getElementById('generateBtn').disabled = false;
+      document.getElementById('loading').style.display = 'none';
+    }
+  }
+
+  function showPattern(idx) {
+    activePattern = idx;
+    document.querySelectorAll('.pattern-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+    if (!currentResult) return;
+    const p = currentResult.parsed.patterns[idx];
+    const text = p.text || '';
+    document.getElementById('patternContent').innerHTML = `
+      <div class="result-box">
+        <div class="result-header">
+          <span class="char-count">${text.length}文字</span>
+          <button class="btn-copy" onclick="copyText(this, \`${esc(text)}\`)">📋 コピー</button>
+        </div>
+        <div class="result-text">${esc(text)}</div>
+      </div>`;
+  }
+
+  function renderTitles(titles) {
+    document.getElementById('titleList').innerHTML = (titles || []).map(t => `
+      <div class="title-item">
+        <span>${esc(t)}</span>
+        <button class="btn-copy" onclick="copyText(this, \`${esc(t)}\`)">📋 コピー</button>
+      </div>`).join('');
+  }
+
+  // ── リライト ──
+  async function runRewrite() {
+    const input = document.getElementById('rewriteInput').value.trim();
+    if (!input) { showErr('rewriteError', '文章を貼り付けてください。'); return; }
+    const style = document.getElementById('rewriteStyle').value;
+
+    document.getElementById('rewriteBtn').disabled = true;
+    document.getElementById('rewriteLoading').style.display = 'block';
+    document.getElementById('rewriteResultBox').style.display = 'none';
+    document.getElementById('rewriteError').style.display = 'none';
+
+    const prompt = `以下の文章を「${style}」のスタイルにリライトしてください。リライト後の文章のみを返してください。\n\n${input}`;
+    try {
+      const text = await callClaude(prompt, 'あなたはプロの編集者です。文章を指定スタイルに自然にリライトしてください。', 1500);
+      document.getElementById('rewriteResult').textContent = text;
+      document.getElementById('rewriteCharCount').textContent = text.length + '文字';
+      document.getElementById('rewriteResultBox').style.display = 'block';
+    } catch(e) {
+      showErr('rewriteError', 'エラーが発生しました。\n' + (e.message || String(e)));
+    } finally {
+      document.getElementById('rewriteBtn').disabled = false;
+      document.getElementById('rewriteLoading').style.display = 'none';
+    }
+  }
+
+  // ── 誤字脱字チェック ──
+  async function runCheck() {
+    const input = document.getElementById('checkInput').value.trim();
+    if (!input) { showErr('checkError', '文章を貼り付けてください。'); return; }
+
+    document.getElementById('checkBtn').disabled = true;
+    document.getElementById('checkLoading').style.display = 'block';
+    document.getElementById('checkResultBox').style.display = 'none';
+    document.getElementById('checkError').style.display = 'none';
+
+    const prompt = `以下の文章の誤字脱字・文法的な誤りを修正してください。修正済みの文章のみを返してください。\n\n${input}`;
+    try {
+      const text = await callClaude(prompt, 'あなたはプロの校正者です。誤字脱字・文法ミスを正確に修正してください。', 1500);
+      document.getElementById('checkResult').textContent = text;
+      document.getElementById('checkResultBox').style.display = 'block';
+    } catch(e) {
+      showErr('checkError', 'エラーが発生しました。\n' + (e.message || String(e)));
+    } finally {
+      document.getElementById('checkBtn').disabled = false;
+      document.getElementById('checkLoading').style.display = 'none';
+    }
+  }
+
+  // ── 要約 ──
+  async function runSummary() {
+    const input = document.getElementById('summaryInput').value.trim();
+    if (!input) { showErr('summaryError', '長文を貼り付けてください。'); return; }
+    const style = document.getElementById('summaryStyle').value;
+
+    document.getElementById('summaryBtn').disabled = true;
+    document.getElementById('summaryLoading').style.display = 'block';
+    document.getElementById('summaryResultBox').style.display = 'none';
+    document.getElementById('summaryError').style.display = 'none';
+
+    const prompt = `以下の文章を「${style}」で要約してください。要約結果のみを返してください。\n\n${input}`;
+    try {
+      const text = await callClaude(prompt, 'あなたは要約のプロです。重要なポイントを漏らさず簡潔にまとめてください。', 800);
+      document.getElementById('summaryResult').textContent = text;
+      document.getElementById('summaryResultBox').style.display = 'block';
+    } catch(e) {
+      showErr('summaryError', 'エラーが発生しました。\n' + (e.message || String(e)));
+    } finally {
+      document.getElementById('summaryBtn').disabled = false;
+      document.getElementById('summaryLoading').style.display = 'none';
+    }
+  }
+
+  // ── 翻訳 ──
+  async function runTranslate() {
+    const input = document.getElementById('translateInput').value.trim();
+    if (!input) { showErr('translateError', '翻訳したい文章を入力してください。'); return; }
+    const dir = document.getElementById('translateDir').value;
+    const target = dir === 'ja-en' ? '英語' : '日本語';
+
+    document.getElementById('translateBtn').disabled = true;
+    document.getElementById('translateLoading').style.display = 'block';
+    document.getElementById('translateResultBox').style.display = 'none';
+    document.getElementById('translateError').style.display = 'none';
+
+    const prompt = `以下の文章を${target}に翻訳してください。翻訳結果のみを返してください。\n\n${input}`;
+    try {
+      const text = await callClaude(prompt, 'あなたはプロの翻訳者です。自然で正確な翻訳を提供してください。', 1500);
+      document.getElementById('translateResult').textContent = text;
+      document.getElementById('translateResultBox').style.display = 'block';
+    } catch(e) {
+      showErr('translateError', 'エラーが発生しました。\n' + (e.message || String(e)));
+    } finally {
+      document.getElementById('translateBtn').disabled = false;
+      document.getElementById('translateLoading').style.display = 'none';
+    }
+  }
+
+  // ── コピー ──
+  function copyText(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ コピー済み';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 コピー'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+  function copyResult(elId, btn) {
+    const text = document.getElementById(elId).textContent;
+    copyText(btn, text);
+  }
+
+  // ── お気に入り ──
+  function toggleFav() {
+    currentFav = !currentFav;
+    const btn = document.getElementById('favBtn');
+    btn.classList.toggle('active', currentFav);
+    btn.textContent = currentFav ? '⭐ お気に入り済み' : '⭐ お気に入り';
+  }
+
+  // ── 履歴保存 ──
+  function saveToHistory() {
+    if (!currentResult) return;
+    const entry = {
+      id: Date.now(),
+      docType: currentResult.docType,
+      theme: currentResult.theme,
+      target: currentResult.target,
+      tone: currentResult.tone,
+      date: currentResult.date,
+      parsed: currentResult.parsed,
+      fav: currentFav,
+    };
+    history.unshift(entry);
+    if (history.length > 50) history = history.slice(0, 50);
+    saveHistory();
+    alert('履歴に保存しました！');
+  }
+
+  function renderHistory() {
+    const filtered = historyFilter === 'fav' ? history.filter(h => h.fav) : history;
+    const el = document.getElementById('historyList');
+    if (filtered.length === 0) { el.innerHTML = '<div class="empty">履歴がありません</div>'; return; }
+    el.innerHTML = filtered.map(h => historyCard(h)).join('');
+  }
+
+  function renderFavorites() {
+    const favs = history.filter(h => h.fav);
+    const el = document.getElementById('favList');
+    if (favs.length === 0) { el.innerHTML = '<div class="empty">お気に入りがありません</div>'; return; }
+    el.innerHTML = favs.map(h => historyCard(h)).join('');
+  }
+
+  function historyCard(h) {
+    const d = new Date(h.date).toLocaleString('ja-JP');
+    const preview = h.parsed?.patterns?.[0]?.text || '';
+    return `<div class="history-item${h.fav?' is-fav':''}">
+      <div class="history-header">
+        <div>
+          <div class="history-theme">${h.fav ? '<span class="fav-star">⭐</span> ' : ''}[${esc(h.docType)}] ${esc(h.theme)}</div>
+          <div class="history-meta">${d} · ${esc(h.target)} · ${esc(h.tone)}</div>
+        </div>
+        <div class="history-actions">
+          <button class="btn-sm btn-edit" onclick="loadHistory(${h.id})">再編集</button>
+          <button class="btn-sm btn-del" onclick="deleteHistory(${h.id})">削除</button>
+        </div>
+      </div>
+      <div class="history-preview">${esc(preview)}</div>
+    </div>`;
+  }
+
+  function setFilter(f) {
+    historyFilter = f;
+    document.querySelectorAll('.filter-tab').forEach((t, i) => t.classList.toggle('active', i === (f==='all'?0:1)));
+    renderHistory();
+  }
+
+  function deleteHistory(id) {
+    if (!confirm('この履歴を削除しますか？')) return;
+    history = history.filter(h => h.id !== id);
+    saveHistory(); renderHistory(); renderFavorites();
+  }
+
+  function clearAllHistory() {
+    if (!confirm('全ての履歴を削除しますか？')) return;
+    history = []; saveHistory(); renderHistory(); renderFavorites();
+  }
+
+  function loadHistory(id) {
+    const h = history.find(x => x.id === id);
+    if (!h) return;
+    document.getElementById('docType').value = h.docType;
+    document.getElementById('theme').value = h.theme;
+    document.getElementById('target').value = h.target;
+    document.getElementById('tone').value = h.tone;
+    currentResult = { docType: h.docType, theme: h.theme, target: h.target, tone: h.tone, parsed: h.parsed, date: h.date };
+    currentFav = h.fav;
+    activePattern = 0;
+    renderTitles(h.parsed.titles);
+    showPattern(0);
+    document.getElementById('resultSection').style.display = 'block';
+    document.getElementById('favBtn').classList.toggle('active', h.fav);
+    document.getElementById('favBtn').textContent = h.fav ? '⭐ お気に入り済み' : '⭐ お気に入り';
+    switchTab('generate');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── エラー表示 ──
+  function showErr(id, msg) {
+    const el = document.getElementById(id);
+    el.textContent = '⚠ ' + msg;
+    el.style.display = 'block';
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/`/g,'&#96;');
+  }
+</script>
+</body>
+</html>
