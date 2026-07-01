@@ -530,17 +530,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   opacity: 0.75;
 }
 
-.tool-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 200px;
-  border-style: dashed;
-  opacity: 0.5;
-}
-
 .other-tools-toggle {
   display: flex;
   flex-direction: column;
@@ -553,29 +542,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .other-tools-toggle .tool-icon {
   transition: transform 0.35s ease;
 }
-.other-tools-toggle.active .tool-icon {
-  transform: rotate(45deg);
+.other-tools-toggle:hover .tool-icon {
+  transform: rotate(90deg);
 }
 .other-tools-arrow {
   font-size: 0.9rem;
   color: var(--c-text-sub);
   transition: transform 0.35s ease;
 }
-.other-tools-toggle.active .other-tools-arrow {
-  transform: rotate(180deg);
-}
-.other-tools-panel {
-  grid-column: 1 / -1;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.5s ease, opacity 0.4s ease;
-}
-.other-tools-panel.open {
-  opacity: 1;
-}
-.other-tools-panel-inner {
-  padding-top: 24px;
+.other-tools-toggle:hover .other-tools-arrow {
+  transform: translateX(4px);
 }
 .tools-note { text-align: center; }
 .note-link {

@@ -120,41 +120,6 @@ if (form) {
   });
 }
 
-// ---- OTHER TOOLS EXPAND/COLLAPSE ----
-const otherToggle = document.getElementById('other-tools-toggle');
-const otherPanel = document.getElementById('other-tools-panel');
-if (otherToggle && otherPanel) {
-  const otherPanelInner = otherPanel.querySelector('.other-tools-panel-inner');
-
-  function setOtherToolsOpen(isOpen) {
-    otherToggle.classList.toggle('active', isOpen);
-    otherToggle.setAttribute('aria-expanded', String(isOpen));
-    if (isOpen) {
-      otherPanel.classList.add('open');
-      otherPanel.style.maxHeight = otherPanelInner.scrollHeight + 'px';
-      otherPanel.querySelectorAll('.tool-card').forEach(c => c.classList.add('visible'));
-    } else {
-      otherPanel.style.maxHeight = '0px';
-      otherPanel.classList.remove('open');
-    }
-  }
-
-  otherToggle.addEventListener('click', () => {
-    setOtherToolsOpen(!otherToggle.classList.contains('active'));
-  });
-  otherToggle.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      otherToggle.click();
-    }
-  });
-  window.addEventListener('resize', () => {
-    if (otherToggle.classList.contains('active')) {
-      otherPanel.style.maxHeight = otherPanelInner.scrollHeight + 'px';
-    }
-  });
-}
-
 // ---- SMOOTH ACTIVE NAV ----
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
