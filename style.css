@@ -540,6 +540,43 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   border-style: dashed;
   opacity: 0.5;
 }
+
+.other-tools-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+.other-tools-toggle .tool-icon {
+  transition: transform 0.35s ease;
+}
+.other-tools-toggle.active .tool-icon {
+  transform: rotate(45deg);
+}
+.other-tools-arrow {
+  font-size: 0.9rem;
+  color: var(--c-text-sub);
+  transition: transform 0.35s ease;
+}
+.other-tools-toggle.active .other-tools-arrow {
+  transform: rotate(180deg);
+}
+.other-tools-panel {
+  grid-column: 1 / -1;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s ease, opacity 0.4s ease;
+}
+.other-tools-panel.open {
+  opacity: 1;
+}
+.other-tools-panel-inner {
+  padding-top: 24px;
+}
 .tools-note { text-align: center; }
 .note-link {
   display: inline-flex;
