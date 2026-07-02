@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AIビジネスグラフ作成ツール</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.18) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 50px; left: -120px; }
+
+  .container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+
+  .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab {
+    padding: 0.55rem 1.2rem; border-radius: 10px; cursor: pointer; font-size: 0.88rem; font-weight: 600;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .tab.active { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border-color: transparent; color: #fff; }
+  .tab:hover:not(.active) { border-color: rgba(124,58,237,0.4); color: var(--text); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .card.api-card { border-color: rgba(124,58,237,0.2); background: rgba(124,58,237,0.05); }
+
+  .label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .label-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); flex-shrink: 0; }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group label { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+  input, select, textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.65rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.45); }
+  select option { background: #1a1a3e; }
+
+  .btn {
+    padding: 0.65rem 1.25rem; border-radius: 10px; cursor: pointer;
+    font-size: 0.88rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+  .btn-secondary { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
+  .btn-secondary:hover { background: rgba(96,165,250,0.2); }
+  .btn-success { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green-400); }
+  .btn-success:hover { background: rgba(52,211,153,0.2); }
+  .btn-danger { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
+  .btn-sm { padding: 0.4rem 0.85rem; font-size: 0.78rem; border-radius: 8px; }
+  .btn-ai {
+    width: 100%; padding: 0.9rem; border-radius: 14px; border: none; cursor: pointer;
+    font-size: 0.95rem; font-weight: 700; font-family: inherit; color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    position: relative; overflow: hidden; transition: all 0.2s; margin-top: 0.5rem;
+  }
+  .btn-ai::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  .btn-ai:hover:not(:disabled)::after { left: 100%; }
+  .btn-ai:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .api-row { position: relative; }
+  .api-row input { padding-right: 2.8rem; font-family: monospace; }
+  .toggle-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1rem; }
+
+  /* データ入力テーブル */
+  .data-table-wrap { overflow-x: auto; margin-bottom: 0.75rem; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 500px; }
+  .data-table th {
+    background: rgba(124,58,237,0.1); color: var(--muted); font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em; padding: 0.65rem 0.75rem;
+    text-align: left; border-bottom: 1px solid var(--glass-border);
+  }
+  .data-table td { padding: 0.4rem 0.4rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .data-table input { padding: 0.5rem 0.6rem; font-size: 0.85rem; }
+  .data-table .del-btn { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem; }
+
+  /* グラフエリア */
+  .chart-container {
+    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 1.5rem; margin-bottom: 1.25rem;
+    position: relative;
+  }
+  .chart-title-display {
+    text-align: center; font-size: 1rem; font-weight: 700; color: var(--text);
+    margin-bottom: 1rem;
+  }
+  #mainChart { max-height: 420px; }
+
+  /* グラフ種類選択 */
+  .chart-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.5rem; margin-bottom: 0.75rem; }
+  .chart-type-btn {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 10px;
+    padding: 0.65rem 0.5rem; cursor: pointer; text-align: center; font-size: 0.78rem;
+    color: var(--muted); transition: all 0.2s; font-family: inherit;
+  }
+  .chart-type-btn:hover { border-color: rgba(124,58,237,0.4); color: var(--text); }
+  .chart-type-btn.active { border-color: rgba(124,58,237,0.5); background: rgba(124,58,237,0.15); color: var(--purple-400); font-weight: 700; }
+  .chart-type-icon { font-size: 1.3rem; display: block; margin-bottom: 0.3rem; }
+
+  /* AI結果 */
+  .ai-block {
+    background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.18);
+    border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+    font-size: 0.88rem; line-height: 1.8;
+  }
+  .ai-block-title {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--purple-400); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;
+  }
+
+  /* プレゼンモード */
+  .present-block {
+    background: rgba(29,78,216,0.08); border: 1px solid rgba(29,78,216,0.25);
+    border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+    font-size: 0.88rem; line-height: 1.8;
+  }
+  .present-block-title {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--blue-300); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;
+  }
+
+  .spinner-wrap { display: none; text-align: center; padding: 1.5rem; }
+  .spinner {
+    width: 44px; height: 44px; margin: 0 auto 0.75rem;
+    border: 3px solid rgba(124,58,237,0.2); border-top-color: var(--purple-700);
+    border-radius: 50%; animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner-wrap p { color: var(--muted); font-size: 0.88rem; }
+
+  .error-box {
+    display: none; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3);
+    border-radius: 12px; padding: 1rem; color: var(--red-400); font-size: 0.85rem; margin-bottom: 1rem;
+  }
+
+  /* 用途モード */
+  .mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem; }
+  .mode-item {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 10px;
+    padding: 0.6rem 0.75rem; cursor: pointer; text-align: center; font-size: 0.8rem;
+    color: var(--muted); transition: all 0.2s; font-family: inherit;
+  }
+  .mode-item:hover { border-color: rgba(124,58,237,0.4); color: var(--text); background: rgba(124,58,237,0.06); }
+  .mode-item.active {
+    border-color: rgba(124,58,237,0.7);
+    background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(29,78,216,0.3));
+    color: #fff; font-weight: 700;
+    box-shadow: 0 0 12px rgba(124,58,237,0.3);
+  }
+
+  .action-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+
+  .file-upload-area {
+    border: 2px dashed rgba(124,58,237,0.3); border-radius: 14px; padding: 2rem;
+    text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 1rem;
+  }
+  .file-upload-area:hover { border-color: rgba(124,58,237,0.6); background: rgba(124,58,237,0.05); }
+  .file-upload-area input { display: none; }
+  .file-upload-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+  .file-upload-text { font-size: 0.85rem; color: var(--muted); }
+
+  .copy-btn {
+    background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green-400);
+    padding: 0.35rem 0.75rem; border-radius: 7px; cursor: pointer; font-size: 0.75rem; font-family: inherit;
+  }
+  .copy-btn:hover { background: rgba(52,211,153,0.2); }
+
+  @media(max-width:640px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .chart-type-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <header>
+    <h1>📊 AIビジネスグラフ作成ツール</h1>
+    <p>データを入力するだけでAIが最適なグラフを作成・分析・改善提案まで自動対応</p>
+  </header>
+
+  <!-- API Key -->
+  <div class="card api-card">
+    <div class="label"><div class="label-bar"></div>Claude API 設定</div>
+    <div class="api-row">
+      <input type="password" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off" />
+      <button class="toggle-btn" onclick="toggleKey()">👁</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('input')">📁 データ入力</button>
+    <button class="tab" onclick="switchTab('graph')">📊 グラフ</button>
+    <button class="tab" onclick="switchTab('analysis')">🤖 AI分析</button>
+    <button class="tab" onclick="switchTab('report')">📄 レポート</button>
+    <button class="tab" onclick="switchTab('present')">🎯 プレゼンモード</button>
+  </div>
+
+  <!-- ===== データ入力タブ ===== -->
+  <div class="tab-content active" id="tab-input">
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>用途別モード</div>
+      <div class="mode-grid">
+        <button class="mode-item active" data-mode="社内会議" onclick="setMode('社内会議', this)">🏢 社内会議</button>
+        <button class="mode-item" data-mode="上司への報告" onclick="setMode('上司への報告', this)">👔 上司への報告</button>
+        <button class="mode-item" data-mode="取引先向け" onclick="setMode('取引先向け', this)">🤝 取引先向け</button>
+        <button class="mode-item" data-mode="営業資料" onclick="setMode('営業資料', this)">📈 営業資料</button>
+        <button class="mode-item" data-mode="売上分析" onclick="setMode('売上分析', this)">💰 売上分析</button>
+        <button class="mode-item" data-mode="アンケート分析" onclick="setMode('アンケート分析', this)">📋 アンケート分析</button>
+        <button class="mode-item" data-mode="マーケティング分析" onclick="setMode('マーケティング分析', this)">🎯 マーケティング分析</button>
+      </div>
+      <div id="selectedModeLabel" style="margin-top:0.75rem;font-size:0.85rem;color:var(--green-400);font-weight:700">✅ 選択中：社内会議</div>
+    </div>
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>グラフタイトル・設定</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>グラフタイトル</label>
+          <input type="text" id="chartTitle" placeholder="例：月別売上推移 2024年" />
+        </div>
+        <div class="form-group">
+          <label>X軸ラベル</label>
+          <input type="text" id="xLabel" placeholder="例：月、四半期、商品名" />
+        </div>
+        <div class="form-group">
+          <label>Y軸ラベル</label>
+          <input type="text" id="yLabel" placeholder="例：売上（万円）、件数" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>📁 CSVまたはExcelインポート</div>
+      <div class="file-upload-area" onclick="document.getElementById('fileInput').click()">
+        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" onchange="importFile(event)" />
+        <span class="file-upload-icon">📂</span>
+        <div class="file-upload-text">クリックしてCSV・Excelファイルを選択<br><span style="font-size:0.75rem;color:rgba(148,163,184,0.6)">.csv / .xlsx / .xls 対応</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>✏️ 手動入力</div>
+      <div class="form-grid" style="margin-bottom:0.75rem">
+        <div class="form-group">
+          <label>データ系列名</label>
+          <input type="text" id="seriesName" placeholder="例：売上、訪問者数" />
+        </div>
+        <div class="form-group" style="align-self:end">
+          <button class="btn btn-secondary" onclick="addSeries()">＋ 系列を追加</button>
+        </div>
+      </div>
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="min-width:140px">ラベル（X軸）</th>
+              <div id="seriesHeaders"></div>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="dataBody"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick="addRow()">＋ 行を追加</button>
+        <button class="btn btn-sm" style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);color:var(--yellow-400)" onclick="loadSample()">📋 サンプルデータ</button>
+        <button class="btn btn-danger btn-sm" onclick="clearData()">🗑 クリア</button>
+      </div>
+    </div>
+
+    <button class="btn-ai" onclick="createChart()">📊 グラフを作成する</button>
+  </div>
+
+  <!-- ===== グラフタブ ===== -->
+  <div class="tab-content" id="tab-graph">
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>グラフの種類を選択</div>
+      <div class="chart-type-grid">
+        <button class="chart-type-btn active" onclick="changeChartType('bar')" id="type-bar"><span class="chart-type-icon">📊</span>棒グラフ</button>
+        <button class="chart-type-btn" onclick="changeChartType('line')" id="type-line"><span class="chart-type-icon">📈</span>折れ線</button>
+        <button class="chart-type-btn" onclick="changeChartType('pie')" id="type-pie"><span class="chart-type-icon">🥧</span>円グラフ</button>
+        <button class="chart-type-btn" onclick="changeChartType('doughnut')" id="type-doughnut"><span class="chart-type-icon">🍩</span>ドーナツ</button>
+        <button class="chart-type-btn" onclick="changeChartType('area')" id="type-area"><span class="chart-type-icon">🏔</span>面グラフ</button>
+        <button class="chart-type-btn" onclick="changeChartType('radar')" id="type-radar"><span class="chart-type-icon">🕸</span>レーダー</button>
+        <button class="chart-type-btn" onclick="changeChartType('scatter')" id="type-scatter"><span class="chart-type-icon">✦</span>散布図</button>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-title-display" id="chartTitleDisplay">グラフタイトル</div>
+      <canvas id="mainChart"></canvas>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn btn-primary" onclick="downloadPNG()">🖼 PNG保存</button>
+      <button class="btn btn-secondary" onclick="downloadCSV()">📄 CSV保存</button>
+      <button class="btn btn-secondary" onclick="downloadExcel()">📊 Excel保存</button>
+      <button class="btn btn-success btn-sm" onclick="window.print()">🖨 印刷/PDF</button>
+    </div>
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>AIに最適なグラフを選んでもらう</div>
+      <button class="btn-ai" id="aiGraphBtn" onclick="aiSuggestChart()">✦ AIが最適なグラフを選択する</button>
+      <div class="spinner-wrap" id="aiGraphSpinner"><div class="spinner"></div><p>AIが分析中…</p></div>
+      <div class="error-box" id="aiGraphError"></div>
+      <div id="aiGraphResult" style="display:none;margin-top:0.75rem">
+        <div class="ai-block">
+          <div class="ai-block-title">🤖 AIの推薦グラフ</div>
+          <div id="aiGraphText"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== AI分析タブ ===== -->
+  <div class="tab-content" id="tab-analysis">
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>🤖 AIデータ分析</div>
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.75rem">AIがデータの特徴・増減傾向・異常値・気になるポイントを自動分析します。</p>
+      <button class="btn-ai" id="aiAnalysisBtn" onclick="runAnalysis()">✦ AI分析を実行する</button>
+      <div class="spinner-wrap" id="aiAnalysisSpinner"><div class="spinner"></div><p>AIがデータを分析中…</p></div>
+      <div class="error-box" id="aiAnalysisError"></div>
+      <div id="aiAnalysisResult" style="display:none;margin-top:0.75rem">
+        <div class="ai-block" id="analysisFeatures">
+          <div class="ai-block-title">📊 データの特徴</div>
+          <div id="analysisFeaturesText"></div>
+        </div>
+        <div class="ai-block" id="analysisTrend">
+          <div class="ai-block-title">📈 増減傾向</div>
+          <div id="analysisTrendText"></div>
+        </div>
+        <div class="ai-block" id="analysisAnomaly">
+          <div class="ai-block-title">⚠ 異常値・気になるポイント</div>
+          <div id="analysisAnomalyText"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>💡 AI改善提案</div>
+      <button class="btn-ai" id="aiSuggestBtn" onclick="runSuggest()">✦ 改善提案を受ける</button>
+      <div class="spinner-wrap" id="aiSuggestSpinner"><div class="spinner"></div><p>AIが改善案を検討中…</p></div>
+      <div class="error-box" id="aiSuggestError"></div>
+      <div id="aiSuggestResult" style="display:none;margin-top:0.75rem">
+        <div class="ai-block">
+          <div class="ai-block-title">💡 AI改善提案</div>
+          <div id="aiSuggestText"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== レポートタブ ===== -->
+  <div class="tab-content" id="tab-report">
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>📄 AIレポート自動生成</div>
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.75rem">社内報告書やプレゼン資料にそのまま使える分析レポートを自動生成します。</p>
+      <div class="form-group" style="margin-bottom:0.75rem">
+        <label>用途</label>
+        <select id="reportMode">
+          <option>社内会議</option>
+          <option>上司への報告</option>
+          <option>取引先向け</option>
+          <option>営業資料</option>
+          <option>売上分析</option>
+          <option>アンケート分析</option>
+          <option>マーケティング分析</option>
+        </select>
+      </div>
+      <button class="btn-ai" id="aiReportBtn" onclick="runReport()">✦ レポートを生成する</button>
+      <div class="spinner-wrap" id="aiReportSpinner"><div class="spinner"></div><p>AIがレポートを作成中…</p></div>
+      <div class="error-box" id="aiReportError"></div>
+      <div id="aiReportResult" style="display:none;margin-top:0.75rem">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:0.5rem">
+          <button class="copy-btn" onclick="copyReport()">📋 コピー</button>
+        </div>
+        <div class="ai-block">
+          <div class="ai-block-title">📄 分析レポート</div>
+          <div id="aiReportAnalysis"></div>
+        </div>
+        <div class="ai-block">
+          <div class="ai-block-title">💭 考察</div>
+          <div id="aiReportConsideration"></div>
+        </div>
+        <div class="ai-block">
+          <div class="ai-block-title">✅ まとめ</div>
+          <div id="aiReportSummary"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== プレゼンモードタブ ===== -->
+  <div class="tab-content" id="tab-present">
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>🎯 AIプレゼンモード</div>
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem">「何を伝えるべきか」「どう説明するか」をAIが自動生成します。</p>
+      <div class="form-grid" style="margin-bottom:0.75rem">
+        <div class="form-group">
+          <label>説明する相手</label>
+          <select id="presentTarget">
+            <option>上司・役員</option>
+            <option>取引先・クライアント</option>
+            <option>チームメンバー</option>
+            <option>社外向け一般</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-ai" id="aiPresentBtn" onclick="runPresent()">✦ プレゼン原稿を生成する</button>
+      <div class="spinner-wrap" id="aiPresentSpinner"><div class="spinner"></div><p>AIがプレゼン原稿を作成中…</p></div>
+      <div class="error-box" id="aiPresentError"></div>
+      <div id="aiPresentResult" style="display:none;margin-top:0.75rem">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:0.5rem">
+          <button class="copy-btn" onclick="copyPresent()">📋 コピー</button>
+        </div>
+        <div class="present-block">
+          <div class="present-block-title">📢 このグラフから何を伝えるべきか</div>
+          <div id="presentWhat"></div>
+        </div>
+        <div class="present-block">
+          <div class="present-block-title">🗣 説明トーク（<span id="presentTargetLabel"></span>向け）</div>
+          <div id="presentHow"></div>
+        </div>
+        <div class="present-block">
+          <div class="present-block-title">❓ 想定される質問と回答</div>
+          <div id="presentQA"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── 状態 ──
+  let rows = [];
+  let series = ['データ1'];
+  let currentChartType = 'bar';
+  let currentMode = '社内会議';
+  let chartInstance = null;
+
+  const COLORS = [
+    'rgba(96,165,250,0.8)', 'rgba(167,139,250,0.8)', 'rgba(52,211,153,0.8)',
+    'rgba(251,191,36,0.8)', 'rgba(248,113,113,0.8)', 'rgba(244,114,182,0.8)',
+    'rgba(34,211,238,0.8)', 'rgba(251,146,60,0.8)'
+  ];
+  const BORDER_COLORS = [
+    '#60a5fa','#a78bfa','#34d399','#fbbf24','#f87171','#f472b6','#22d3ee','#fb923c'
+  ];
+
+  // ── タブ ──
+  function switchTab(name) {
+    const names = ['input','graph','analysis','report','present'];
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', names[i] === name));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    if (name === 'graph' && chartInstance) renderChart();
+  }
+
+  function toggleKey() {
+    const inp = document.getElementById('apiKey');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  }
+
+  // ── 用途モード ──
+  function setMode(mode, btn) {
+    currentMode = mode;
+    document.querySelectorAll('.mode-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('reportMode').value = mode;
+    document.getElementById('selectedModeLabel').textContent = `✅ 選択中：${mode}`;
+  }
+
+  // ── データ管理 ──
+  function addRow() {
+    rows.push({ label: '', values: series.map(() => '') });
+    renderTable();
+  }
+
+  function addSeries() {
+    const name = document.getElementById('seriesName').value.trim() || `データ${series.length + 1}`;
+    series.push(name);
+    rows.forEach(r => r.values.push(''));
+    document.getElementById('seriesName').value = '';
+    renderTable();
+  }
+
+  function removeRow(idx) {
+    rows.splice(idx, 1);
+    renderTable();
+  }
+
+  function clearData() {
+    if (!confirm('データをクリアしますか？')) return;
+    rows = []; series = ['データ1']; renderTable();
+  }
+
+  function loadSample() {
+    series = ['売上（万円）', '前年同期'];
+    rows = [
+      { label: '1月', values: ['320', '280'] },
+      { label: '2月', values: ['290', '260'] },
+      { label: '3月', values: ['410', '350'] },
+      { label: '4月', values: ['380', '320'] },
+      { label: '5月', values: ['450', '390'] },
+      { label: '6月', values: ['520', '420'] },
+    ];
+    document.getElementById('chartTitle').value = '月別売上推移（前年比較）';
+    document.getElementById('xLabel').value = '月';
+    document.getElementById('yLabel').value = '売上（万円）';
+    renderTable();
+  }
+
+  function renderTable() {
+    // ヘッダー
+    const thead = document.querySelector('.data-table thead tr');
+    thead.innerHTML = `<th style="min-width:140px">ラベル（X軸）</th>` +
+      series.map((s, i) => `<th>${esc(s)}</th>`).join('') +
+      `<th></th>`;
+
+    // ボディ
+    const tbody = document.getElementById('dataBody');
+    tbody.innerHTML = rows.map((row, ri) =>
+      `<tr>
+        <td><input type="text" value="${esc(row.label)}" placeholder="例：1月" oninput="rows[${ri}].label=this.value" /></td>
+        ${series.map((s, si) => `<td><input type="number" value="${row.values[si]||''}" placeholder="0" oninput="rows[${ri}].values[${si}]=this.value" /></td>`).join('')}
+        <td><button class="del-btn" onclick="removeRow(${ri})">×</button></td>
+      </tr>`
+    ).join('') || `<tr><td colspan="${series.length + 2}" style="text-align:center;color:var(--muted);padding:1.5rem;font-size:0.85rem">行を追加してデータを入力してください</td></tr>`;
+  }
+
+  // ── ファイルインポート ──
+  function importFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (ext === 'csv') {
+      const reader = new FileReader();
+      reader.onload = e => parseCSV(e.target.result);
+      reader.readAsText(file, 'UTF-8');
+    } else if (ext === 'xlsx' || ext === 'xls') {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const wb = XLSX.read(e.target.result, { type: 'binary' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const data = XLSX.utils.sheet_to_csv(ws);
+        parseCSV(data);
+      };
+      reader.readAsBinaryString(file);
+    }
+    event.target.value = '';
+  }
+
+  function parseCSV(text) {
+    const lines = text.trim().split('\n').map(l => l.split(',').map(c => c.trim().replace(/^"|"$/g, '')));
+    if (lines.length < 2) { alert('データが少なすぎます'); return; }
+    const header = lines[0];
+    series = header.slice(1);
+    rows = lines.slice(1).map(l => ({
+      label: l[0] || '',
+      values: series.map((_, i) => l[i+1] || '')
+    }));
+    renderTable();
+    alert(`${rows.length}行のデータをインポートしました！`);
+  }
+
+  // ── グラフ作成 ──
+  function createChart() {
+    if (rows.length === 0) { alert('データを入力してください'); return; }
+    renderChart();
+    switchTab('graph');
+  }
+
+  function renderChart() {
+    const labels = rows.map(r => r.label);
+    const title = document.getElementById('chartTitle').value || 'グラフ';
+    document.getElementById('chartTitleDisplay').textContent = title;
+
+    const datasets = series.map((s, si) => {
+      const data = rows.map(r => parseFloat(r.values[si]) || 0);
+      const color = COLORS[si % COLORS.length];
+      const border = BORDER_COLORS[si % BORDER_COLORS.length];
+
+      const base = {
+        label: s,
+        data: data,
+        backgroundColor: currentChartType === 'line' ? 'transparent' : color,
+        borderColor: border,
+        borderWidth: 2,
+        tension: 0.4,
+        pointBackgroundColor: border,
+      };
+
+      if (currentChartType === 'area') {
+        base.fill = true;
+        base.backgroundColor = color.replace('0.8', '0.3');
+      }
+
+      return base;
+    });
+
+    const ctx = document.getElementById('mainChart').getContext('2d');
+    if (chartInstance) chartInstance.destroy();
+
+    const type = currentChartType === 'area' ? 'line' : currentChartType;
+    const xLabel = document.getElementById('xLabel').value;
+    const yLabel = document.getElementById('yLabel').value;
+
+    chartInstance = new Chart(ctx, {
+      type: type,
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#94a3b8', font: { size: 12 } } },
+          title: { display: false }
+        },
+        scales: type === 'pie' || type === 'doughnut' || type === 'radar' ? {} : {
+          x: {
+            ticks: { color: '#94a3b8' },
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            title: { display: !!xLabel, text: xLabel, color: '#94a3b8' }
+          },
+          y: {
+            ticks: { color: '#94a3b8' },
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            title: { display: !!yLabel, text: yLabel, color: '#94a3b8' }
+          }
+        }
+      }
+    });
+  }
+
+  function changeChartType(type) {
+    currentChartType = type;
+    document.querySelectorAll('.chart-type-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('type-' + type)?.classList.add('active');
+    if (chartInstance) renderChart();
+  }
+
+  // ── エクスポート ──
+  function downloadPNG() {
+    if (!chartInstance) { alert('グラフを作成してください'); return; }
+    const a = document.createElement('a');
+    a.href = chartInstance.toBase64Image();
+    a.download = `graph_${new Date().toISOString().slice(0,10)}.png`;
+    a.click();
+  }
+
+  function downloadCSV() {
+    const header = ['ラベル', ...series].join(',');
+    const body = rows.map(r => [r.label, ...r.values].join(',')).join('\n');
+    const blob = new Blob(['\uFEFF' + header + '\n' + body], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `data_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  }
+
+  function downloadExcel() {
+    const wsData = [['ラベル', ...series], ...rows.map(r => [r.label, ...r.values])];
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'データ');
+    XLSX.writeFile(wb, `data_${new Date().toISOString().slice(0,10)}.xlsx`);
+  }
+
+  // ── Claude API 共通 ──
+  async function callClaude(prompt, system, maxTokens) {
+    const apiKey = document.getElementById('apiKey').value.trim();
+    if (!apiKey) throw new Error('APIキーを入力してください。\nconsole.anthropic.com から取得できます。');
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-calls': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: maxTokens || 1000,
+        system: system || 'あなたはビジネスデータ分析の専門家です。日本語で回答してください。',
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e?.error?.message || `HTTP ${res.status}`); }
+    const data = await res.json();
+    return data?.content?.[0]?.text ?? '';
+  }
+
+  function getDataSummary() {
+    const title = document.getElementById('chartTitle').value || '（タイトルなし）';
+    const dataStr = rows.map(r => `${r.label}: ${series.map((s,i)=>`${s}=${r.values[i]||0}`).join(', ')}`).join('\n');
+    return `グラフタイトル：${title}\n用途：${currentMode}\n\nデータ：\n${dataStr}`;
+  }
+
+  async function runAITask(opts) {
+    const { prompt, system, btnId, spinnerId, errorId, resultId, onSuccess } = opts;
+    document.getElementById(btnId).disabled = true;
+    document.getElementById(spinnerId).style.display = 'block';
+    document.getElementById(errorId).style.display = 'none';
+    document.getElementById(resultId).style.display = 'none';
+    try {
+      const text = await callClaude(prompt, system, 1500);
+      onSuccess(text);
+      document.getElementById(resultId).style.display = 'block';
+    } catch(e) {
+      const el = document.getElementById(errorId);
+      el.textContent = '⚠ ' + (e.message || String(e));
+      el.style.display = 'block';
+    } finally {
+      document.getElementById(btnId).disabled = false;
+      document.getElementById(spinnerId).style.display = 'none';
+    }
+  }
+
+  // ── AI推薦グラフ ──
+  function aiSuggestChart() {
+    if (rows.length === 0) { alert('データを入力してください'); return; }
+    runAITask({
+      prompt: `以下のデータに最適なグラフの種類を推薦してください。\n${getDataSummary()}\n\n推薦するグラフと理由を100文字程度で説明してください。`,
+      system: 'あなたはビジネスデータ可視化の専門家です。データに最適なグラフを推薦してください。日本語で回答してください。',
+      btnId: 'aiGraphBtn', spinnerId: 'aiGraphSpinner',
+      errorId: 'aiGraphError', resultId: 'aiGraphResult',
+      onSuccess: text => {
+        document.getElementById('aiGraphText').innerHTML = esc(text).replace(/\n/g,'<br>');
+      }
+    });
+  }
+
+  // ── AI分析 ──
+  function runAnalysis() {
+    if (rows.length === 0) { alert('データを入力してください'); return; }
+    runAITask({
+      prompt: `以下のデータを分析してください。\n${getDataSummary()}\n\n以下の3点について分析してください：\n1. データの特徴（2〜3文）\n2. 増減傾向（2〜3文）\n3. 異常値・気になるポイント（2〜3文）\n\n各項目を「1.」「2.」「3.」で区切って回答してください。`,
+      system: 'あなたはビジネスデータ分析の専門家です。データを客観的に分析し、ビジネスに役立つ洞察を提供してください。日本語で回答してください。',
+      btnId: 'aiAnalysisBtn', spinnerId: 'aiAnalysisSpinner',
+      errorId: 'aiAnalysisError', resultId: 'aiAnalysisResult',
+      onSuccess: text => {
+        const parts = text.split(/\n?[123]\./);
+        document.getElementById('analysisFeaturesText').innerHTML = esc((parts[1]||text).trim()).replace(/\n/g,'<br>');
+        document.getElementById('analysisTrendText').innerHTML = esc((parts[2]||'').trim()).replace(/\n/g,'<br>');
+        document.getElementById('analysisAnomalyText').innerHTML = esc((parts[3]||'').trim()).replace(/\n/g,'<br>');
+      }
+    });
+  }
+
+  // ── AI改善提案 ──
+  function runSuggest() {
+    if (rows.length === 0) { alert('データを入力してください'); return; }
+    runAITask({
+      prompt: `以下のデータとグラフに対して改善提案をしてください。\n${getDataSummary()}\nグラフ種類：${currentChartType}\n\n「このグラフの方が分かりやすい」「比較データを追加した方が良い」「タイトルを変更した方が良い」などの視点で3〜5個の具体的な改善提案をしてください。`,
+      system: 'あなたはビジネスプレゼンテーションの専門家です。グラフとデータの改善点を具体的に提案してください。日本語で回答してください。',
+      btnId: 'aiSuggestBtn', spinnerId: 'aiSuggestSpinner',
+      errorId: 'aiSuggestError', resultId: 'aiSuggestResult',
+      onSuccess: text => {
+        document.getElementById('aiSuggestText').innerHTML = esc(text).replace(/\n/g,'<br>');
+      }
+    });
+  }
+
+  // ── AIレポート ──
+  function runReport() {
+    if (rows.length === 0) { alert('データを入力してください'); return; }
+    const mode = document.getElementById('reportMode').value;
+    runAITask({
+      prompt: `以下のデータについて「${mode}」向けのビジネスレポートを作成してください。\n${getDataSummary()}\n\n以下の3セクションで作成してください：\n【分析結果】\n【考察】\n【まとめ】\n\n各セクションを「【分析結果】」「【考察】」「【まとめ】」で区切って回答してください。`,
+      system: 'あなたはビジネスレポート作成の専門家です。ビジネスの現場で使える明確で簡潔なレポートを作成してください。日本語で回答してください。',
+      btnId: 'aiReportBtn', spinnerId: 'aiReportSpinner',
+      errorId: 'aiReportError', resultId: 'aiReportResult',
+      onSuccess: text => {
+        const a = text.match(/【分析結果】([\s\S]*?)(?=【考察】|$)/)?.[1]?.trim() || text;
+        const b = text.match(/【考察】([\s\S]*?)(?=【まとめ】|$)/)?.[1]?.trim() || '';
+        const c = text.match(/【まとめ】([\s\S]*?)$/)?.[1]?.trim() || '';
+        document.getElementById('aiReportAnalysis').innerHTML = esc(a).replace(/\n/g,'<br>');
+        document.getElementById('aiReportConsideration').innerHTML = esc(b).replace(/\n/g,'<br>');
+        document.getElementById('aiReportSummary').innerHTML = esc(c).replace(/\n/g,'<br>');
+      }
+    });
+  }
+
+  // ── AIプレゼンモード ──
+  function runPresent() {
+    if (rows.length === 0) { alert('データを入力してください'); return; }
+    const target = document.getElementById('presentTarget').value;
+    document.getElementById('presentTargetLabel').textContent = target;
+    runAITask({
+      prompt: `以下のデータグラフを「${target}」に説明するためのプレゼン原稿を作成してください。\n${getDataSummary()}\n\n以下の3セクションで作成してください：\n【このグラフから何を伝えるべきか】\n【${target}向け説明トーク】\n【想定される質問と回答】\n\n各セクションを区切って回答してください。`,
+      system: 'あなたはビジネスプレゼンテーションのコーチです。グラフを効果的に伝えるための具体的なトーク原稿を作成してください。日本語で回答してください。',
+      btnId: 'aiPresentBtn', spinnerId: 'aiPresentSpinner',
+      errorId: 'aiPresentError', resultId: 'aiPresentResult',
+      onSuccess: text => {
+        const what = text.match(/【このグラフから何を伝えるべきか】([\s\S]*?)(?=【|$)/)?.[1]?.trim() || text;
+        const how = text.match(/【.*?向け説明トーク】([\s\S]*?)(?=【|$)/)?.[1]?.trim() || '';
+        const qa = text.match(/【想定される質問と回答】([\s\S]*?)$/)?.[1]?.trim() || '';
+        document.getElementById('presentWhat').innerHTML = esc(what).replace(/\n/g,'<br>');
+        document.getElementById('presentHow').innerHTML = esc(how).replace(/\n/g,'<br>');
+        document.getElementById('presentQA').innerHTML = esc(qa).replace(/\n/g,'<br>');
+      }
+    });
+  }
+
+  // ── コピー ──
+  function copyReport() {
+    const text = [
+      document.getElementById('aiReportAnalysis').innerText,
+      document.getElementById('aiReportConsideration').innerText,
+      document.getElementById('aiReportSummary').innerText
+    ].join('\n\n');
+    navigator.clipboard.writeText(text).then(() => alert('レポートをコピーしました！'));
+  }
+
+  function copyPresent() {
+    const text = [
+      document.getElementById('presentWhat').innerText,
+      document.getElementById('presentHow').innerText,
+      document.getElementById('presentQA').innerText
+    ].join('\n\n');
+    navigator.clipboard.writeText(text).then(() => alert('プレゼン原稿をコピーしました！'));
+  }
+
+  // ── ユーティリティ ──
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── 初期化 ──
+  rows = [
+    { label: '', values: [''] },
+    { label: '', values: [''] },
+    { label: '', values: [''] },
+  ];
+  renderTable();
+</script>
+</body>
+</html>
