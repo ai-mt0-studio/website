@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI業務改善診断ツール</title>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.18) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 50px; left: -120px; }
+
+  .container { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+
+  /* ステップインジケーター */
+  .steps { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 2rem; flex-wrap: wrap; }
+  .step-item { display: flex; align-items: center; gap: 0; }
+  .step-circle {
+    width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15);
+    background: var(--glass); display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700; color: var(--muted); transition: all 0.3s; flex-shrink: 0;
+  }
+  .step-circle.active { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border-color: transparent; color: #fff; }
+  .step-circle.done { background: rgba(52,211,153,0.2); border-color: rgba(52,211,153,0.5); color: var(--green-400); }
+  .step-label { font-size: 0.72rem; color: var(--muted); margin: 0 0.4rem; white-space: nowrap; }
+  .step-label.active { color: var(--purple-400); font-weight: 700; }
+  .step-line { width: 30px; height: 2px; background: rgba(255,255,255,0.1); }
+  .step-line.done { background: rgba(52,211,153,0.4); }
+
+  /* カード */
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .card.api-card { border-color: rgba(124,58,237,0.2); background: rgba(124,58,237,0.05); }
+
+  .label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .label-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); flex-shrink: 0; }
+
+  .step-title {
+    font-size: 1.1rem; font-weight: 800; margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .step-badge {
+    background: linear-gradient(135deg, var(--purple-700), var(--blue-700));
+    color: #fff; font-size: 0.75rem; font-weight: 700;
+    padding: 0.2rem 0.7rem; border-radius: 999px;
+  }
+
+  /* 業種グリッド */
+  .industry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.6rem; }
+  .industry-btn {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px;
+    padding: 0.85rem 0.75rem; cursor: pointer; text-align: center; font-size: 0.85rem;
+    color: var(--muted); transition: all 0.2s; font-family: inherit;
+  }
+  .industry-btn:hover { border-color: rgba(124,58,237,0.4); color: var(--text); }
+  .industry-btn.selected { border-color: rgba(124,58,237,0.6); background: rgba(124,58,237,0.15); color: var(--purple-400); font-weight: 700; }
+  .industry-icon { font-size: 1.5rem; display: block; margin-bottom: 0.35rem; }
+
+  /* フォーム */
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group label { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+  input, select, textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.65rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.45); }
+  textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+  select option { background: #1a1a3e; }
+
+  /* チェックボックス */
+  .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.5rem; }
+  .check-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 10px;
+    padding: 0.65rem 0.85rem; cursor: pointer; font-size: 0.85rem; color: var(--muted);
+    transition: all 0.2s; user-select: none;
+  }
+  .check-item:hover { border-color: rgba(124,58,237,0.3); color: var(--text); }
+  .check-item.checked { border-color: rgba(124,58,237,0.5); background: rgba(124,58,237,0.12); color: var(--purple-400); }
+  .check-box {
+    width: 18px; height: 18px; border-radius: 5px; border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
+    transition: all 0.2s;
+  }
+  .check-item.checked .check-box { background: var(--purple-700); border-color: var(--purple-700); }
+
+  /* ボタン */
+  .btn {
+    padding: 0.75rem 1.5rem; border-radius: 12px; cursor: pointer;
+    font-size: 0.9rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+  .btn-secondary { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
+  .btn-secondary:hover { background: rgba(96,165,250,0.2); }
+  .btn-ai {
+    width: 100%; padding: 1rem; border-radius: 14px; border: none; cursor: pointer;
+    font-size: 1rem; font-weight: 700; font-family: inherit; color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    position: relative; overflow: hidden; transition: all 0.2s;
+  }
+  .btn-ai::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  .btn-ai:hover:not(:disabled)::after { left: 100%; }
+  .btn-ai:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .nav-btns { display: flex; gap: 0.75rem; justify-content: space-between; margin-top: 1rem; }
+
+  /* API key */
+  .api-row { position: relative; }
+  .api-row input { padding-right: 2.8rem; font-family: monospace; }
+  .toggle-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1rem; }
+
+  /* ローディング */
+  .loading { display: none; text-align: center; padding: 2rem; }
+  .spinner {
+    width: 52px; height: 52px; margin: 0 auto 1rem;
+    border: 3px solid rgba(124,58,237,0.2); border-top-color: var(--purple-700);
+    border-radius: 50%; animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading p { color: var(--muted); font-size: 0.9rem; }
+
+  .error-box {
+    display: none; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3);
+    border-radius: 12px; padding: 1rem; color: var(--red-400); font-size: 0.85rem; margin-bottom: 1rem;
+  }
+
+  /* 結果 */
+  .result-section { display: none; }
+
+  .priority-item {
+    background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 1.1rem 1.25rem; margin-bottom: 0.75rem;
+  }
+  .priority-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem; }
+  .priority-title { font-size: 0.95rem; font-weight: 700; }
+  .stars { color: var(--yellow-400); font-size: 0.9rem; letter-spacing: 1px; }
+  .priority-tag {
+    font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px;
+  }
+  .tag-high { background: rgba(248,113,113,0.15); color: var(--red-400); border: 1px solid rgba(248,113,113,0.3); }
+  .tag-mid { background: rgba(251,191,36,0.15); color: var(--yellow-400); border: 1px solid rgba(251,191,36,0.3); }
+  .tag-low { background: rgba(52,211,153,0.15); color: var(--green-400); border: 1px solid rgba(52,211,153,0.3); }
+  .priority-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+  .report-block {
+    background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.18);
+    border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+    font-size: 0.88rem; line-height: 1.8;
+  }
+  .report-block-title {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--purple-400); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;
+  }
+
+  /* おすすめツール */
+  .tool-recommend {
+    background: rgba(29,78,216,0.08); border: 1px solid rgba(29,78,216,0.25);
+    border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .tool-recommend-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .tool-recommend-name { font-size: 0.9rem; font-weight: 700; color: var(--blue-300); margin-bottom: 0.2rem; }
+  .tool-recommend-desc { font-size: 0.8rem; color: var(--muted); }
+  .tool-recommend-btn {
+    margin-left: auto; flex-shrink: 0;
+    background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300);
+    padding: 0.4rem 0.85rem; border-radius: 8px; cursor: pointer; font-size: 0.78rem; font-family: inherit;
+    text-decoration: none; display: inline-block; transition: background 0.2s;
+  }
+  .tool-recommend-btn:hover { background: rgba(96,165,250,0.2); }
+
+  .action-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .copy-btn {
+    background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green-400);
+    padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-family: inherit;
+  }
+
+  /* 進捗バー */
+  .progress-bar-wrap { margin-bottom: 1.5rem; }
+  .progress-bar-bg { background: rgba(255,255,255,0.06); border-radius: 999px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--purple-700), var(--blue-400)); transition: width 0.4s; }
+  .progress-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.4rem; text-align: right; }
+
+  @media(max-width:640px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .industry-grid { grid-template-columns: repeat(3, 1fr); }
+    .check-grid { grid-template-columns: 1fr 1fr; }
+    .nav-btns { flex-direction: column; }
+    .tool-recommend { flex-wrap: wrap; }
+    .tool-recommend-btn { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <header>
+    <h1>🏢 AI業務改善診断ツール</h1>
+    <p>質問に答えるだけでAIが業務課題を分析・改善提案レポートを自動生成</p>
+  </header>
+
+  <!-- API Key -->
+  <div class="card api-card">
+    <div class="label"><div class="label-bar"></div>Claude API 設定</div>
+    <div class="api-row">
+      <input type="password" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off" />
+      <button class="toggle-btn" onclick="toggleKey()">👁</button>
+    </div>
+  </div>
+
+  <!-- ステップインジケーター -->
+  <div class="steps" id="stepsIndicator">
+    <div class="step-item">
+      <div class="step-circle active" id="sc1">1</div>
+      <div class="step-label active" id="sl1">業種</div>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step-item">
+      <div class="step-circle" id="sc2">2</div>
+      <div class="step-label" id="sl2">基本情報</div>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step-item">
+      <div class="step-circle" id="sc3">3</div>
+      <div class="step-label" id="sl3">困っていること</div>
+    </div>
+    <div class="step-line" id="line3"></div>
+    <div class="step-item">
+      <div class="step-circle" id="sc4">4</div>
+      <div class="step-label" id="sl4">詳細</div>
+    </div>
+    <div class="step-line" id="line4"></div>
+    <div class="step-item">
+      <div class="step-circle" id="sc5">5</div>
+      <div class="step-label" id="sl5">診断結果</div>
+    </div>
+  </div>
+
+  <!-- 進捗バー -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill" style="width:20%"></div></div>
+    <div class="progress-label" id="progressLabel">STEP 1 / 4</div>
+  </div>
+
+  <!-- ===== STEP1 業種選択 ===== -->
+  <div id="step1">
+    <div class="card">
+      <div class="step-title"><span class="step-badge">STEP 1</span>業種を選択してください</div>
+      <div class="industry-grid">
+        <button class="industry-btn" data-industry="飲食店" onclick="selectIndustry(this)"><span class="industry-icon">🍽</span>飲食店</button>
+        <button class="industry-btn" data-industry="ホテル・宿泊" onclick="selectIndustry(this)"><span class="industry-icon">🏨</span>ホテル・宿泊</button>
+        <button class="industry-btn" data-industry="建設業" onclick="selectIndustry(this)"><span class="industry-icon">🏗</span>建設業</button>
+        <button class="industry-btn" data-industry="製造業" onclick="selectIndustry(this)"><span class="industry-icon">🏭</span>製造業</button>
+        <button class="industry-btn" data-industry="小売業" onclick="selectIndustry(this)"><span class="industry-icon">🛒</span>小売業</button>
+        <button class="industry-btn" data-industry="医療・介護" onclick="selectIndustry(this)"><span class="industry-icon">🏥</span>医療・介護</button>
+        <button class="industry-btn" data-industry="美容" onclick="selectIndustry(this)"><span class="industry-icon">💄</span>美容</button>
+        <button class="industry-btn" data-industry="IT・Web" onclick="selectIndustry(this)"><span class="industry-icon">💻</span>IT・Web</button>
+        <button class="industry-btn" data-industry="その他" onclick="selectIndustry(this)"><span class="industry-icon">📋</span>その他</button>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <div></div>
+      <button class="btn btn-primary" onclick="goStep(2)">次へ →</button>
+    </div>
+  </div>
+
+  <!-- ===== STEP2 基本情報 ===== -->
+  <div id="step2" style="display:none">
+    <div class="card">
+      <div class="step-title"><span class="step-badge">STEP 2</span>基本情報を入力してください</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>従業員数</label>
+          <select id="employees">
+            <option value="">選択してください</option>
+            <option>1人（個人）</option>
+            <option>2〜5人</option>
+            <option>6〜10人</option>
+            <option>11〜30人</option>
+            <option>31〜50人</option>
+            <option>51人以上</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>事業年数</label>
+          <select id="years">
+            <option value="">選択してください</option>
+            <option>1年未満</option>
+            <option>1〜3年</option>
+            <option>3〜5年</option>
+            <option>5〜10年</option>
+            <option>10年以上</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>月間売上（任意）</label>
+          <select id="revenue">
+            <option value="">選択しない</option>
+            <option>100万円未満</option>
+            <option>100〜300万円</option>
+            <option>300〜500万円</option>
+            <option>500〜1000万円</option>
+            <option>1000万円以上</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>事務・管理担当者数</label>
+          <select id="staff">
+            <option value="">選択してください</option>
+            <option>0人（本人のみ）</option>
+            <option>1人</option>
+            <option>2〜3人</option>
+            <option>4〜5人</option>
+            <option>6人以上</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-secondary" onclick="goStep(1)">← 戻る</button>
+      <button class="btn btn-primary" onclick="goStep(3)">次へ →</button>
+    </div>
+  </div>
+
+  <!-- ===== STEP3 困っている業務 ===== -->
+  <div id="step3" style="display:none">
+    <div class="card">
+      <div class="step-title"><span class="step-badge">STEP 3</span>現在困っている業務を選択（複数可）</div>
+      <div class="check-grid" id="problemsGrid">
+        <div class="check-item" data-value="見積書・請求書作成" onclick="toggleCheck(this)"><div class="check-box">✓</div>📄 見積書・請求書</div>
+        <div class="check-item" data-value="資料作成" onclick="toggleCheck(this)"><div class="check-box">✓</div>📝 資料作成</div>
+        <div class="check-item" data-value="データ分析・集計" onclick="toggleCheck(this)"><div class="check-box">✓</div>📊 データ分析</div>
+        <div class="check-item" data-value="顧客管理" onclick="toggleCheck(this)"><div class="check-box">✓</div>👥 顧客管理</div>
+        <div class="check-item" data-value="在庫管理" onclick="toggleCheck(this)"><div class="check-box">✓</div>📦 在庫管理</div>
+        <div class="check-item" data-value="SNS運用" onclick="toggleCheck(this)"><div class="check-box">✓</div>📱 SNS運用</div>
+        <div class="check-item" data-value="経理・帳簿" onclick="toggleCheck(this)"><div class="check-box">✓</div>💰 経理・帳簿</div>
+        <div class="check-item" data-value="電話対応" onclick="toggleCheck(this)"><div class="check-box">✓</div>📞 電話対応</div>
+        <div class="check-item" data-value="メール対応" onclick="toggleCheck(this)"><div class="check-box">✓</div>✉️ メール対応</div>
+        <div class="check-item" data-value="シフト管理" onclick="toggleCheck(this)"><div class="check-box">✓</div>📅 シフト管理</div>
+        <div class="check-item" data-value="会議・議事録" onclick="toggleCheck(this)"><div class="check-box">✓</div>🗣 会議・議事録</div>
+        <div class="check-item" data-value="営業活動" onclick="toggleCheck(this)"><div class="check-box">✓</div>💼 営業活動</div>
+        <div class="check-item" data-value="その他" onclick="toggleCheck(this)"><div class="check-box">✓</div>📋 その他</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-secondary" onclick="goStep(2)">← 戻る</button>
+      <button class="btn btn-primary" onclick="goStep(4)">次へ →</button>
+    </div>
+  </div>
+
+  <!-- ===== STEP4 詳細入力 ===== -->
+  <div id="step4" style="display:none">
+    <div class="card">
+      <div class="step-title"><span class="step-badge">STEP 4</span>現在困っていることを詳しく教えてください</div>
+      <div class="form-group">
+        <label>具体的な課題・お困りごと（自由記述）</label>
+        <textarea id="details" placeholder="例：
+・毎月の見積書作成に半日かかっている
+・Excelの管理が複雑でミスが多い
+・SNSを更新する時間がない
+・顧客情報が紙で管理されていて検索できない
+・請求書の発行が遅れがちになっている"></textarea>
+      </div>
+      <div class="form-group" style="margin-top:0.75rem">
+        <label>AIや自動化についての知識・経験</label>
+        <select id="aiKnowledge">
+          <option>全くない（初めて）</option>
+          <option>少しある（ChatGPTなどを使ったことがある）</option>
+          <option>ある程度ある（業務で活用している）</option>
+          <option>詳しい（積極的に導入している）</option>
+        </select>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn btn-secondary" onclick="goStep(3)">← 戻る</button>
+      <button class="btn-ai" onclick="runDiagnosis()">🤖 AI診断を実行する</button>
+    </div>
+  </div>
+
+  <!-- ローディング -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>AIが業務内容を分析中です…<br><span style="font-size:0.8rem;opacity:0.6">少々お待ちください</span></p>
+  </div>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- ===== 診断結果 ===== -->
+  <div class="result-section" id="resultSection">
+
+    <div class="card" style="border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.05);text-align:center;padding:1.75rem">
+      <div style="font-size:2rem;margin-bottom:0.5rem">✅</div>
+      <div style="font-size:1.1rem;font-weight:800;color:var(--green-400);margin-bottom:0.25rem">診断完了！</div>
+      <div style="font-size:0.85rem;color:var(--muted)" id="resultSummaryLine"></div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn btn-primary" onclick="window.print()">🖨 PDF保存</button>
+      <button class="copy-btn" onclick="copyReport()">📋 レポートをコピー</button>
+      <button class="btn btn-secondary" onclick="resetDiagnosis()">🔄 もう一度診断する</button>
+    </div>
+
+    <!-- 優先順位 -->
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>🎯 改善優先順位</div>
+      <div id="priorityList"></div>
+    </div>
+
+    <!-- AIレポート -->
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>📄 AI業務改善レポート</div>
+      <div class="report-block">
+        <div class="report-block-title">📊 現状分析</div>
+        <div id="reportAnalysis"></div>
+      </div>
+      <div class="report-block">
+        <div class="report-block-title">💡 改善ポイント</div>
+        <div id="reportImprovement"></div>
+      </div>
+      <div class="report-block">
+        <div class="report-block-title">🤖 AI・自動化導入提案</div>
+        <div id="reportAI"></div>
+      </div>
+      <div class="report-block">
+        <div class="report-block-title">📈 期待できる効果</div>
+        <div id="reportEffect"></div>
+      </div>
+      <div class="report-block">
+        <div class="report-block-title">✅ 今後取り組むべきこと</div>
+        <div id="reportNext"></div>
+      </div>
+    </div>
+
+    <!-- おすすめツール -->
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>🛠 AI MT0 Studio おすすめツール</div>
+      <div id="toolRecommends"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── 状態 ──
+  let currentStep = 1;
+  let selectedIndustry = '';
+  let selectedProblems = [];
+  let reportText = '';
+
+  const toolMap = {
+    '見積書・請求書作成': { name: 'AI見積書・請求書作成ツール', icon: '🧾', desc: '見積書・請求書をプロ品質で素早く作成。AIが文章をサポート。', url: 'invoice-tool.html' },
+    '資料作成': { name: 'AI資料・文章作成ツール', icon: '✍️', desc: '目的を選ぶだけでAIがビジネス文章を自動作成。', url: 'doc-tool.html' },
+    'データ分析・集計': { name: 'AIビジネスグラフ作成ツール', icon: '📊', desc: 'データを入力するだけでAIが最適なグラフを作成・分析。', url: 'graph-tool.html' },
+    'SNS運用': { name: 'SNS投稿自動生成ツール', icon: '✦', desc: 'テーマを入力するだけでSNS投稿文を自動生成。', url: 'sns-tool.html' },
+    '経理・帳簿': { name: '経理・帳簿ツール', icon: '📊', desc: '売上・経費を入力するだけでAIが自動分析。', url: 'accounting-tool.html' },
+    '会議・議事録': { name: 'AI議事録ツール', icon: '🎙', desc: '会議の録音や文字起こしをAIが要約・整形。', url: '#' },
+    '営業活動': { name: 'AI資料・文章作成ツール', icon: '✍️', desc: '提案書・営業メールをAIが自動生成。', url: 'doc-tool.html' },
+    'メール対応': { name: 'AI資料・文章作成ツール', icon: '✍️', desc: 'メール文章をAIが素早く作成。', url: 'doc-tool.html' },
+  };
+
+  // ── ステップ管理 ──
+  function goStep(n) {
+    if (n === 2 && !selectedIndustry) { alert('業種を選択してください'); return; }
+    if (n === 3) {
+      const emp = document.getElementById('employees').value;
+      const yr = document.getElementById('years').value;
+      const stf = document.getElementById('staff').value;
+      if (!emp || !yr || !stf) { alert('必須項目を入力してください'); return; }
+    }
+
+    document.getElementById('step' + currentStep).style.display = 'none';
+    currentStep = n;
+    document.getElementById('step' + currentStep).style.display = 'block';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress() {
+    const pct = (currentStep / 5) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `STEP ${Math.min(currentStep, 4)} / 4`;
+
+    for (let i = 1; i <= 5; i++) {
+      const sc = document.getElementById('sc' + i);
+      const sl = document.getElementById('sl' + i);
+      sc.className = 'step-circle' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+      sl.className = 'step-label' + (i === currentStep ? ' active' : '');
+      if (i < 5) {
+        document.getElementById('line' + i).className = 'step-line' + (i < currentStep ? ' done' : '');
+      }
+    }
+  }
+
+  // ── 業種選択 ──
+  function selectIndustry(el) {
+    document.querySelectorAll('.industry-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedIndustry = el.getAttribute('data-industry');
+  }
+
+  // ── チェックボックス ──
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    const val = el.getAttribute('data-value');
+    if (el.classList.contains('checked')) {
+      if (!selectedProblems.includes(val)) selectedProblems.push(val);
+    } else {
+      selectedProblems = selectedProblems.filter(v => v !== val);
+    }
+  }
+
+  // ── API Key ──
+  function toggleKey() {
+    const inp = document.getElementById('apiKey');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  }
+
+  // ── AI診断 ──
+  async function runDiagnosis() {
+    const apiKey = document.getElementById('apiKey').value.trim();
+    if (!apiKey) { showError('APIキーを入力してください。\nconsole.anthropic.com から取得できます。'); return; }
+    if (selectedProblems.length === 0) { showError('困っている業務を1つ以上選択してください。'); return; }
+
+    const details = document.getElementById('details').value.trim();
+    const employees = document.getElementById('employees').value;
+    const years = document.getElementById('years').value;
+    const revenue = document.getElementById('revenue').value;
+    const staff = document.getElementById('staff').value;
+    const aiKnowledge = document.getElementById('aiKnowledge').value;
+
+    document.getElementById('step4').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('errorBox').style.display = 'none';
+    document.getElementById('resultSection').style.display = 'none';
+
+    const prompt = `以下の企業情報をもとに業務改善診断レポートを作成してください。
+
+【業種】${selectedIndustry}
+【従業員数】${employees}
+【事業年数】${years}
+【月間売上】${revenue || '未回答'}
+【事務担当者数】${staff}
+【AIの知識・経験】${aiKnowledge}
+【困っている業務】${selectedProblems.join('、')}
+【詳細な課題】${details || '特になし'}
+
+以下のJSON形式で回答してください：
+{
+  "summary": "診断結果の一言まとめ（50文字以内）",
+  "priorities": [
+    {"title": "課題名", "stars": 5, "level": "最優先", "desc": "説明（2〜3文）"},
+    {"title": "課題名", "stars": 4, "level": "優先", "desc": "説明（2〜3文）"},
+    {"title": "課題名", "stars": 3, "level": "余裕があれば", "desc": "説明（2〜3文）"}
+  ],
+  "analysis": "現状分析（3〜4文）",
+  "improvement": "改善ポイント（箇条書き3〜5項目）",
+  "ai_proposal": "AI・自動化導入提案（具体的に3〜4文）",
+  "effect": "期待できる効果（具体的な数値も含めて）",
+  "next_steps": "今後取り組むべきこと（優先順に3〜5ステップ）"
+}
+JSONのみ返してください。`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-calls': 'true',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6', max_tokens: 2000,
+          system: 'あなたは中小企業・個人事業主向けの業務改善コンサルタントです。実践的で具体的なアドバイスを提供してください。必ずJSONのみ返してください。',
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+
+      if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e?.error?.message || `HTTP ${res.status}`); }
+      const data = await res.json();
+      const text = data?.content?.[0]?.text ?? '';
+      const clean = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+
+      renderResult(parsed);
+
+    } catch(e) {
+      document.getElementById('step4').style.display = 'block';
+      currentStep = 4;
+      showError('エラーが発生しました。\n' + (e.message || String(e)));
+    } finally {
+      document.getElementById('loading').style.display = 'none';
+    }
+  }
+
+  function renderResult(d) {
+    currentStep = 5;
+    updateProgress();
+
+    document.getElementById('resultSummaryLine').textContent = d.summary || '';
+
+    // 優先順位
+    const priorities = d.priorities || [];
+    document.getElementById('priorityList').innerHTML = priorities.map(p => {
+      const stars = '★'.repeat(p.stars) + '☆'.repeat(5 - p.stars);
+      const tagClass = p.stars >= 5 ? 'tag-high' : p.stars >= 4 ? 'tag-mid' : 'tag-low';
+      const tagLabel = p.stars >= 5 ? '最優先' : p.stars >= 4 ? '優先' : '余裕があれば改善';
+      return `<div class="priority-item">
+        <div class="priority-header">
+          <div class="priority-title">${esc(p.title)}</div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="stars">${stars}</span>
+            <span class="priority-tag ${tagClass}">${tagLabel}</span>
+          </div>
+        </div>
+        <div class="priority-desc">${esc(p.desc).replace(/\n/g,'<br>')}</div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('reportAnalysis').innerHTML = esc(d.analysis||'').replace(/\n/g,'<br>');
+    document.getElementById('reportImprovement').innerHTML = esc(d.improvement||'').replace(/\n/g,'<br>');
+    document.getElementById('reportAI').innerHTML = esc(d.ai_proposal||'').replace(/\n/g,'<br>');
+    document.getElementById('reportEffect').innerHTML = esc(d.effect||'').replace(/\n/g,'<br>');
+    document.getElementById('reportNext').innerHTML = esc(d.next_steps||'').replace(/\n/g,'<br>');
+
+    // おすすめツール
+    const recommends = [];
+    selectedProblems.forEach(p => {
+      if (toolMap[p] && !recommends.find(r => r.name === toolMap[p].name)) {
+        recommends.push(toolMap[p]);
+      }
+    });
+    document.getElementById('toolRecommends').innerHTML = recommends.length > 0
+      ? recommends.map(t => `
+        <div class="tool-recommend">
+          <div class="tool-recommend-icon">${t.icon}</div>
+          <div>
+            <div class="tool-recommend-name">${esc(t.name)}</div>
+            <div class="tool-recommend-desc">${esc(t.desc)}</div>
+          </div>
+          <a href="${t.url}" class="tool-recommend-btn">使ってみる →</a>
+        </div>`).join('')
+      : '<div style="color:var(--muted);font-size:0.85rem">該当ツールはありません</div>';
+
+    // レポートテキスト保存
+    reportText = `【AI業務改善診断レポート】\n業種：${selectedIndustry}\n\n` +
+      `【現状分析】\n${d.analysis}\n\n【改善ポイント】\n${d.improvement}\n\n` +
+      `【AI・自動化導入提案】\n${d.ai_proposal}\n\n【期待できる効果】\n${d.effect}\n\n` +
+      `【今後取り組むべきこと】\n${d.next_steps}`;
+
+    document.getElementById('resultSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyReport() {
+    navigator.clipboard.writeText(reportText).then(() => alert('レポートをコピーしました！'));
+  }
+
+  function resetDiagnosis() {
+    if (!confirm('診断をリセットしますか？')) return;
+    currentStep = 1;
+    selectedIndustry = '';
+    selectedProblems = [];
+    reportText = '';
+    document.querySelectorAll('.industry-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.check-item').forEach(b => b.classList.remove('checked'));
+    document.getElementById('employees').value = '';
+    document.getElementById('years').value = '';
+    document.getElementById('revenue').value = '';
+    document.getElementById('staff').value = '';
+    document.getElementById('details').value = '';
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('step1').style.display = 'block';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorBox');
+    el.textContent = '⚠ ' + msg;
+    el.style.display = 'block';
+  }
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
