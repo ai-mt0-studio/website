@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AIプロンプト管理ツール Pro Lite</title>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-500: #8b5cf6;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+    --sidebar-w: 260px;
+  }
+
+  /* ライトモード */
+  body.light {
+    --bg: #f0f4ff;
+    --text: #1e1e3a;
+    --muted: #6b7280;
+    --glass: rgba(255,255,255,0.7);
+    --glass-border: rgba(0,0,0,0.08);
+    --input-bg: rgba(255,255,255,0.9);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 10% 30%, rgba(124,58,237,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 90% 10%, rgba(29,78,216,0.12) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 0; left: -100px; }
+
+  /* アプリレイアウト */
+  .app { display: flex; height: 100vh; position: relative; z-index: 1; overflow: hidden; }
+
+  /* ========= サイドバー ========= */
+  .sidebar {
+    width: var(--sidebar-w); flex-shrink: 0;
+    background: rgba(6,6,26,0.9);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--glass-border);
+    display: flex; flex-direction: column;
+    overflow: hidden; transition: transform 0.3s;
+  }
+  body.light .sidebar { background: rgba(240,244,255,0.95); }
+
+  .sidebar-header {
+    padding: 1.1rem 1rem 0.75rem;
+    border-bottom: 1px solid var(--glass-border);
+    flex-shrink: 0;
+  }
+  .sidebar-logo {
+    font-size: 1rem; font-weight: 900; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300), var(--purple-400));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.75rem;
+  }
+
+  /* 検索 */
+  .search-wrap { position: relative; margin-bottom: 0; }
+  .search-wrap input {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.55rem 0.85rem 0.55rem 2.1rem;
+    color: var(--text); font-size: 0.82rem; font-family: inherit; outline: none;
+    transition: border-color 0.2s;
+  }
+  body.light .search-wrap input { border-color: rgba(0,0,0,0.1); }
+  .search-wrap input:focus { border-color: var(--purple-700); }
+  .search-icon { position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; }
+
+  /* サイドバーナビ */
+  .sidebar-nav { flex: 1; overflow-y: auto; padding: 0.75rem 0.6rem; }
+  .sidebar-nav::-webkit-scrollbar { width: 3px; }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+
+  .nav-section-label {
+    font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); padding: 0.5rem 0.5rem 0.25rem; margin-top: 0.5rem;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.6rem; border-radius: 8px; cursor: pointer;
+    font-size: 0.83rem; color: var(--muted); transition: all 0.15s;
+    position: relative; margin-bottom: 1px;
+    border: none; background: none; font-family: inherit; width: 100%;
+    -webkit-appearance: none; appearance: none;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+  .nav-item.active { background: rgba(124,58,237,0.18); color: var(--purple-400); font-weight: 700; }
+  body.light .nav-item:hover { background: rgba(0,0,0,0.05); }
+  body.light .nav-item.active { background: rgba(124,58,237,0.12); }
+  .nav-item-icon { font-size: 0.9rem; width: 18px; text-align: center; flex-shrink: 0; }
+  .nav-item-count {
+    margin-left: auto; background: rgba(255,255,255,0.08); border-radius: 999px;
+    font-size: 0.68rem; padding: 0.1rem 0.45rem; color: var(--muted); flex-shrink: 0;
+  }
+  .nav-item.active .nav-item-count { background: rgba(124,58,237,0.25); color: var(--purple-400); }
+
+  /* フォルダ */
+  .folder-item {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.45rem 0.6rem; border-radius: 8px; cursor: pointer;
+    font-size: 0.82rem; color: var(--muted); transition: all 0.15s; margin-bottom: 1px;
+    border: none; background: none; font-family: inherit; width: 100%; text-align: left;
+    -webkit-appearance: none; appearance: none;
+  }
+  .folder-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+  .folder-item.active { background: rgba(124,58,237,0.15); color: var(--purple-400); font-weight: 600; }
+  .folder-color { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .folder-add-btn {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.6rem; border-radius: 8px; cursor: pointer;
+    font-size: 0.78rem; color: rgba(96,165,250,0.7); transition: all 0.15s;
+    border: none; background: none; font-family: inherit; width: 100%;
+  }
+  .folder-add-btn:hover { color: var(--blue-300); background: rgba(96,165,250,0.05); }
+
+  .sidebar-bottom { padding: 0.75rem; border-top: 1px solid var(--glass-border); flex-shrink: 0; display: flex; gap: 0.4rem; }
+  .icon-btn {
+    flex: 1; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--glass-border);
+    background: var(--glass); color: var(--muted); cursor: pointer; font-size: 0.85rem;
+    transition: all 0.2s; font-family: inherit;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+
+  /* ========= メインエリア ========= */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+
+  /* トップバー */
+  .topbar {
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(6,6,26,0.6);
+    backdrop-filter: blur(20px);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    flex-shrink: 0;
+  }
+  body.light .topbar { background: rgba(240,244,255,0.8); }
+  .topbar-left { display: flex; align-items: center; gap: 0.75rem; min-width: 0; }
+  .topbar-title { font-size: 1rem; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar-count { font-size: 0.75rem; color: var(--muted); flex-shrink: 0; }
+  .topbar-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+
+  .btn {
+    padding: 0.5rem 1rem; border-radius: 9px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(124,58,237,0.4); }
+  .btn-ghost { background: var(--glass); border: 1px solid var(--glass-border); color: var(--muted); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+  .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.75rem; border-radius: 7px; }
+  .btn-danger { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
+
+  /* フィルターバー */
+  .filterbar {
+    padding: 0.6rem 1.25rem;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; flex-shrink: 0;
+  }
+  .filter-chip {
+    padding: 0.3rem 0.75rem; border-radius: 999px; cursor: pointer; font-size: 0.75rem;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.15s; font-family: inherit;
+  }
+  .filter-chip:hover { border-color: rgba(124,58,237,0.4); color: var(--text); }
+  .filter-chip.active { background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.5); color: var(--purple-400); font-weight: 700; }
+
+  /* プロンプトグリッド */
+  .prompt-grid {
+    flex: 1; overflow-y: auto; padding: 1rem 1.25rem;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.85rem;
+    align-content: start;
+  }
+  .prompt-grid::-webkit-scrollbar { width: 4px; }
+  .prompt-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 99px; }
+
+  /* プロンプトカード */
+  .prompt-card {
+    background: var(--glass); backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); border-radius: 14px;
+    padding: 1rem; cursor: pointer; transition: all 0.2s;
+    position: relative; display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .prompt-card:hover { border-color: rgba(124,58,237,0.35); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .prompt-card.pinned { border-color: rgba(251,191,36,0.3); }
+  .prompt-card.fav { border-color: rgba(251,191,36,0.4); }
+
+  .card-header { display: flex; align-items: flex-start; gap: 0.5rem; }
+  .card-title { font-size: 0.9rem; font-weight: 700; flex: 1; line-height: 1.4; }
+  .card-badges { display: flex; gap: 0.3rem; flex-shrink: 0; }
+  .pin-badge, .fav-badge { font-size: 0.8rem; }
+
+  .card-body {
+    font-size: 0.8rem; color: var(--muted); line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  .card-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+  .tag-pill {
+    background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.2);
+    color: var(--purple-400); font-size: 0.68rem; font-weight: 600;
+    padding: 0.15rem 0.5rem; border-radius: 999px;
+  }
+
+  .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .card-folder { font-size: 0.72rem; color: var(--muted); display: flex; align-items: center; gap: 0.3rem; }
+  .card-actions { display: flex; gap: 0.3rem; opacity: 0; transition: opacity 0.2s; }
+  .prompt-card:hover .card-actions { opacity: 1; }
+  .card-action-btn {
+    width: 28px; height: 28px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.05); color: var(--muted); cursor: pointer; font-size: 0.75rem;
+    display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+  }
+  .card-action-btn:hover { background: rgba(124,58,237,0.2); color: var(--purple-400); border-color: rgba(124,58,237,0.3); }
+  .card-action-btn.copy-done { background: rgba(52,211,153,0.2); color: var(--green-400); }
+
+  .card-date { font-size: 0.68rem; color: rgba(148,163,184,0.5); }
+
+  /* 空状態 */
+  .empty-state {
+    grid-column: 1/-1; text-align: center; padding: 3rem 1rem; color: var(--muted);
+  }
+  .empty-icon { font-size: 3rem; margin-bottom: 0.75rem; opacity: 0.4; }
+  .empty-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .empty-desc { font-size: 0.82rem; opacity: 0.7; }
+
+  /* ========= モーダル ========= */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #0d0d2b; border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 20px; padding: 1.5rem; width: 100%; max-width: 560px;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  body.light .modal { background: #fff; border-color: rgba(124,58,237,0.2); }
+  .modal-title { font-size: 1rem; font-weight: 800; margin-bottom: 1.25rem; }
+  .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.25rem; }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.85rem; }
+  .form-group label { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+  input[type=text], input[type=search], select, textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.65rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  body.light input[type=text], body.light input[type=search], body.light select, body.light textarea {
+    border-color: rgba(0,0,0,0.12);
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.45); }
+  textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+  select option { background: #1a1a3e; }
+
+  .toggle-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .toggle { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0; background: rgba(255,255,255,0.1); border-radius: 999px;
+    cursor: pointer; transition: 0.3s;
+  }
+  .toggle-slider::before {
+    content: ''; position: absolute; width: 16px; height: 16px; background: #fff;
+    border-radius: 50%; left: 3px; top: 3px; transition: 0.3s;
+  }
+  .toggle input:checked + .toggle-slider { background: var(--purple-700); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+  .toggle-label { font-size: 0.85rem; color: var(--text); }
+
+  /* ダッシュボード */
+  .dashboard { padding: 1.25rem; overflow-y: auto; flex: 1; }
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem; }
+  .kpi {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px;
+    padding: 1rem; text-align: center;
+  }
+  .kpi-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .kpi-value { font-size: 1.6rem; font-weight: 800; }
+  .kpi-value.purple { color: var(--purple-400); }
+  .kpi-value.blue { color: var(--blue-300); }
+  .kpi-value.green { color: var(--green-400); }
+  .kpi-value.yellow { color: var(--yellow-400); }
+
+  .section-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .section-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); }
+
+  .recent-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .recent-item {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 10px;
+    padding: 0.65rem 0.85rem; display: flex; align-items: center; gap: 0.75rem;
+    cursor: pointer; transition: all 0.15s;
+    font-family: inherit; width: 100%; text-align: left;
+    -webkit-appearance: none; appearance: none;
+  }
+  .recent-item:hover { border-color: rgba(124,58,237,0.3); }
+  .recent-title { font-size: 0.85rem; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .recent-meta { font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
+
+  .tag-cloud { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .tag-cloud-item {
+    background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.2);
+    color: var(--purple-400); font-size: 0.78rem; font-weight: 600;
+    padding: 0.3rem 0.75rem; border-radius: 999px; cursor: pointer; transition: all 0.15s;
+    font-family: inherit; -webkit-appearance: none; appearance: none;
+  }
+  .tag-cloud-item:hover { background: rgba(124,58,237,0.2); }
+
+  /* コピー通知 */
+  .toast {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--green-400); color: #fff; border-radius: 999px;
+    padding: 0.65rem 1.5rem; font-size: 0.85rem; font-weight: 700;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.3s; z-index: 200;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* モバイル対応 */
+  .menu-btn { display: none; }
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 49;
+    border: none; padding: 0; cursor: default;
+    -webkit-appearance: none; appearance: none;
+  }
+
+  @media(max-width: 768px) {
+    .sidebar { position: fixed; left: 0; top: 0; height: 100vh; z-index: 50; transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay.show { display: block; }
+    .menu-btn { display: flex; }
+    .prompt-grid { grid-template-columns: 1fr; }
+    .card-actions { opacity: 1; }
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<button class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-label="サイドバーを閉じる"></button>
+<div class="toast" id="toast">📋 コピーしました！</div>
+
+<div class="app">
+
+  <!-- ===== サイドバー ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">✦ Prompt Pro Lite</div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="searchInput" placeholder="検索…" oninput="handleSearch()" />
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">メニュー</div>
+      <button class="nav-item active" data-view="dashboard" onclick="setView('dashboard', this)">
+        <span class="nav-item-icon">📊</span>ダッシュボード
+      </button>
+      <button class="nav-item" data-view="all" onclick="setView('all', this)">
+        <span class="nav-item-icon">📁</span>すべて
+        <span class="nav-item-count" id="countAll">0</span>
+      </button>
+      <button class="nav-item" data-view="fav" onclick="setView('fav', this)">
+        <span class="nav-item-icon">⭐</span>お気に入り
+        <span class="nav-item-count" id="countFav">0</span>
+      </button>
+      <button class="nav-item" data-view="pin" onclick="setView('pin', this)">
+        <span class="nav-item-icon">📌</span>ピン留め
+        <span class="nav-item-count" id="countPin">0</span>
+      </button>
+      <button class="nav-item" data-view="recent" onclick="setView('recent', this)">
+        <span class="nav-item-icon">🕐</span>最近使用
+      </button>
+
+      <div class="nav-section-label" style="margin-top:0.75rem">フォルダ</div>
+      <div id="folderList"></div>
+      <button class="folder-add-btn" onclick="showModal('folderModal')">＋ フォルダを追加</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="icon-btn" onclick="showModal('importExportModal')" title="インポート/エクスポート">📤</button>
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="テーマ切替">🌙</button>
+      <button class="icon-btn" onclick="showModal('promptModal', null)" title="新規作成">✏️</button>
+    </div>
+  </aside>
+
+  <!-- ===== メインエリア ===== -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="btn btn-ghost btn-sm menu-btn" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-title" id="topbarTitle">ダッシュボード</div>
+        <div class="topbar-count" id="topbarCount"></div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="showModal('promptModal', null)">＋ 新規作成</button>
+      </div>
+    </div>
+
+    <!-- フィルターバー -->
+    <div class="filterbar" id="filterbar" style="display:none">
+      <button class="filter-chip active" data-filter="all" onclick="setFilter('all', this)">すべて</button>
+      <div id="tagFilters"></div>
+    </div>
+
+    <!-- ダッシュボード -->
+    <div class="dashboard" id="dashboardView">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-label">合計</div><div class="kpi-value purple" id="kpiTotal">0</div></div>
+        <div class="kpi"><div class="kpi-label">お気に入り</div><div class="kpi-value yellow" id="kpiFav">0</div></div>
+        <div class="kpi"><div class="kpi-label">ピン留め</div><div class="kpi-value blue" id="kpiPin">0</div></div>
+        <div class="kpi"><div class="kpi-label">フォルダ</div><div class="kpi-value green" id="kpiFolder">0</div></div>
+      </div>
+
+      <div class="section-title"><div class="section-bar"></div>最近追加したプロンプト</div>
+      <div class="recent-list" id="recentAdded"></div>
+
+      <div class="section-title"><div class="section-bar"></div>最近使用したプロンプト</div>
+      <div class="recent-list" id="recentUsed"></div>
+
+      <div class="section-title"><div class="section-bar"></div>人気タグ</div>
+      <div class="tag-cloud" id="tagCloud"></div>
+    </div>
+
+    <!-- プロンプト一覧 -->
+    <div class="prompt-grid" id="promptGrid" style="display:none"></div>
+  </main>
+</div>
+
+<!-- ===== プロンプト作成・編集モーダル ===== -->
+<div class="modal-overlay" id="promptModal">
+  <div class="modal">
+    <div class="modal-title" id="promptModalTitle">✏️ 新規プロンプト</div>
+    <input type="hidden" id="editId" />
+    <div class="form-group">
+      <label>タイトル *</label>
+      <input type="text" id="pTitle" placeholder="例：ブログ記事の導入文を書くプロンプト" />
+    </div>
+    <div class="form-group">
+      <label>プロンプト本文 *</label>
+      <textarea id="pBody" placeholder="プロンプトの内容を入力してください…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>カテゴリ / フォルダ</label>
+      <select id="pFolder">
+        <option value="">未分類</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>タグ（カンマ区切り）</label>
+      <input type="text" id="pTags" placeholder="例：ブログ, 記事, Claude" />
+    </div>
+    <div class="toggle-row">
+      <label class="toggle"><input type="checkbox" id="pFav"><span class="toggle-slider"></span></label>
+      <span class="toggle-label">⭐ お気に入りに追加</span>
+    </div>
+    <div class="toggle-row">
+      <label class="toggle"><input type="checkbox" id="pPin"><span class="toggle-slider"></span></label>
+      <span class="toggle-label">📌 ピン留めする</span>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="hideModal('promptModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="savePrompt()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== フォルダ作成モーダル ===== -->
+<div class="modal-overlay" id="folderModal">
+  <div class="modal">
+    <div class="modal-title">📁 フォルダを作成</div>
+    <div class="form-group">
+      <label>フォルダ名 *</label>
+      <input type="text" id="folderName" placeholder="例：仕事、SNS、ブログ" />
+    </div>
+    <div class="form-group">
+      <label>カラー</label>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap" id="colorPicker">
+        <button type="button" class="color-opt" data-color="#7c3aed" onclick="selectColor(this)" aria-label="カラーを選択" style="width:28px;height:28px;border-radius:50%;background:#7c3aed;cursor:pointer;border:2px solid transparent;padding:0;-webkit-appearance:none;appearance:none"></button>
+        <button type="button" class="color-opt" data-color="#3b82f6" onclick="selectColor(this)" aria-label="カラーを選択" style="width:28px;height:28px;border-radius:50%;background:#3b82f6;cursor:pointer;border:2px solid transparent;padding:0;-webkit-appearance:none;appearance:none"></button>
+        <button type="button" class="color-opt" data-color="#34d399" onclick="selectColor(this)" aria-label="カラーを選択" style="width:28px;height:28px;border-radius:50%;background:#34d399;cursor:pointer;border:2px solid transparent;padding:0;-webkit-appearance:none;appearance:none"></button>
+        <button type="button" class="color-opt" data-color="#f87171" onclick="selectColor(this)" aria-label="カラーを選択" style="width:28px;height:28px;border-radius:50%;background:#f87171;cursor:pointer;border:2px solid transparent;padding:0;-webkit-appearance:none;appearance:none"></button>
+        <button type="button" class="color-opt" data-color="#fbbf24" onclick="selectColor(this)" aria-label="カラーを選択" style="width:28px;height:28px;border-radius:50%;background:#fbbf24;cursor:pointer;border:2px solid transparent;padding:0;-webkit-appearance:none;appearance:none"></button>
+        <button type="button" class="color-opt" data-color="#f472b6" onclick="selectColor(this)" aria-label="カラーを選択" style="width:28px;height:28px;border-radius:50%;background:#f472b6;cursor:pointer;border:2px solid transparent;padding:0;-webkit-appearance:none;appearance:none"></button>
+        <button type="button" class="color-opt" data-color="#60a5fa" onclick="selectColor(this)" aria-label="カラーを選択" style="width:28px;height:28px;border-radius:50%;background:#60a5fa;cursor:pointer;border:2px solid transparent;padding:0;-webkit-appearance:none;appearance:none"></button>
+        <button type="button" class="color-opt" data-color="#a78bfa" onclick="selectColor(this)" aria-label="カラーを選択" style="width:28px;height:28px;border-radius:50%;background:#a78bfa;cursor:pointer;border:2px solid transparent;padding:0;-webkit-appearance:none;appearance:none"></button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="hideModal('folderModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveFolder()">作成</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== インポート/エクスポート ===== -->
+<div class="modal-overlay" id="importExportModal">
+  <div class="modal">
+    <div class="modal-title">📤 インポート / エクスポート</div>
+    <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem">
+      <button class="btn btn-ghost" onclick="exportData()" style="width:100%;text-align:left;padding:0.85rem 1rem">📥 JSONエクスポート（バックアップ）</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()" style="width:100%;text-align:left;padding:0.85rem 1rem">📤 JSONインポート（復元）</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)" />
+      <button class="btn btn-danger btn-sm" onclick="clearAllData()" style="width:100%">🗑 全データを削除する</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="hideModal('importExportModal')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== プロンプト詳細モーダル ===== -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" style="max-width:640px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;gap:0.75rem">
+      <div class="modal-title" id="detailTitle" style="margin-bottom:0"></div>
+      <div style="display:flex;gap:0.4rem;flex-shrink:0">
+        <button class="btn btn-ghost btn-sm" onclick="editFromDetail()">✏️ 編集</button>
+        <button class="btn btn-ghost btn-sm" onclick="hideModal('detailModal')">×</button>
+      </div>
+    </div>
+    <div id="detailTags" style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.85rem"></div>
+    <div id="detailBody" style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:1.1rem;font-size:0.88rem;line-height:1.8;white-space:pre-wrap;word-break:break-word;margin-bottom:1rem;max-height:300px;overflow-y:auto"></div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="copyFromDetail()" id="detailCopyBtn">📋 コピーする</button>
+      <button class="btn btn-ghost btn-sm" onclick="toggleFavFromDetail()" id="detailFavBtn">⭐ お気に入り</button>
+      <button class="btn btn-ghost btn-sm" onclick="togglePinFromDetail()" id="detailPinBtn">📌 ピン留め</button>
+      <button class="btn btn-ghost btn-sm" onclick="duplicateFromDetail()">📋 複製</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteFromDetail()">🗑 削除</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── データ ──
+  let prompts = JSON.parse(localStorage.getItem('pp_prompts') || '[]');
+  let folders = JSON.parse(localStorage.getItem('pp_folders') || '[]');
+  let recentUsed = JSON.parse(localStorage.getItem('pp_recent') || '[]');
+  let currentView = 'dashboard';
+  let currentFilter = 'all';
+  let searchQuery = '';
+  let selectedColor = '#7c3aed';
+  let detailId = null;
+  let isLight = localStorage.getItem('pp_theme') === 'light';
+
+  if (isLight) document.body.classList.add('light');
+
+  function save() {
+    localStorage.setItem('pp_prompts', JSON.stringify(prompts));
+    localStorage.setItem('pp_folders', JSON.stringify(folders));
+    localStorage.setItem('pp_recent', JSON.stringify(recentUsed));
+  }
+
+  // ── テーマ ──
+  function toggleTheme() {
+    isLight = !isLight;
+    document.body.classList.toggle('light', isLight);
+    document.getElementById('themeBtn').textContent = isLight ? '🌙' : '☀️';
+    localStorage.setItem('pp_theme', isLight ? 'light' : 'dark');
+  }
+  if (isLight) document.getElementById('themeBtn').textContent = '☀️';
+
+  // ── サイドバー（モバイル） ──
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  }
+
+  // ── ビュー切り替え ──
+  function setView(view, el) {
+    currentView = view;
+    searchQuery = '';
+    document.getElementById('searchInput').value = '';
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    const isDash = view === 'dashboard';
+    document.getElementById('dashboardView').style.display = isDash ? 'block' : 'none';
+    document.getElementById('promptGrid').style.display = isDash ? 'none' : 'grid';
+    document.getElementById('filterbar').style.display = isDash ? 'none' : 'flex';
+
+    const titles = { dashboard: 'ダッシュボード', all: 'すべてのプロンプト', fav: 'お気に入り', pin: 'ピン留め', recent: '最近使用' };
+    document.getElementById('topbarTitle').textContent = titles[view] || view;
+
+    if (!isDash) { renderGrid(); renderTagFilters(); }
+    else renderDashboard();
+    closeSidebar();
+  }
+
+  function setFolderView(folderId) {
+    currentView = 'folder:' + folderId;
+    searchQuery = '';
+    document.getElementById('searchInput').value = '';
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.folder-item').forEach(n => {
+      n.classList.toggle('active', n.getAttribute('data-id') === folderId);
+    });
+    const folder = folders.find(f => f.id === folderId);
+    document.getElementById('topbarTitle').textContent = folder ? '📁 ' + folder.name : 'フォルダ';
+    document.getElementById('dashboardView').style.display = 'none';
+    document.getElementById('promptGrid').style.display = 'grid';
+    document.getElementById('filterbar').style.display = 'flex';
+    renderGrid(); renderTagFilters();
+    closeSidebar();
+  }
+
+  // ── フィルター ──
+  function setFilter(tag, el) {
+    currentFilter = tag;
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    if (el) el.classList.add('active');
+    renderGrid();
+  }
+
+  function handleSearch() {
+    searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (searchQuery) {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('topbarTitle').textContent = `🔍 「${searchQuery}」の検索結果`;
+      document.getElementById('dashboardView').style.display = 'none';
+      document.getElementById('promptGrid').style.display = 'grid';
+      document.getElementById('filterbar').style.display = 'none';
+      currentView = 'search';
+    } else if (currentView === 'search') {
+      setView('all', document.querySelector('[data-view="all"]'));
+    }
+    renderGrid();
+  }
+
+  // ── グリッド描画 ──
+  function getFilteredPrompts() {
+    let list = [...prompts];
+
+    if (currentView === 'fav') list = list.filter(p => p.fav);
+    else if (currentView === 'pin') list = list.filter(p => p.pin);
+    else if (currentView === 'recent') {
+      const ids = recentUsed.slice(0, 20);
+      list = ids.map(id => prompts.find(p => p.id === id)).filter(Boolean);
+      return list;
+    }
+    else if (currentView.startsWith('folder:')) {
+      const fid = currentView.split(':')[1];
+      list = list.filter(p => p.folderId === fid);
+    }
+    else if (currentView === 'search') {
+      list = list.filter(p =>
+        p.title.toLowerCase().includes(searchQuery) ||
+        p.body.toLowerCase().includes(searchQuery) ||
+        (p.tags || []).some(t => t.toLowerCase().includes(searchQuery))
+      );
+    }
+
+    if (currentFilter !== 'all') list = list.filter(p => (p.tags || []).includes(currentFilter));
+
+    // ピン留めを上位に
+    list.sort((a, b) => (b.pin ? 1 : 0) - (a.pin ? 1 : 0) || b.createdAt - a.createdAt);
+    return list;
+  }
+
+  function renderGrid() {
+    const list = getFilteredPrompts();
+    const el = document.getElementById('promptGrid');
+    document.getElementById('topbarCount').textContent = list.length + '件';
+
+    if (list.length === 0) {
+      el.innerHTML = `<div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <div class="empty-title">プロンプトがありません</div>
+        <div class="empty-desc">「＋ 新規作成」から追加してください</div>
+      </div>`;
+      return;
+    }
+
+    el.innerHTML = list.map(p => {
+      const folder = folders.find(f => f.id === p.folderId);
+      const tags = (p.tags || []).map(t => `<span class="tag-pill">${esc(t)}</span>`).join('');
+      const date = new Date(p.createdAt).toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric' });
+      return `<div class="prompt-card${p.pin?' pinned':''}${p.fav?' fav':''}" role="button" tabindex="0" onclick="openDetail('${p.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetail('${p.id}');}">
+        <div class="card-header">
+          <div class="card-title">${esc(p.title)}</div>
+          <div class="card-badges">
+            ${p.pin ? '<span class="pin-badge">📌</span>' : ''}
+            ${p.fav ? '<span class="fav-badge">⭐</span>' : ''}
+          </div>
+        </div>
+        <div class="card-body">${esc(p.body)}</div>
+        ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+        <div class="card-footer">
+          <div class="card-folder">${folder ? `<span style="width:8px;height:8px;border-radius:50%;background:${folder.color};display:inline-block"></span> ${esc(folder.name)}` : '未分類'}</div>
+          <div class="card-actions">
+            <button class="card-action-btn" onclick="event.stopPropagation();copyPrompt('${p.id}', this)" title="コピー">📋</button>
+            <button class="card-action-btn" onclick="event.stopPropagation();toggleFav('${p.id}')" title="お気に入り">${p.fav?'💛':'⭐'}</button>
+            <button class="card-action-btn" onclick="event.stopPropagation();editPrompt('${p.id}')" title="編集">✏️</button>
+            <button class="card-action-btn" onclick="event.stopPropagation();deletePrompt('${p.id}')" title="削除" style="color:var(--red-400)">🗑</button>
+          </div>
+          <div class="card-date">${date}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderTagFilters() {
+    const allTags = [...new Set(prompts.flatMap(p => p.tags || []))];
+    const el = document.getElementById('tagFilters');
+    el.innerHTML = allTags.map(t =>
+      `<button class="filter-chip${currentFilter===t?' active':''}" data-filter="${esc(t)}" onclick="setFilter('${esc(t)}', this)">#${esc(t)}</button>`
+    ).join('');
+  }
+
+  // ── ダッシュボード ──
+  function renderDashboard() {
+    document.getElementById('kpiTotal').textContent = prompts.length;
+    document.getElementById('kpiFav').textContent = prompts.filter(p=>p.fav).length;
+    document.getElementById('kpiPin').textContent = prompts.filter(p=>p.pin).length;
+    document.getElementById('kpiFolder').textContent = folders.length;
+
+    const recent5 = [...prompts].sort((a,b) => b.createdAt - a.createdAt).slice(0, 5);
+    document.getElementById('recentAdded').innerHTML = recent5.length
+      ? recent5.map(p => `<button class="recent-item" onclick="openDetail('${p.id}')">
+          <div class="recent-title">${esc(p.title)}</div>
+          <div class="recent-meta">${new Date(p.createdAt).toLocaleDateString('ja-JP')}</div>
+        </button>`).join('')
+      : '<div style="color:var(--muted);font-size:0.82rem;padding:0.5rem">まだありません</div>';
+
+    const used5 = recentUsed.slice(0, 5).map(id => prompts.find(p => p.id === id)).filter(Boolean);
+    document.getElementById('recentUsed').innerHTML = used5.length
+      ? used5.map(p => `<button class="recent-item" onclick="openDetail('${p.id}')">
+          <div class="recent-title">${esc(p.title)}</div>
+          <div class="recent-meta">最近使用</div>
+        </button>`).join('')
+      : '<div style="color:var(--muted);font-size:0.82rem;padding:0.5rem">まだありません</div>';
+
+    const tagCount = {};
+    prompts.forEach(p => (p.tags || []).forEach(t => { tagCount[t] = (tagCount[t]||0) + 1; }));
+    const topTags = Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).slice(0,12);
+    document.getElementById('tagCloud').innerHTML = topTags
+      .map(([t, c]) => `<button class="tag-cloud-item" onclick="setView('all');setFilter('${esc(t)}', null)">#${esc(t)} <span style="opacity:0.6">${c}</span></button>`)
+      .join('') || '<div style="color:var(--muted);font-size:0.82rem">タグがありません</div>';
+  }
+
+  // ── サイドバー ──
+  function renderSidebar() {
+    document.getElementById('countAll').textContent = prompts.length;
+    document.getElementById('countFav').textContent = prompts.filter(p=>p.fav).length;
+    document.getElementById('countPin').textContent = prompts.filter(p=>p.pin).length;
+
+    const fl = document.getElementById('folderList');
+    fl.innerHTML = folders.map(f => {
+      const cnt = prompts.filter(p=>p.folderId===f.id).length;
+      return `<button class="folder-item" data-id="${f.id}" onclick="setFolderView('${f.id}')">
+        <div class="folder-color" style="background:${f.color}"></div>
+        <span style="flex:1;font-size:0.82rem">${esc(f.name)}</span>
+        <span style="font-size:0.68rem;color:var(--muted)">${cnt}</span>
+      </button>`;
+    }).join('');
+
+    // フォルダセレクト更新
+    const sel = document.getElementById('pFolder');
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">未分類</option>' +
+      folders.map(f => `<option value="${f.id}">${esc(f.name)}</option>`).join('');
+    sel.value = cur;
+  }
+
+  // ── プロンプト操作 ──
+  function savePrompt() {
+    const title = document.getElementById('pTitle').value.trim();
+    const body = document.getElementById('pBody').value.trim();
+    if (!title || !body) { alert('タイトルとプロンプト本文は必須です'); return; }
+
+    const tags = document.getElementById('pTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+    const folderId = document.getElementById('pFolder').value;
+    const fav = document.getElementById('pFav').checked;
+    const pin = document.getElementById('pPin').checked;
+    const editId = document.getElementById('editId').value;
+
+    if (editId) {
+      const idx = prompts.findIndex(p => p.id === editId);
+      if (idx !== -1) {
+        prompts[idx] = { ...prompts[idx], title, body, tags, folderId, fav, pin, updatedAt: Date.now() };
+      }
+    } else {
+      prompts.unshift({ id: 'p' + Date.now(), title, body, tags, folderId, fav, pin, createdAt: Date.now() });
+    }
+    save(); renderSidebar(); render(); hideModal('promptModal');
+  }
+
+  function editPrompt(id) {
+    const p = prompts.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('promptModalTitle').textContent = '✏️ プロンプトを編集';
+    document.getElementById('editId').value = id;
+    document.getElementById('pTitle').value = p.title;
+    document.getElementById('pBody').value = p.body;
+    document.getElementById('pTags').value = (p.tags||[]).join(', ');
+    document.getElementById('pFolder').value = p.folderId || '';
+    document.getElementById('pFav').checked = p.fav || false;
+    document.getElementById('pPin').checked = p.pin || false;
+    showModal('promptModal');
+  }
+
+  function deletePrompt(id) {
+    if (!confirm('このプロンプトを削除しますか？')) return;
+    prompts = prompts.filter(p => p.id !== id);
+    save(); renderSidebar(); render();
+  }
+
+  function toggleFav(id) {
+    const p = prompts.find(x => x.id === id);
+    if (p) { p.fav = !p.fav; save(); renderSidebar(); render(); }
+  }
+
+  function togglePin(id) {
+    const p = prompts.find(x => x.id === id);
+    if (p) { p.pin = !p.pin; save(); renderSidebar(); render(); }
+  }
+
+  function copyPrompt(id, btn) {
+    const p = prompts.find(x => x.id === id);
+    if (!p) return;
+    navigator.clipboard.writeText(p.body).then(() => {
+      showToast();
+      if (btn) { btn.textContent = '✓'; btn.classList.add('copy-done'); setTimeout(() => { btn.textContent = '📋'; btn.classList.remove('copy-done'); }, 1500); }
+      addRecentUsed(id);
+    });
+  }
+
+  function addRecentUsed(id) {
+    recentUsed = [id, ...recentUsed.filter(x => x !== id)].slice(0, 30);
+    save();
+  }
+
+  function duplicatePrompt(id) {
+    const p = prompts.find(x => x.id === id);
+    if (!p) return;
+    prompts.unshift({ ...p, id: 'p' + Date.now(), title: p.title + '（コピー）', createdAt: Date.now(), pin: false });
+    save(); renderSidebar(); render();
+  }
+
+  // ── 詳細モーダル ──
+  function openDetail(id) {
+    const p = prompts.find(x => x.id === id);
+    if (!p) return;
+    detailId = id;
+    document.getElementById('detailTitle').textContent = p.title;
+    document.getElementById('detailBody').textContent = p.body;
+    document.getElementById('detailTags').innerHTML = (p.tags||[]).map(t=>`<span class="tag-pill">${esc(t)}</span>`).join('');
+    document.getElementById('detailFavBtn').textContent = p.fav ? '💛 お気に入り済み' : '⭐ お気に入り';
+    document.getElementById('detailPinBtn').textContent = p.pin ? '📌 ピン留め済み' : '📌 ピン留め';
+    document.getElementById('detailCopyBtn').textContent = '📋 コピーする';
+    showModal('detailModal');
+  }
+
+  function copyFromDetail() {
+    const p = prompts.find(x => x.id === detailId);
+    if (!p) return;
+    navigator.clipboard.writeText(p.body).then(() => {
+      showToast();
+      document.getElementById('detailCopyBtn').textContent = '✓ コピーしました！';
+      setTimeout(() => { document.getElementById('detailCopyBtn').textContent = '📋 コピーする'; }, 2000);
+      addRecentUsed(detailId);
+    });
+  }
+
+  function editFromDetail() { hideModal('detailModal'); editPrompt(detailId); }
+  function toggleFavFromDetail() { toggleFav(detailId); openDetail(detailId); }
+  function togglePinFromDetail() { togglePin(detailId); openDetail(detailId); }
+  function duplicateFromDetail() { duplicatePrompt(detailId); hideModal('detailModal'); showToast('複製しました！'); }
+  function deleteFromDetail() {
+    if (!confirm('削除しますか？')) return;
+    deletePrompt(detailId);
+    hideModal('detailModal');
+  }
+
+  // ── フォルダ管理 ──
+  function selectColor(el) {
+    document.querySelectorAll('.color-opt').forEach(c => c.style.border = '2px solid transparent');
+    el.style.border = '2px solid #fff';
+    selectedColor = el.getAttribute('data-color');
+  }
+
+  function saveFolder() {
+    const name = document.getElementById('folderName').value.trim();
+    if (!name) { alert('フォルダ名を入力してください'); return; }
+    folders.push({ id: 'f' + Date.now(), name, color: selectedColor });
+    save(); renderSidebar();
+    document.getElementById('folderName').value = '';
+    hideModal('folderModal');
+  }
+
+  // ── インポート/エクスポート ──
+  function exportData() {
+    const data = JSON.stringify({ prompts, folders }, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `prompt_backup_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+  }
+
+  function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const d = JSON.parse(e.target.result);
+        if (d.prompts) prompts = d.prompts;
+        if (d.folders) folders = d.folders;
+        save(); renderSidebar(); render();
+        alert('インポートしました！');
+        hideModal('importExportModal');
+      } catch { alert('ファイルの形式が正しくありません'); }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
+  function clearAllData() {
+    if (!confirm('全てのデータを削除しますか？この操作は元に戻せません。')) return;
+    prompts = []; folders = []; recentUsed = [];
+    save(); renderSidebar(); render();
+    hideModal('importExportModal');
+  }
+
+  // ── モーダル ──
+  function showModal(id, reset) {
+    if (id === 'promptModal') {
+      document.getElementById('promptModalTitle').textContent = '✏️ 新規プロンプト';
+      document.getElementById('editId').value = '';
+      document.getElementById('pTitle').value = '';
+      document.getElementById('pBody').value = '';
+      document.getElementById('pTags').value = '';
+      document.getElementById('pFolder').value = '';
+      document.getElementById('pFav').checked = false;
+      document.getElementById('pPin').checked = false;
+    }
+    document.getElementById(id).classList.add('show');
+  }
+  function hideModal(id) { document.getElementById(id).classList.remove('show'); }
+  document.querySelectorAll('.modal-overlay').forEach(el => {
+    el.addEventListener('click', e => { if (e.target === el) el.classList.remove('show'); });
+  });
+
+  // ── トースト ──
+  let toastTimer;
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg || '📋 コピーしました！';
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
+  }
+
+  // ── 描画まとめ ──
+  function render() {
+    if (currentView === 'dashboard') renderDashboard();
+    else renderGrid();
+    if (currentView !== 'dashboard') renderTagFilters();
+  }
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── 初期化 ──
+  renderSidebar();
+  renderDashboard();
+</script>
+</body>
+</html>
