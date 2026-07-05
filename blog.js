@@ -15,7 +15,7 @@ async function fetchBlogData() {
 }
 
 function createBlogCard(article, readMoreUrl) {
-  var href = readMoreUrl || ('blog-post.html?id=' + article.id);
+  var href = readMoreUrl || article.url || ('blog-post.html?id=' + article.id);
   var el = document.createElement('article');
   el.className = 'blog-card glass-card';
   el.dataset.cat = article.category;

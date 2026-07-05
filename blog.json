@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "business-os-intro",
+      "title": "AI Business OSの紹介・使い方【無料で使えるビジネスツール】",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.04",
+      "summary": "見積書・顧客管理・営業管理・分析グラフまで全部入り。インストール不要・登録不要で今すぐ使える無料ツールの紹介。",
+      "url": "business-os.html"
+    },
+    {
+      "id": "ai-efficiency-guide",
+      "title": "AIツールで業務効率化する方法【中小企業・個人事業主向け】",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "date": "2026.07.04",
+      "summary": "見積書・メール・顧客管理・営業管理をAIで効率化する具体的な方法を解説。",
+      "url": "blog-ai-efficiency.html"
+    },
+    {
       "id": "chatgpt-vs-claude-2026",
       "title": "ChatGPTとClaudeの違いと使い分け方【2026年版】",
       "category": "ai",
