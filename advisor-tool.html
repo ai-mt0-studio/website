@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI業務改善アドバイザー Pro Lite</title>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --orange-400: #fb923c;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.18) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 50px; left: -120px; }
+
+  .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+  .free-badge {
+    display: inline-block; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.4);
+    color: var(--green-400); font-size: 0.75rem; font-weight: 700;
+    padding: 0.2rem 0.85rem; border-radius: 999px; margin-top: 0.5rem;
+  }
+
+  /* ステップ */
+  .progress-wrap { margin-bottom: 1.75rem; }
+  .progress-steps { display: flex; justify-content: center; gap: 0; margin-bottom: 0.75rem; flex-wrap: wrap; }
+  .step-item { display: flex; align-items: center; }
+  .step-dot {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.12); background: var(--glass);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 700; color: var(--muted); transition: all 0.3s;
+  }
+  .step-dot.active { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border-color: transparent; color: #fff; }
+  .step-dot.done { background: rgba(52,211,153,0.2); border-color: rgba(52,211,153,0.5); color: var(--green-400); }
+  .step-line { width: 40px; height: 2px; background: rgba(255,255,255,0.08); }
+  .step-line.done { background: rgba(52,211,153,0.35); }
+  .step-label { font-size: 0.68rem; color: var(--muted); text-align: center; margin-top: 0.3rem; }
+  .step-label.active { color: var(--purple-400); font-weight: 700; }
+  .progress-bar-bg { background: rgba(255,255,255,0.06); border-radius: 999px; height: 5px; }
+  .progress-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--purple-700), var(--blue-400)); transition: width 0.4s; }
+
+  /* カード */
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .step-title {
+    font-size: 1.05rem; font-weight: 800; margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .step-badge {
+    background: linear-gradient(135deg, var(--purple-700), var(--blue-700));
+    color: #fff; font-size: 0.72rem; font-weight: 700;
+    padding: 0.2rem 0.65rem; border-radius: 999px; flex-shrink: 0;
+  }
+
+  /* 業種グリッド */
+  .industry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.55rem; }
+  .sel-btn {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px;
+    padding: 0.75rem 0.5rem; cursor: pointer; text-align: center; font-size: 0.82rem;
+    color: var(--muted); transition: all 0.2s; font-family: inherit;
+  }
+  .sel-btn:hover { border-color: rgba(124,58,237,0.4); color: var(--text); background: rgba(124,58,237,0.06); }
+  .sel-btn.selected { border-color: rgba(124,58,237,0.6); background: rgba(124,58,237,0.18); color: var(--purple-400); font-weight: 700; }
+  .sel-icon { font-size: 1.4rem; display: block; margin-bottom: 0.3rem; }
+
+  /* フォーム */
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group label { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+  select, textarea, input[type=text] {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.65rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  select:focus, textarea:focus, input:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  select option { background: #1a1a3e; }
+
+  /* チェックリスト */
+  .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; }
+  .check-item {
+    display: flex; align-items: center; gap: 0.55rem;
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 10px;
+    padding: 0.6rem 0.8rem; cursor: pointer; font-size: 0.83rem; color: var(--muted);
+    transition: all 0.2s; user-select: none;
+  }
+  .check-item:hover { border-color: rgba(124,58,237,0.3); color: var(--text); }
+  .check-item.checked { border-color: rgba(124,58,237,0.55); background: rgba(124,58,237,0.12); color: var(--purple-400); }
+  .check-box {
+    width: 17px; height: 17px; border-radius: 5px; border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.65rem;
+    transition: all 0.2s;
+  }
+  .check-item.checked .check-box { background: var(--purple-700); border-color: var(--purple-700); color: #fff; }
+
+  /* ボタン */
+  .btn {
+    padding: 0.75rem 1.5rem; border-radius: 12px; cursor: pointer;
+    font-size: 0.9rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+  .btn-secondary { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
+  .btn-secondary:hover { background: rgba(96,165,250,0.2); }
+  .btn-diagnose {
+    width: 100%; padding: 1rem; border-radius: 14px; border: none; cursor: pointer;
+    font-size: 1rem; font-weight: 700; font-family: inherit; color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    position: relative; overflow: hidden; transition: all 0.2s; margin-top: 0.5rem;
+  }
+  .btn-diagnose::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  .btn-diagnose:hover::after { left: 100%; }
+  .nav-btns { display: flex; gap: 0.75rem; justify-content: space-between; margin-top: 1rem; flex-wrap: wrap; }
+
+  /* 診断中アニメーション */
+  .analyzing {
+    display: none; text-align: center; padding: 2.5rem 1rem;
+  }
+  .analyze-ring {
+    width: 80px; height: 80px; margin: 0 auto 1.25rem;
+    border: 4px solid rgba(124,58,237,0.15);
+    border-top-color: var(--purple-700);
+    border-radius: 50%; animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .analyze-text { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+  .analyze-sub { color: rgba(148,163,184,0.5); font-size: 0.78rem; }
+
+  /* 結果 */
+  .result-section { display: none; }
+
+  /* 総合スコア */
+  .score-card {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(29,78,216,0.15));
+    border: 1px solid rgba(124,58,237,0.3); border-radius: 18px; padding: 1.75rem;
+    text-align: center; margin-bottom: 1.25rem;
+  }
+  .score-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.5rem; }
+  .score-value {
+    font-size: 3rem; font-weight: 900; letter-spacing: -0.03em;
+    background: linear-gradient(130deg, var(--blue-300), var(--purple-400));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.25rem;
+  }
+  .score-stars { font-size: 1.4rem; letter-spacing: 3px; margin-bottom: 0.75rem; }
+  .score-summary { font-size: 0.9rem; color: var(--text); line-height: 1.6; max-width: 500px; margin: 0 auto; }
+
+  /* 優先度バー */
+  .priority-meters { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem; }
+  .meter-card {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 1rem;
+  }
+  .meter-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .meter-bar-bg { background: rgba(255,255,255,0.06); border-radius: 999px; height: 8px; overflow: hidden; margin-bottom: 0.35rem; }
+  .meter-bar-fill { height: 100%; border-radius: 999px; transition: width 0.8s ease; }
+  .meter-value { font-size: 0.82rem; font-weight: 700; }
+
+  /* 改善ポイントカード */
+  .improvement-grid { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.25rem; }
+  .imp-card {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.25rem;
+    position: relative; overflow: hidden;
+  }
+  .imp-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 4px 0 0 4px;
+  }
+  .imp-card.high::before { background: var(--red-400); }
+  .imp-card.mid::before { background: var(--yellow-400); }
+  .imp-card.low::before { background: var(--green-400); }
+  .imp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem; }
+  .imp-title { font-size: 0.95rem; font-weight: 800; padding-left: 0.75rem; }
+  .imp-badge {
+    font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px; flex-shrink: 0;
+  }
+  .badge-high { background: rgba(248,113,113,0.15); color: var(--red-400); border: 1px solid rgba(248,113,113,0.3); }
+  .badge-mid { background: rgba(251,191,36,0.15); color: var(--yellow-400); border: 1px solid rgba(251,191,36,0.3); }
+  .badge-low { background: rgba(52,211,153,0.15); color: var(--green-400); border: 1px solid rgba(52,211,153,0.3); }
+  .imp-stars { font-size: 0.85rem; color: var(--yellow-400); letter-spacing: 1px; margin-bottom: 0.6rem; padding-left: 0.75rem; }
+  .imp-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; padding-left: 0.75rem; margin-bottom: 0.75rem; }
+  .imp-effects { display: flex; gap: 0.4rem; flex-wrap: wrap; padding-left: 0.75rem; }
+  .effect-tag {
+    background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.2);
+    color: var(--blue-300); font-size: 0.72rem; font-weight: 600;
+    padding: 0.2rem 0.6rem; border-radius: 999px;
+  }
+
+  /* AIアイデア */
+  .ai-ideas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem; }
+  .ai-idea-card {
+    background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.18);
+    border-radius: 14px; padding: 1rem;
+  }
+  .ai-idea-icon { font-size: 1.5rem; margin-bottom: 0.4rem; display: block; }
+  .ai-idea-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem; }
+  .ai-idea-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+  /* 今すぐできること */
+  .now-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .now-item {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    background: rgba(52,211,153,0.05); border: 1px solid rgba(52,211,153,0.15);
+    border-radius: 12px; padding: 0.9rem 1rem;
+  }
+  .now-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(52,211,153,0.2); border: 1px solid rgba(52,211,153,0.4);
+    color: var(--green-400); font-size: 0.72rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .now-text { font-size: 0.85rem; line-height: 1.7; color: var(--text); }
+
+  /* アクションバー */
+  .action-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .act-btn {
+    padding: 0.6rem 1.1rem; border-radius: 10px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+  }
+  .act-btn-print { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
+  .act-btn-json { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3); color: var(--purple-400); }
+  .act-btn-reset { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
+
+  .section-label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .section-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); flex-shrink: 0; }
+
+  @media(max-width:640px) {
+    .form-grid, .industry-grid { grid-template-columns: repeat(3,1fr); }
+    .check-grid { grid-template-columns: 1fr 1fr; }
+    .nav-btns { flex-direction: column; }
+    .ai-ideas { grid-template-columns: 1fr; }
+    .priority-meters { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media print {
+    body { background: #fff; color: #1a1a2e; padding: 0; }
+    .orb, #inputSection, .action-bar, .nav-btns { display: none !important; }
+    .result-section { display: block !important; }
+    .card, .imp-card, .ai-idea-card, .now-item { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <header>
+    <h1>🔍 AI業務改善アドバイザー</h1>
+    <p>業種・課題をもとにAIが業務改善のヒントを提案します</p>
+    <div class="free-badge">✅ 完全無料 · API不要 · インストール不要</div>
+  </header>
+
+  <!-- ステップインジケーター -->
+  <div class="progress-wrap">
+    <div class="progress-steps">
+      <div class="step-item">
+        <div style="text-align:center">
+          <div class="step-dot active" id="sd1">1</div>
+          <div class="step-label active" id="sl1">業種</div>
+        </div>
+      </div>
+      <div class="step-line" id="sline1"></div>
+      <div class="step-item">
+        <div style="text-align:center">
+          <div class="step-dot" id="sd2">2</div>
+          <div class="step-label" id="sl2">会社情報</div>
+        </div>
+      </div>
+      <div class="step-line" id="sline2"></div>
+      <div class="step-item">
+        <div style="text-align:center">
+          <div class="step-dot" id="sd3">3</div>
+          <div class="step-label" id="sl3">課題選択</div>
+        </div>
+      </div>
+      <div class="step-line" id="sline3"></div>
+      <div class="step-item">
+        <div style="text-align:center">
+          <div class="step-dot" id="sd4">4</div>
+          <div class="step-label" id="sl4">詳細</div>
+        </div>
+      </div>
+      <div class="step-line" id="sline4"></div>
+      <div class="step-item">
+        <div style="text-align:center">
+          <div class="step-dot" id="sd5">5</div>
+          <div class="step-label" id="sl5">診断結果</div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill" style="width:20%"></div></div>
+  </div>
+
+  <div id="inputSection">
+
+    <!-- STEP1 業種 -->
+    <div id="step1">
+      <div class="card">
+        <div class="step-title"><span class="step-badge">STEP 1</span>業種を選択してください</div>
+        <div class="industry-grid">
+          <button class="sel-btn" data-v="飲食店" onclick="selIndustry(this)"><span class="sel-icon">🍽</span>飲食店</button>
+          <button class="sel-btn" data-v="ホテル・宿泊" onclick="selIndustry(this)"><span class="sel-icon">🏨</span>ホテル</button>
+          <button class="sel-btn" data-v="建設業" onclick="selIndustry(this)"><span class="sel-icon">🏗</span>建設業</button>
+          <button class="sel-btn" data-v="製造業" onclick="selIndustry(this)"><span class="sel-icon">🏭</span>製造業</button>
+          <button class="sel-btn" data-v="小売業" onclick="selIndustry(this)"><span class="sel-icon">🛒</span>小売業</button>
+          <button class="sel-btn" data-v="医療・介護" onclick="selIndustry(this)"><span class="sel-icon">🏥</span>医療・介護</button>
+          <button class="sel-btn" data-v="美容・サロン" onclick="selIndustry(this)"><span class="sel-icon">💄</span>美容・サロン</button>
+          <button class="sel-btn" data-v="IT・Web" onclick="selIndustry(this)"><span class="sel-icon">💻</span>IT・Web</button>
+          <button class="sel-btn" data-v="士業・コンサル" onclick="selIndustry(this)"><span class="sel-icon">⚖️</span>士業・コンサル</button>
+          <button class="sel-btn" data-v="教育・スクール" onclick="selIndustry(this)"><span class="sel-icon">📚</span>教育</button>
+          <button class="sel-btn" data-v="不動産" onclick="selIndustry(this)"><span class="sel-icon">🏠</span>不動産</button>
+          <button class="sel-btn" data-v="その他" onclick="selIndustry(this)"><span class="sel-icon">📋</span>その他</button>
+        </div>
+      </div>
+      <div class="nav-btns"><div></div><button class="btn btn-primary" onclick="goStep(2)">次へ →</button></div>
+    </div>
+
+    <!-- STEP2 会社情報 -->
+    <div id="step2" style="display:none">
+      <div class="card">
+        <div class="step-title"><span class="step-badge">STEP 2</span>会社・事業の基本情報</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>従業員数</label>
+            <select id="employees">
+              <option value="">選択してください</option>
+              <option value="1">1人（個人）</option>
+              <option value="2">2〜5人</option>
+              <option value="3">6〜10人</option>
+              <option value="4">11〜30人</option>
+              <option value="5">31〜100人</option>
+              <option value="6">101人以上</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>会社規模</label>
+            <select id="companySize">
+              <option value="">選択してください</option>
+              <option value="sole">個人事業主</option>
+              <option value="small">小規模（〜10人）</option>
+              <option value="mid">中規模（11〜50人）</option>
+              <option value="large">大規模（51人〜）</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>事業年数</label>
+            <select id="bizYears">
+              <option value="">選択してください</option>
+              <option value="new">1年未満</option>
+              <option value="young">1〜3年</option>
+              <option value="mid">3〜10年</option>
+              <option value="mature">10年以上</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>AI導入経験</label>
+            <select id="aiExp">
+              <option value="none">全くない</option>
+              <option value="little">少しある（ChatGPT等）</option>
+              <option value="some">ある程度ある</option>
+              <option value="expert">積極的に活用中</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-secondary" onclick="goStep(1)">← 戻る</button>
+        <button class="btn btn-primary" onclick="goStep(3)">次へ →</button>
+      </div>
+    </div>
+
+    <!-- STEP3 課題 -->
+    <div id="step3" style="display:none">
+      <div class="card">
+        <div class="step-title"><span class="step-badge">STEP 3</span>現在困っていることを選択（複数可）</div>
+        <div class="check-grid" id="problemsGrid">
+          <div class="check-item" data-v="見積書・請求書作成に時間がかかる" onclick="toggleCheck(this)"><div class="check-box">✓</div>📄 見積書・請求書</div>
+          <div class="check-item" data-v="資料・文章作成が大変" onclick="toggleCheck(this)"><div class="check-box">✓</div>📝 資料・文章作成</div>
+          <div class="check-item" data-v="データ集計・分析が手間" onclick="toggleCheck(this)"><div class="check-box">✓</div>📊 データ分析</div>
+          <div class="check-item" data-v="顧客管理が煩雑" onclick="toggleCheck(this)"><div class="check-box">✓</div>👥 顧客管理</div>
+          <div class="check-item" data-v="在庫管理が大変" onclick="toggleCheck(this)"><div class="check-box">✓</div>📦 在庫管理</div>
+          <div class="check-item" data-v="SNS運用の時間がない" onclick="toggleCheck(this)"><div class="check-box">✓</div>📱 SNS運用</div>
+          <div class="check-item" data-v="経理・帳簿が複雑" onclick="toggleCheck(this)"><div class="check-box">✓</div>💰 経理・帳簿</div>
+          <div class="check-item" data-v="電話対応が多い" onclick="toggleCheck(this)"><div class="check-box">✓</div>📞 電話対応</div>
+          <div class="check-item" data-v="メール対応に時間がかかる" onclick="toggleCheck(this)"><div class="check-box">✓</div>✉️ メール対応</div>
+          <div class="check-item" data-v="シフト管理が面倒" onclick="toggleCheck(this)"><div class="check-box">✓</div>📅 シフト管理</div>
+          <div class="check-item" data-v="会議・議事録の効率が悪い" onclick="toggleCheck(this)"><div class="check-box">✓</div>🗣 会議・議事録</div>
+          <div class="check-item" data-v="営業管理が難しい" onclick="toggleCheck(this)"><div class="check-box">✓</div>💼 営業管理</div>
+          <div class="check-item" data-v="採用・人材管理が課題" onclick="toggleCheck(this)"><div class="check-box">✓</div>👤 採用・人材</div>
+          <div class="check-item" data-v="情報共有が上手くいかない" onclick="toggleCheck(this)"><div class="check-box">✓</div>🔗 情報共有</div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-secondary" onclick="goStep(2)">← 戻る</button>
+        <button class="btn btn-primary" onclick="goStep(4)">次へ →</button>
+      </div>
+    </div>
+
+    <!-- STEP4 詳細 -->
+    <div id="step4" style="display:none">
+      <div class="card">
+        <div class="step-title"><span class="step-badge">STEP 4</span>詳細・自由記述（任意）</div>
+        <div class="form-group" style="margin-bottom:1rem">
+          <label>具体的な困りごと・状況（任意）</label>
+          <textarea id="freeText" placeholder="例：毎月の請求書作成に2〜3時間かかっている。Excelで顧客管理しているが検索しにくい。SNSを更新する時間がなく集客に困っている。"></textarea>
+        </div>
+        <div class="form-group">
+          <label>月にどのくらい残業・超過業務がありますか？</label>
+          <select id="overtime">
+            <option value="none">ほぼない</option>
+            <option value="little">月10時間未満</option>
+            <option value="mid">月10〜30時間</option>
+            <option value="heavy">月30時間以上</option>
+          </select>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn btn-secondary" onclick="goStep(3)">← 戻る</button>
+        <button class="btn-diagnose" onclick="runDiagnosis()">🔍 無料診断を実行する</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 診断中 -->
+  <div class="analyzing" id="analyzingSection">
+    <div class="analyze-ring"></div>
+    <div class="analyze-text">業務内容を分析中です…</div>
+    <div class="analyze-sub">業種・課題・規模に応じた診断を行っています</div>
+  </div>
+
+  <!-- 結果 -->
+  <div class="result-section" id="resultSection">
+
+    <div class="action-bar">
+      <button class="act-btn act-btn-print" onclick="window.print()">🖨 印刷・PDF保存</button>
+      <button class="act-btn act-btn-json" onclick="saveJSON()">💾 JSON保存</button>
+      <button class="act-btn act-btn-reset" onclick="resetAll()">🔄 再診断する</button>
+    </div>
+
+    <!-- 総合スコア -->
+    <div class="score-card">
+      <div class="score-label">総合評価スコア</div>
+      <div class="score-value" id="scoreValue">72</div>
+      <div class="score-stars" id="scoreStars">★★★★☆</div>
+      <div class="score-summary" id="scoreSummary"></div>
+    </div>
+
+    <!-- 優先度メーター -->
+    <div class="priority-meters" id="priorityMeters"></div>
+
+    <!-- 改善ポイント -->
+    <div class="card">
+      <div class="section-label"><div class="section-bar"></div>🎯 改善ポイント（優先順）</div>
+      <div class="improvement-grid" id="improvementGrid"></div>
+    </div>
+
+    <!-- AI活用アイデア -->
+    <div class="card">
+      <div class="section-label"><div class="section-bar"></div>🤖 AI活用アイデア</div>
+      <div class="ai-ideas" id="aiIdeas"></div>
+    </div>
+
+    <!-- 今すぐできること -->
+    <div class="card">
+      <div class="section-label"><div class="section-bar"></div>⚡ 今すぐできる改善案</div>
+      <div class="now-list" id="nowList"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── 状態 ──
+  let currentStep = 1;
+  let selectedIndustry = '';
+  let selectedProblems = [];
+  let diagnosisResult = null;
+
+  // ── 診断ロジックDB ──
+  const DB = {
+    // 業種別の特性
+    industryTraits: {
+      '飲食店': { weakPoints: ['シフト管理', 'SNS運用', '在庫管理'], aiPotential: 'high', timeWaste: 'high' },
+      'ホテル・宿泊': { weakPoints: ['顧客管理', '情報共有', 'メール対応'], aiPotential: 'high', timeWaste: 'high' },
+      '建設業': { weakPoints: ['見積書・請求書作成', '資料・文章作成', '営業管理'], aiPotential: 'mid', timeWaste: 'high' },
+      '製造業': { weakPoints: ['在庫管理', 'データ分析', '情報共有'], aiPotential: 'mid', timeWaste: 'mid' },
+      '小売業': { weakPoints: ['在庫管理', 'SNS運用', '顧客管理'], aiPotential: 'high', timeWaste: 'mid' },
+      '医療・介護': { weakPoints: ['書類作成', '情報共有', 'シフト管理'], aiPotential: 'mid', timeWaste: 'high' },
+      '美容・サロン': { weakPoints: ['SNS運用', '顧客管理', '予約管理'], aiPotential: 'high', timeWaste: 'mid' },
+      'IT・Web': { weakPoints: ['資料・文章作成', '営業管理', '会議・議事録'], aiPotential: 'very_high', timeWaste: 'low' },
+      '士業・コンサル': { weakPoints: ['資料・文章作成', '見積書・請求書作成', 'メール対応'], aiPotential: 'very_high', timeWaste: 'mid' },
+      '教育・スクール': { weakPoints: ['資料・文章作成', 'SNS運用', '顧客管理'], aiPotential: 'high', timeWaste: 'mid' },
+      '不動産': { weakPoints: ['顧客管理', '営業管理', 'メール対応'], aiPotential: 'high', timeWaste: 'mid' },
+      'その他': { weakPoints: ['資料・文章作成', '顧客管理', '経理・帳簿'], aiPotential: 'mid', timeWaste: 'mid' },
+    },
+
+    // 課題別の改善提案
+    problemSolutions: {
+      '見積書・請求書作成に時間がかかる': {
+        title: '見積書・請求書作成の自動化',
+        desc: '見積書・請求書の作成は定型作業が多く、テンプレート化・自動化の効果が最も出やすい業務です。手作業での作成は人的ミスも発生しやすいため、早急な改善が推奨されます。',
+        effects: ['作業時間50〜70%削減', '入力ミスの防止', '発行スピードUP'],
+        aiIdea: '見積書・請求書作成ツールを導入し、品名・単価の自動入力・消費税計算・PDF出力を自動化する。',
+        nowDo: 'まず現在の見積書をExcelテンプレート化し、毎回コピーして使う運用に変更する。',
+        priority: 'high',
+      },
+      '資料・文章作成が大変': {
+        title: '資料・文章作成のAI活用',
+        desc: 'プレゼン資料・企画書・メール文章など、文章作成にかかる時間をAIで大幅に削減できます。下書き生成・修正・要約など、AIが最も得意とする業務です。',
+        effects: ['文章作成時間60〜80%削減', '品質の均一化', 'アイデア出しの加速'],
+        aiIdea: 'ChatGPT・Claudeなどを活用し、文章の下書き生成・修正・翻訳・要約を自動化する。',
+        nowDo: '社内でよく使う文章パターンをテンプレート集として整備し、コピーして使えるようにする。',
+        priority: 'high',
+      },
+      'データ集計・分析が手間': {
+        title: 'データ分析の効率化',
+        desc: 'ExcelやスプレッドシートでのデータCOLLECTIONに多くの時間を使っている場合、自動集計・可視化ツールの導入で大幅な時間削減が可能です。',
+        effects: ['集計時間70〜80%削減', 'リアルタイム分析の実現', '経営判断の迅速化'],
+        aiIdea: 'グラフ作成ツールやBIツールを導入し、データを入力するだけで自動グラフ化・分析レポートを生成する。',
+        nowDo: 'まず現在のExcelを整理し、ピボットテーブルや基本グラフ機能を活用する。',
+        priority: 'mid',
+      },
+      '顧客管理が煩雑': {
+        title: '顧客管理システムの整備',
+        desc: '紙や複数のExcelでの顧客管理は、情報の重複・検索の手間・引き継ぎミスが発生しやすい状態です。一元管理による業務効率化と顧客対応品質の向上が見込めます。',
+        effects: ['情報検索時間80%削減', '引き継ぎミスの防止', '顧客対応品質の向上'],
+        aiIdea: '無料CRMツールまたはスプレッドシートベースの顧客管理システムを構築し、検索・フィルター機能を整備する。',
+        nowDo: 'まず全顧客情報を1つのスプレッドシートに集約し、項目を統一する。',
+        priority: 'high',
+      },
+      '在庫管理が大変': {
+        title: '在庫管理の自動化・デジタル化',
+        desc: '手作業での在庫管理は数え間違い・記録漏れが発生しやすく、過剰在庫や欠品リスクが高い状態です。デジタル化により発注精度と業務効率が大幅に改善します。',
+        effects: ['在庫差異の削減', '発注ミスの防止', '棚卸し時間50%削減'],
+        aiIdea: 'バーコード・QRコードを活用した在庫管理システムを導入し、スマホで在庫確認・更新できる環境を作る。',
+        nowDo: '全商品にIDを振り、スプレッドシートで入出庫を記録する運用から始める。',
+        priority: 'mid',
+      },
+      'SNS運用の時間がない': {
+        title: 'SNS投稿の自動化・効率化',
+        desc: 'SNS運用は集客に直結しますが、毎日の投稿作業は時間と労力がかかります。AIを活用した文章生成・予約投稿の組み合わせで大幅な時間削減が可能です。',
+        effects: ['投稿作成時間70%削減', '投稿頻度の維持', '集客力の向上'],
+        aiIdea: 'SNS投稿文章生成AIを活用し、テーマを入力するだけで複数プラットフォーム向けの投稿文を自動生成する。',
+        nowDo: '1週間分の投稿を週1回でまとめて作成し、予約投稿ツール（Buffer等）を活用する。',
+        priority: 'mid',
+      },
+      '経理・帳簿が複雑': {
+        title: '経理・帳簿のデジタル化',
+        desc: '経理業務のデジタル化は、確定申告の省力化・税務リスクの低減・キャッシュフロー把握の改善につながります。freeeやマネーフォワードなど無料から使えるツールがあります。',
+        effects: ['帳簿入力時間60%削減', '確定申告の省力化', '税務リスクの低減'],
+        aiIdea: 'クラウド会計ソフトと銀行口座・クレジットカードを連携し、取引を自動記録する環境を構築する。',
+        nowDo: 'まずレシート・領収書をスマホで撮影して保存する習慣を作り、後でまとめて入力する運用に変更する。',
+        priority: 'high',
+      },
+      '電話対応が多い': {
+        title: '電話対応の効率化・自動化',
+        desc: '電話対応は作業の中断を引き起こし、生産性低下の大きな要因となります。よくある問い合わせのFAQ化・チャットボット導入で対応件数を大幅に削減できます。',
+        effects: ['電話対応件数30〜50%削減', '作業中断の減少', '対応品質の均一化'],
+        aiIdea: 'ホームページにFAQページを充実させ、よくある質問の80%をウェブで解決できる環境を作る。',
+        nowDo: '電話でよく聞かれる質問TOP10をリストアップし、ホームページやメールの自動返信に掲載する。',
+        priority: 'mid',
+      },
+      'メール対応に時間がかかる': {
+        title: 'メール対応の効率化',
+        desc: 'メール作成・返信に多くの時間を使っている場合、テンプレート化・AI文章生成で大幅な時間削減が可能です。また、メールの優先順位付けも重要です。',
+        effects: ['メール作成時間60%削減', '返信品質の向上', '対応漏れの防止'],
+        aiIdea: 'AIメール生成ツールを活用し、状況を入力するだけでプロ品質のメール文章を自動生成する。',
+        nowDo: 'よく使うメール文章を10〜20パターンテンプレート化し、コピー&ペーストで送信できるようにする。',
+        priority: 'mid',
+      },
+      'シフト管理が面倒': {
+        title: 'シフト管理のデジタル化',
+        desc: 'LINEやExcelでのシフト管理は、変更対応・集計・周知に多くの手間がかかります。無料のシフト管理アプリの導入で大幅な省力化が可能です。',
+        effects: ['シフト作成時間70%削減', '変更対応の迅速化', '希望確認の自動化'],
+        aiIdea: 'Shiftee・らくしふなどの無料シフト管理ツールを導入し、スタッフがスマホから希望を入力できる環境を作る。',
+        nowDo: 'まずシフトの希望提出をLINEアンケート機能に統一し、集計の手間を減らす。',
+        priority: 'mid',
+      },
+      '会議・議事録の効率が悪い': {
+        title: '会議・議事録の効率化',
+        desc: '会議の準備・進行・議事録作成に多くの時間を使っている場合、AIを活用した議事録自動生成で大幅な時間削減が可能です。',
+        effects: ['議事録作成時間80%削減', '会議時間の短縮', '情報共有の迅速化'],
+        aiIdea: 'AI議事録ツールを活用し、会議の録音・文字起こし・要約・ToDo抽出を自動化する。',
+        nowDo: 'まず会議にアジェンダ（議題）を事前共有し、結論・決定事項・次のアクションを必ず記録する習慣を作る。',
+        priority: 'low',
+      },
+      '営業管理が難しい': {
+        title: '営業管理の仕組み化',
+        desc: '案件の進捗管理・フォローアップのタイミングが曖昧な場合、商談機会の損失や対応漏れが発生しやすい状態です。シンプルな管理ツールの導入で受注率改善が期待できます。',
+        effects: ['対応漏れの防止', '受注率10〜20%向上', '営業活動の可視化'],
+        aiIdea: '営業管理ツールを導入し、案件ステータス・次のアクション・フォローアップ日を一元管理する。',
+        nowDo: 'スプレッドシートに「会社名・ステータス・次のアクション・期日」の4列を作り、毎日更新する習慣を作る。',
+        priority: 'high',
+      },
+      '採用・人材管理が課題': {
+        title: '採用・人材管理の効率化',
+        desc: '採用活動・人材評価・スキル管理が属人化している場合、組織の成長に支障をきたします。採用基準の明確化と管理ツールの導入が効果的です。',
+        effects: ['採用精度の向上', '育成コストの削減', '離職率の低下'],
+        aiIdea: 'AIを活用して求人票・面接質問・評価シートを自動生成し、採用プロセスを標準化する。',
+        nowDo: 'まず自社の採用基準・求める人物像を文書化し、面接チェックリストを作成する。',
+        priority: 'low',
+      },
+      '情報共有が上手くいかない': {
+        title: '社内情報共有の改善',
+        desc: '情報がメール・LINEに散在し、必要な情報をすぐに見つけられない状態は生産性低下の大きな要因です。情報の一元管理が急務です。',
+        effects: ['情報検索時間70%削減', '引き継ぎミスの防止', 'チームワークの向上'],
+        aiIdea: 'NotionやGoogleドライブを活用し、社内マニュアル・議事録・顧客情報を一元管理する環境を構築する。',
+        nowDo: 'まずGoogleドライブに共有フォルダを作成し、全員がアクセスできる基本ルールを決める。',
+        priority: 'mid',
+      },
+    },
+
+    // AI活用アイデア（業種別）
+    industryAIIdeas: {
+      '飲食店': [
+        { icon: '📱', title: 'SNS自動投稿', desc: '料理の写真を投稿するだけで、AIがキャプション・ハッシュタグを自動生成。集客力アップ。' },
+        { icon: '📋', title: 'メニュー説明文生成', desc: '食材・調理法を入力するだけで、魅力的なメニュー説明文をAIが自動生成。' },
+        { icon: '💌', title: 'リピーター向けメール', desc: '顧客データをもとにAIがお礼・イベント案内メールを自動生成。' },
+      ],
+      'IT・Web': [
+        { icon: '📄', title: '提案書・仕様書生成', desc: '要件を入力するだけでAIが提案書・仕様書の下書きを自動生成。' },
+        { icon: '✉️', title: '営業メール自動化', desc: '送信先の業種・規模に合わせた営業メールをAIが生成。' },
+        { icon: '🔍', title: 'コードレビュー支援', desc: 'AIによるコードレビュー・デバッグ支援で開発効率を向上。' },
+      ],
+      '士業・コンサル': [
+        { icon: '📝', title: '契約書・書類作成支援', desc: '定型契約書・報告書の下書きをAIが生成し、確認・修正の手間を削減。' },
+        { icon: '📊', title: 'レポート自動生成', desc: 'データを入力するだけで分析レポートをAIが自動作成。' },
+        { icon: '✉️', title: 'クライアントメール', desc: 'お礼・報告・提案メールをAIが状況に合わせて生成。' },
+      ],
+    },
+
+    // 規模別のアドバイス
+    sizeAdvice: {
+      sole: '個人事業主の場合、まず自分の時間を最も奪っている業務1〜2つに絞って改善を始めることが重要です。',
+      small: '小規模事業者は、コストをかけずに無料ツールから始め、効果を確認しながら段階的に拡張することをお勧めします。',
+      mid: '中規模では、チーム全体での情報共有と業務標準化が最優先課題です。一人の改善だけでなく、仕組みとして定着させることが重要です。',
+      large: '大規模組織では、部門間の情報共有と業務プロセスの標準化が生産性向上の鍵です。段階的なデジタル化計画の策定をお勧めします。',
+    },
+  };
+
+  // ── ステップ管理 ──
+  function goStep(n) {
+    if (n === 2 && !selectedIndustry) { alert('業種を選択してください'); return; }
+    if (n === 3) {
+      const emp = document.getElementById('employees').value;
+      const size = document.getElementById('companySize').value;
+      if (!emp || !size) { alert('従業員数と会社規模を選択してください'); return; }
+    }
+    if (n === 4 && selectedProblems.length === 0) { alert('困っていることを1つ以上選択してください'); return; }
+
+    document.getElementById('step' + currentStep).style.display = 'none';
+    currentStep = n;
+    document.getElementById('step' + currentStep).style.display = 'block';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress() {
+    const pct = (currentStep / 5) * 100;
+    document.getElementById('progFill').style.width = pct + '%';
+    for (let i = 1; i <= 5; i++) {
+      const dot = document.getElementById('sd' + i);
+      const label = document.getElementById('sl' + i);
+      dot.className = 'step-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+      if (label) label.className = 'step-label' + (i === currentStep ? ' active' : '');
+      if (i < 5) {
+        const line = document.getElementById('sline' + i);
+        if (line) line.className = 'step-line' + (i < currentStep ? ' done' : '');
+      }
+    }
+  }
+
+  // ── 選択 ──
+  function selIndustry(el) {
+    document.querySelectorAll('.industry-grid .sel-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedIndustry = el.getAttribute('data-v');
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    const v = el.getAttribute('data-v');
+    if (el.classList.contains('checked')) {
+      if (!selectedProblems.includes(v)) selectedProblems.push(v);
+    } else {
+      selectedProblems = selectedProblems.filter(x => x !== v);
+    }
+  }
+
+  // ── 診断実行 ──
+  function runDiagnosis() {
+    if (selectedProblems.length === 0) { alert('困っていることを1つ以上選択してください'); return; }
+
+    document.getElementById('inputSection').style.display = 'none';
+    document.getElementById('analyzingSection').style.display = 'block';
+    currentStep = 5;
+    updateProgress();
+
+    setTimeout(() => {
+      const result = buildDiagnosis();
+      diagnosisResult = result;
+      renderResult(result);
+      document.getElementById('analyzingSection').style.display = 'none';
+      document.getElementById('resultSection').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 2200);
+  }
+
+  function buildDiagnosis() {
+    const employees = document.getElementById('employees').value;
+    const companySize = document.getElementById('companySize').value;
+    const bizYears = document.getElementById('bizYears').value;
+    const aiExp = document.getElementById('aiExp').value;
+    const overtime = document.getElementById('overtime').value;
+
+    const trait = DB.industryTraits[selectedIndustry] || DB.industryTraits['その他'];
+
+    // スコア計算
+    let score = 60;
+    if (overtime === 'heavy') score -= 15;
+    else if (overtime === 'mid') score -= 8;
+    if (aiExp === 'none') score -= 5;
+    else if (aiExp === 'expert') score += 10;
+    if (selectedProblems.length >= 5) score -= 10;
+    else if (selectedProblems.length <= 2) score += 5;
+    if (bizYears === 'mature') score += 5;
+    score = Math.max(30, Math.min(95, score + Math.floor(Math.random() * 10 - 3)));
+
+    const stars = score >= 85 ? '★★★★★' : score >= 70 ? '★★★★☆' : score >= 55 ? '★★★☆☆' : score >= 40 ? '★★☆☆☆' : '★☆☆☆☆';
+
+    // 改善ポイント（選択された課題から優先順に最大5つ）
+    const prioritized = selectedProblems
+      .map(p => ({ key: p, sol: DB.problemSolutions[p] }))
+      .filter(x => x.sol)
+      .sort((a, b) => {
+        const order = { high: 0, mid: 1, low: 2 };
+        return order[a.sol.priority] - order[b.sol.priority];
+      })
+      .slice(0, 5);
+
+    // AI活用アイデア（業種別）
+    const aiIdeas = DB.industryAIIdeas[selectedIndustry] || [
+      { icon: '✉️', title: 'メール・文章の自動生成', desc: 'よく使う文章パターンをAIに学習させ、状況に応じた文章を自動生成する。' },
+      { icon: '📊', title: 'データ集計・レポート自動化', desc: 'データを入力するだけでグラフ・レポートを自動生成し、経営判断を迅速化する。' },
+      { icon: '📋', title: '書類作成の効率化', desc: 'テンプレートとAIを組み合わせ、各種書類の作成時間を大幅に削減する。' },
+    ];
+
+    // 今すぐできること
+    const nowItems = prioritized.slice(0, 4).map(x => x.sol.nowDo);
+
+    // 優先度メーター
+    const highCount = prioritized.filter(x => x.sol.priority === 'high').length;
+    const midCount = prioritized.filter(x => x.sol.priority === 'mid').length;
+    const aiPotentialScore = { very_high: 90, high: 75, mid: 55, low: 35 }[trait.aiPotential] || 55;
+    const timeWasteScore = { high: 80, mid: 55, low: 30 }[trait.timeWaste] || 55;
+    const urgency = Math.min(100, highCount * 30 + midCount * 15 + (overtime === 'heavy' ? 20 : overtime === 'mid' ? 10 : 0));
+
+    // サマリー
+    const sizeAdv = DB.sizeAdvice[companySize] || '';
+    const summary = `${selectedIndustry}・${document.getElementById('employees').options[document.getElementById('employees').selectedIndex]?.text || ''}の事業において、${selectedProblems.length}つの改善課題が見つかりました。特に${prioritized[0]?.sol?.title || '業務効率化'}が最優先です。${sizeAdv}`;
+
+    return { score, stars, summary, prioritized, aiIdeas, nowItems, urgency, aiPotentialScore, timeWasteScore, companySize, overtime };
+  }
+
+  function renderResult(r) {
+    // スコア
+    document.getElementById('scoreValue').textContent = r.score;
+    document.getElementById('scoreStars').textContent = r.stars;
+    document.getElementById('scoreSummary').textContent = r.summary;
+
+    // メーター
+    const meters = [
+      { label: '改善緊急度', value: r.urgency, color: r.urgency >= 70 ? '#f87171' : r.urgency >= 45 ? '#fbbf24' : '#34d399' },
+      { label: 'AI導入ポテンシャル', value: r.aiPotentialScore, color: '#a78bfa' },
+      { label: '時間削減余地', value: r.timeWasteScore, color: '#60a5fa' },
+      { label: '改善後の期待スコア', value: Math.min(99, r.score + 20), color: '#34d399' },
+    ];
+    document.getElementById('priorityMeters').innerHTML = meters.map(m => `
+      <div class="meter-card">
+        <div class="meter-label">${m.label}</div>
+        <div class="meter-bar-bg">
+          <div class="meter-bar-fill" style="width:${m.value}%;background:${m.color}"></div>
+        </div>
+        <div class="meter-value" style="color:${m.color}">${m.value}%</div>
+      </div>`).join('');
+
+    // 改善ポイント
+    document.getElementById('improvementGrid').innerHTML = r.prioritized.map((x, i) => {
+      const s = x.sol;
+      const stars = s.priority === 'high' ? '★★★★★' : s.priority === 'mid' ? '★★★★☆' : '★★★☆☆';
+      const badgeClass = 'badge-' + s.priority;
+      const badgeText = s.priority === 'high' ? '最優先' : s.priority === 'mid' ? '優先' : '余裕があれば';
+      return `<div class="imp-card ${s.priority}">
+        <div class="imp-header">
+          <div class="imp-title">改善ポイント${i+1}：${esc(s.title)}</div>
+          <span class="imp-badge ${badgeClass}">${badgeText}</span>
+        </div>
+        <div class="imp-stars">${stars}</div>
+        <div class="imp-desc">${esc(s.desc)}</div>
+        <div class="imp-effects">${s.effects.map(e => `<span class="effect-tag">✅ ${esc(e)}</span>`).join('')}</div>
+      </div>`;
+    }).join('');
+
+    // AIアイデア
+    document.getElementById('aiIdeas').innerHTML = r.aiIdeas.map(a => `
+      <div class="ai-idea-card">
+        <span class="ai-idea-icon">${a.icon}</span>
+        <div class="ai-idea-title">${esc(a.title)}</div>
+        <div class="ai-idea-desc">${esc(a.desc)}</div>
+      </div>`).join('');
+
+    // 今すぐできること
+    document.getElementById('nowList').innerHTML = r.nowItems.map((item, i) => `
+      <div class="now-item">
+        <div class="now-num">${i+1}</div>
+        <div class="now-text">${esc(item)}</div>
+      </div>`).join('');
+  }
+
+  // ── リセット ──
+  function resetAll() {
+    if (!confirm('診断をリセットしますか？')) return;
+    currentStep = 1;
+    selectedIndustry = '';
+    selectedProblems = [];
+    document.querySelectorAll('.sel-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.check-item').forEach(b => b.classList.remove('checked'));
+    ['employees','companySize','bizYears','aiExp','overtime'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = el.options[0]?.value || '';
+    });
+    document.getElementById('freeText').value = '';
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('inputSection').style.display = 'block';
+    document.getElementById('step1').style.display = 'block';
+    for (let i = 2; i <= 4; i++) document.getElementById('step' + i).style.display = 'none';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── JSON保存 ──
+  function saveJSON() {
+    if (!diagnosisResult) return;
+    const data = {
+      date: new Date().toISOString(),
+      industry: selectedIndustry,
+      problems: selectedProblems,
+      score: diagnosisResult.score,
+      priorities: diagnosisResult.prioritized.map(x => ({ title: x.sol.title, priority: x.sol.priority, desc: x.sol.desc })),
+      nowItems: diagnosisResult.nowItems,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `diagnosis_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+  }
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
