@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="業種・課題を入力するだけでAIが業務改善の優先順位・改善方法・今すぐできることを提案する無料診断ツール「AI業務改善アドバイザー Pro Lite」の紹介・使い方。" />
+  <title>AI業務改善アドバイザー Pro Lite｜無料で使える業務診断ツール | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ========== 記事ヘッダー ========== */
+    .post-hero {
+      padding: 140px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .post-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(155,89,245,0.1), transparent 70%);
+      pointer-events: none;
+    }
+    .post-hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      margin-bottom: 28px;
+      transition: var(--transition);
+    }
+    .post-back:hover { color: var(--c-blue); }
+    .post-cat-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 50px;
+      background: rgba(79,142,247,0.12);
+      color: var(--c-blue);
+      border: 1px solid rgba(79,142,247,0.25);
+      margin-bottom: 20px;
+    }
+    #post-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 20px;
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+    }
+
+    /* ========== 記事本文 ========== */
+    .post-body-section { padding: 0 0 120px; }
+    .post-layout {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .post-card {
+      padding: 48px 56px;
+      margin-bottom: 32px;
+    }
+    #post-body h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 36px 0 14px;
+      padding-left: 14px;
+      border-left: 3px solid var(--c-blue);
+    }
+    #post-body h2:first-child { margin-top: 0; }
+    #post-body p {
+      font-size: 0.95rem;
+      color: var(--c-text-sub);
+      line-height: 1.95;
+      margin-bottom: 16px;
+    }
+    #post-body ul {
+      list-style: none;
+      margin: 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    #post-body ul li {
+      font-size: 0.92rem;
+      color: var(--c-text-sub);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.8;
+    }
+    #post-body ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--c-blue);
+      font-size: 0.75rem;
+      top: 4px;
+    }
+    #post-body a {
+      color: var(--c-blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: var(--transition);
+    }
+    #post-body a:hover { color: var(--c-purple2); }
+    #post-body strong { color: var(--c-text); font-weight: 600; }
+
+    /* ========== ステップリスト ========== */
+    .step-flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 8px 0 20px;
+    }
+    .step-flow-item {
+      padding: 20px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+      text-align: center;
+    }
+    .step-flow-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-purple2), var(--c-blue));
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+    .step-flow-item h4 {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .step-flow-item p {
+      font-size: 0.8rem;
+      color: var(--c-text-sub);
+      line-height: 1.6;
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .step-flow { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ========== 機能リスト ========== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 8px 0 20px;
+    }
+    .feature-item {
+      padding: 20px 22px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+    }
+    .feature-item h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .feature-item p {
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      line-height: 1.7;
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ========== CTA ========== */
+    .post-cta {
+      padding: 36px 40px;
+      text-align: center;
+      border-color: rgba(155,89,245,0.2);
+    }
+    .post-cta h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .post-cta p {
+      font-size: 0.9rem;
+      color: var(--c-text-sub);
+      margin-bottom: 24px;
+    }
+    .post-cta-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .post-card { padding: 32px 20px; }
+      .post-cta { padding: 28px 20px; }
+      .post-hero { padding: 120px 0 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="blog.html" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="contact.html" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== 記事ヘッダー ========== -->
+  <section class="post-hero">
+    <div class="container">
+      <div class="post-hero-inner">
+
+        <a href="blog.html" class="post-back">← ブログ一覧へ戻る</a>
+
+        <div class="post-cat-label" data-cat="tools">ツール紹介</div>
+
+        <h1 id="post-title">AI業務改善アドバイザー Pro Lite｜無料で使える業務診断ツール</h1>
+
+        <div class="post-meta">
+          <span>2026.07.05</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 記事本文 ========== -->
+  <section class="post-body-section">
+    <div class="container">
+      <div class="post-layout">
+
+        <div class="post-card glass-card">
+          <div id="post-body">
+
+            <h2>AI業務改善アドバイザー Pro Liteとは</h2>
+            <p>AI業務改善アドバイザー Pro Liteは、業種と抱えている課題を入力するだけで、AIが業務改善のヒントを提案してくれる無料診断ツールです。APIキーの取得や外部サービスへの登録は一切不要。このページからそのまま診断を始められます。</p>
+            <p>「何から改善すればいいかわからない」「AIをどう業務に活かせばいいのかイメージできない」という中小企業・個人事業主・フリーランスの方に向けて、優先順位を明確にすることを目的に作られています。</p>
+
+            <h2>診断の流れ（4ステップ）</h2>
+            <div class="step-flow">
+              <div class="step-flow-item">
+                <div class="step-flow-num">1</div>
+                <h4>業種を選択</h4>
+                <p>ご自身の業種を選ぶだけで、業種特有の改善ポイントを把握できます。</p>
+              </div>
+              <div class="step-flow-item">
+                <div class="step-flow-num">2</div>
+                <h4>会社情報を入力</h4>
+                <p>従業員数や事業規模など、簡単な情報を入力します。</p>
+              </div>
+              <div class="step-flow-item">
+                <div class="step-flow-num">3</div>
+                <h4>課題を選択</h4>
+                <p>「時間がかかる」「ミスが多い」など、感じている課題を選びます。</p>
+              </div>
+              <div class="step-flow-item">
+                <div class="step-flow-num">4</div>
+                <h4>詳細を入力</h4>
+                <p>状況をもう少し詳しく入力すると、AIがより精度の高い提案を作成します。</p>
+              </div>
+            </div>
+            <p>入力が終わると、AIが自動で診断結果を作成・表示します。所要時間は1〜2分程度です。</p>
+
+            <h2>診断でわかること</h2>
+            <ul>
+              <li><strong>改善優先順位</strong>：数ある業務課題の中で、まず着手すべきポイントをAIが整理して提示します。</li>
+              <li><strong>AI活用アイデア</strong>：業種・課題に合わせた具体的なAI活用方法を提案します。</li>
+              <li><strong>今すぐできること</strong>：特別なツール導入や予算をかけずに、すぐに実践できる改善案を紹介します。</li>
+            </ul>
+
+            <h2>こんな方におすすめ</h2>
+            <ul>
+              <li>業務効率化を検討している<strong>中小企業</strong>の経営者・担当者の方</li>
+              <li>日々の業務に追われている<strong>個人事業主</strong>の方</li>
+              <li>一人で複数の業務を抱えている<strong>フリーランス</strong>の方</li>
+              <li>AI活用に興味はあるが、何から始めればいいかわからない方</li>
+            </ul>
+            <p>診断結果はあくまで最初の一歩の指針です。より具体的な改善のご相談は<a href="contact.html">お問い合わせ</a>からお気軽にどうぞ。</p>
+
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="post-cta glass-card">
+          <h3>AI業務改善アドバイザー Pro Liteを今すぐ試す</h3>
+          <p>API不要・完全無料・インストール不要。1〜2分の入力で業務改善のヒントが見つかります。</p>
+          <div class="post-cta-btns">
+            <a href="advisor-tool.html" class="btn btn-primary">無料で診断する →</a>
+            <a href="blog.html" class="btn btn-glass">ブログ一覧へ</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/aimt0studio?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="blog.html">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="index.html#consult">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

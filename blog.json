@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "advisor-tool-intro",
+      "title": "AI業務改善アドバイザー Pro Lite｜無料で使える業務診断ツール",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.05",
+      "summary": "業種・課題を入力するだけでAIが業務改善の優先順位・改善方法・今すぐできることを提案。API不要・完全無料の診断ツールの紹介。",
+      "url": "blog-advisor.html"
+    },
+    {
+      "id": "ai-basics-2026",
+      "title": "AI初心者が最初に知っておくべき3つのこと【2026年版】",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "date": "2026.07.05",
+      "summary": "ChatGPT・Claude・Geminiの違いから、ビジネスでのAI活用メリット、始め方までを解説。",
+      "url": "blog-ai-basics.html"
+    },
+    {
       "id": "business-os-intro",
       "title": "AI Business OSの紹介・使い方【無料で使えるビジネスツール】",
       "category": "tools",
