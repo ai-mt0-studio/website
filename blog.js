@@ -80,6 +80,7 @@ async function initBlogList() {
   var countEl = document.getElementById('article-count');
   if (countEl) countEl.textContent = data.articles.length;
 
+  grid.innerHTML = '';
   data.articles.forEach(function(a) {
     grid.appendChild(createBlogCard(a));
   });
