@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "sales-mail-tool-intro",
+      "title": "AI営業文作成 Pro Lite｜無料で使える営業メール自動生成ツール",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.07",
+      "summary": "会社名・業種・伝えたい内容を入力するだけで、営業メールなど6種類の文書をAIが3パターン同時生成。API不要・完全無料のツールの紹介。",
+      "url": "blog-sales-mail.html"
+    },
+    {
+      "id": "ai-tips-5",
+      "title": "AIを業務で活用するコツ5選【初心者でもすぐ使える】",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "date": "2026.07.07",
+      "summary": "指示の出し方から複数パターンの試し方まで、AIツールを業務でうまく活用するための5つのコツを解説。",
+      "url": "blog-ai-tips.html"
+    },
+    {
       "id": "advisor-tool-intro",
       "title": "AI業務改善アドバイザー Pro Lite｜無料で使える業務診断ツール",
       "category": "tools",
