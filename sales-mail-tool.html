@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI営業文作成 Pro Lite</title>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.18) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 50px; left: -120px; }
+
+  .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+  .free-badge {
+    display: inline-block; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.4);
+    color: var(--green-400); font-size: 0.75rem; font-weight: 700;
+    padding: 0.2rem 0.85rem; border-radius: 999px; margin-top: 0.5rem;
+  }
+
+  /* タブ */
+  .type-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .type-tab {
+    padding: 0.55rem 1.1rem; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .type-tab.active { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border-color: transparent; color: #fff; }
+  .type-tab:hover:not(.active) { border-color: rgba(124,58,237,0.4); color: var(--text); }
+
+  /* カード */
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .label-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); flex-shrink: 0; }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group label { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+  input[type=text], select, textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.65rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.45); }
+  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  select option { background: #1a1a3e; }
+
+  /* 丁寧さスライダー */
+  .polite-btns { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .polite-btn {
+    padding: 0.4rem 0.9rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .polite-btn.active { border-color: rgba(124,58,237,0.5); background: rgba(124,58,237,0.15); color: var(--purple-400); }
+
+  .length-btns { display: flex; gap: 0.4rem; }
+  .length-btn {
+    padding: 0.4rem 0.9rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .length-btn.active { border-color: rgba(96,165,250,0.5); background: rgba(96,165,250,0.12); color: var(--blue-300); }
+
+  /* 生成ボタン */
+  .btn-generate {
+    width: 100%; padding: 1rem; border-radius: 14px; border: none; cursor: pointer;
+    font-size: 1rem; font-weight: 700; font-family: inherit; color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    position: relative; overflow: hidden; transition: all 0.2s; margin-top: 0.5rem;
+  }
+  .btn-generate::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  .btn-generate:hover::after { left: 100%; }
+
+  /* 結果 */
+  .result-section { display: none; }
+
+  .result-block {
+    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;
+  }
+  .result-block-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .result-block-title {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .result-text {
+    font-size: 0.9rem; line-height: 1.9; color: var(--text);
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .result-text.subject { font-size: 1rem; font-weight: 700; color: var(--blue-300); }
+
+  .copy-btn {
+    background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green-400);
+    padding: 0.35rem 0.85rem; border-radius: 8px; cursor: pointer; font-size: 0.78rem; font-family: inherit;
+    transition: background 0.2s; flex-shrink: 0;
+  }
+  .copy-btn:hover { background: rgba(52,211,153,0.2); }
+  .copy-btn.copied { background: rgba(52,211,153,0.25); }
+
+  .action-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .act-btn {
+    padding: 0.6rem 1.1rem; border-radius: 10px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+  }
+  .act-btn-all { background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.3); color: var(--purple-400); }
+  .act-btn-reset { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
+  .act-btn-print { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
+
+  /* バリエーション */
+  .variation-tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .var-tab {
+    padding: 0.4rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 700;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted); transition: all 0.2s;
+    font-family: inherit;
+  }
+  .var-tab.active { background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.5); color: var(--purple-400); }
+
+  /* 業種バッジ */
+  .industry-badge {
+    display: inline-block; background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+    color: var(--purple-400); font-size: 0.72rem; font-weight: 700;
+    padding: 0.15rem 0.6rem; border-radius: 999px; margin-right: 0.4rem;
+  }
+
+  /* ヒント */
+  .hint-box {
+    background: rgba(29,78,216,0.08); border: 1px solid rgba(29,78,216,0.2);
+    border-radius: 12px; padding: 0.85rem 1rem; margin-bottom: 1.25rem;
+    font-size: 0.82rem; color: var(--muted); line-height: 1.6;
+  }
+  .hint-box strong { color: var(--blue-300); }
+
+  /* トースト */
+  .toast {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--green-400); color: #fff; border-radius: 999px;
+    padding: 0.65rem 1.5rem; font-size: 0.85rem; font-weight: 700;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.3s; z-index: 200; pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media(max-width:640px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .type-tabs { gap: 0.35rem; }
+    .type-tab { font-size: 0.78rem; padding: 0.45rem 0.85rem; }
+  }
+
+  @media print {
+    body { background: #fff; color: #1a1a2e; padding: 0; }
+    .orb, header, .type-tabs, .card:not(.result-card), .action-bar, .variation-tabs { display: none !important; }
+    .result-section { display: block !important; }
+    .result-block { border: 1px solid #e5e7eb; box-shadow: none; }
+    .result-text { color: #1a1a2e; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="toast" id="toast">📋 コピーしました！</div>
+
+<div class="container">
+  <header>
+    <h1>✉️ AI営業文作成 Pro Lite</h1>
+    <p>入力するだけで業種・状況に合わせた営業文を自動生成</p>
+    <div class="free-badge">✅ 完全無料 · API不要 · インストール不要</div>
+  </header>
+
+  <!-- 文書タイプ選択 -->
+  <div class="type-tabs">
+    <button class="type-tab active" data-type="sales" onclick="setType(this)">✉️ 営業メール</button>
+    <button class="type-tab" data-type="inquiry" onclick="setType(this)">📋 お問い合わせフォーム</button>
+    <button class="type-tab" data-type="collab" onclick="setType(this)">🤝 協業提案</button>
+    <button class="type-tab" data-type="intro" onclick="setType(this)">📣 サービス紹介</button>
+    <button class="type-tab" data-type="thanks" onclick="setType(this)">🙏 お礼メール</button>
+    <button class="type-tab" data-type="follow" onclick="setType(this)">🔄 フォローメール</button>
+  </div>
+
+  <div class="hint-box" id="hintBox">
+    <strong>💡 営業メール：</strong>初めてご連絡する相手へのアプローチメールです。相手の業種・課題に合わせた提案内容を入力すると、より効果的な文章が生成されます。
+  </div>
+
+  <!-- 入力フォーム -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>相手先の情報</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>相手の会社名 *</label>
+        <input type="text" id="toCompany" placeholder="例：株式会社〇〇" />
+      </div>
+      <div class="form-group">
+        <label>相手の業種 *</label>
+        <select id="toIndustry">
+          <option value="">選択してください</option>
+          <option value="建設業">建設業</option>
+          <option value="製造業">製造業</option>
+          <option value="印刷・出版">印刷・出版</option>
+          <option value="不動産">不動産</option>
+          <option value="IT・Web">IT・Web</option>
+          <option value="飲食業">飲食業</option>
+          <option value="小売業">小売業</option>
+          <option value="医療・介護">医療・介護</option>
+          <option value="美容・サロン">美容・サロン</option>
+          <option value="士業・コンサル">士業・コンサル</option>
+          <option value="教育・スクール">教育・スクール</option>
+          <option value="物流・運送">物流・運送</option>
+          <option value="金融・保険">金融・保険</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>担当者名（任意）</label>
+        <input type="text" id="toName" placeholder="例：山田太郎 様" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>自社・提案内容</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>自社名・屋号 *</label>
+        <input type="text" id="fromCompany" placeholder="例：AI MT0 Studio" />
+      </div>
+      <div class="form-group">
+        <label>自社の業種・職種</label>
+        <select id="fromIndustry">
+          <option value="AI・システム開発">AI・システム開発</option>
+          <option value="Web制作">Web制作</option>
+          <option value="コンサルティング">コンサルティング</option>
+          <option value="マーケティング">マーケティング</option>
+          <option value="デザイン">デザイン</option>
+          <option value="IT・SaaS">IT・SaaS</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>提案内容・サービス名 *</label>
+        <input type="text" id="service" placeholder="例：業務効率化AIツールの導入支援" />
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:0.75rem">
+      <label>伝えたいこと・アピールポイント（任意）</label>
+      <textarea id="appeal" placeholder="例：導入費用を抑えながら、業務時間を大幅に削減できます。無料デモもご用意しています。"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>文章スタイル</div>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+      <div>
+        <div style="font-size:0.75rem;color:var(--muted);font-weight:600;margin-bottom:0.5rem">文章の丁寧さ</div>
+        <div class="polite-btns">
+          <button class="polite-btn" data-polite="casual" onclick="setPolite(this)">カジュアル</button>
+          <button class="polite-btn active" data-polite="normal" onclick="setPolite(this)">丁寧</button>
+          <button class="polite-btn" data-polite="formal" onclick="setPolite(this)">フォーマル</button>
+          <button class="polite-btn" data-polite="very_formal" onclick="setPolite(this)">非常に丁寧</button>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem;color:var(--muted);font-weight:600;margin-bottom:0.5rem">文章の長さ</div>
+        <div class="length-btns">
+          <button class="length-btn" data-length="short" onclick="setLength(this)">短め</button>
+          <button class="length-btn active" data-length="mid" onclick="setLength(this)">普通</button>
+          <button class="length-btn" data-length="long" onclick="setLength(this)">長め</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-generate" onclick="generateAll()">✦ 営業文を生成する（3パターン）</button>
+
+  <!-- 結果 -->
+  <div class="result-section" id="resultSection">
+
+    <div class="action-bar">
+      <button class="act-btn act-btn-all" onclick="copyAll()">📋 全文コピー</button>
+      <button class="act-btn act-btn-print" onclick="window.print()">🖨 印刷・PDF</button>
+      <button class="act-btn act-btn-reset" onclick="resetAll()">🔄 作り直す</button>
+    </div>
+
+    <div class="variation-tabs">
+      <button class="var-tab active" onclick="showVar(0, this)">パターン A</button>
+      <button class="var-tab" onclick="showVar(1, this)">パターン B</button>
+      <button class="var-tab" onclick="showVar(2, this)">パターン C</button>
+    </div>
+
+    <div id="varContent"></div>
+
+  </div>
+</div>
+
+<script>
+  // ── 状態 ──
+  let currentType = 'sales';
+  let currentPolite = 'normal';
+  let currentLength = 'mid';
+  let generatedVariants = [];
+  let activeVar = 0;
+
+  // ── ヒント文 ──
+  const hints = {
+    sales: '<strong>💡 営業メール：</strong>初めてご連絡する相手へのアプローチメールです。相手の業種・課題に合わせた提案内容を入力すると、より効果的な文章が生成されます。',
+    inquiry: '<strong>💡 お問い合わせフォーム：</strong>Webサイトのフォームから送る短めの問い合わせ文です。簡潔に要件を伝えることが重要です。',
+    collab: '<strong>💡 協業提案：</strong>パートナーシップや業務提携を提案するメールです。お互いのメリットを明確に伝えることがポイントです。',
+    intro: '<strong>💡 サービス紹介：</strong>自社サービスを紹介するメールです。相手の業種に合わせた課題解決の視点で伝えましょう。',
+    thanks: '<strong>💡 お礼メール：</strong>商談・打ち合わせ後のお礼メールです。次のアクションを明確に示すと良い印象を与えられます。',
+    follow: '<strong>💡 フォローメール：</strong>一度連絡した後のフォローアップメールです。相手の状況を確認しながら、プレッシャーを与えない表現が重要です。',
+  };
+
+  function setType(el) {
+    document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    currentType = el.getAttribute('data-type');
+    document.getElementById('hintBox').innerHTML = hints[currentType] || '';
+  }
+
+  function setPolite(el) {
+    document.querySelectorAll('.polite-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    currentPolite = el.getAttribute('data-polite');
+  }
+
+  function setLength(el) {
+    document.querySelectorAll('.length-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    currentLength = el.getAttribute('data-length');
+  }
+
+  // ── 業種別コンテキスト ──
+  const industryContext = {
+    '建設業': {
+      pain: '現場の書類作成・見積書・工程管理に多くの時間がかかっている',
+      keyword: '工期短縮・コスト削減・現場効率化',
+      intro: '建設・施工管理の現場では、日々の書類作成や見積業務に多大な時間を割かれているケースが多く見受けられます。',
+    },
+    '製造業': {
+      pain: '生産管理・在庫管理・品質管理の効率化が課題',
+      keyword: '生産効率向上・コスト削減・品質管理',
+      intro: '製造現場では、生産管理や品質管理のデジタル化が競争力向上の重要な鍵となっています。',
+    },
+    '印刷・出版': {
+      pain: '受注管理・制作進行管理・コスト管理が複雑',
+      keyword: '制作効率化・受注管理の自動化・コスト削減',
+      intro: '印刷・出版業では、受注から納品までの工程管理と、急増するデジタル対応が大きな課題となっています。',
+    },
+    '不動産': {
+      pain: '物件管理・顧客対応・書類作成に多くの時間がかかる',
+      keyword: '顧客対応の効率化・物件管理のデジタル化',
+      intro: '不動産業では、物件情報の管理・顧客へのご提案・各種書類作成など、業務の幅が広く効率化の余地が大きい分野です。',
+    },
+    'IT・Web': {
+      pain: '提案書作成・営業活動・プロジェクト管理の効率化が求められている',
+      keyword: '開発効率向上・営業力強化・DX推進',
+      intro: 'IT・Web業界では、急速な技術変化への対応と、営業・提案活動の効率化が重要な経営課題となっています。',
+    },
+    '飲食業': {
+      pain: 'スタッフ管理・SNS運用・原価管理に手が回らない',
+      keyword: '業務効率化・集客力向上・コスト管理',
+      intro: '飲食業では、日々の業務に追われながらSNS運用・スタッフ管理・原価管理を行う大変さをよく耳にします。',
+    },
+    '小売業': {
+      pain: '在庫管理・顧客管理・SNS集客に課題がある',
+      keyword: '在庫最適化・顧客満足度向上・売上アップ',
+      intro: '小売業では、在庫の適正管理と顧客へのアプローチ方法が、利益改善の大きなポイントとなっています。',
+    },
+    '医療・介護': {
+      pain: '書類作成・記録業務・スタッフ間の情報共有に時間がかかる',
+      keyword: '業務負担軽減・記録効率化・ケアの質向上',
+      intro: '医療・介護の現場では、利用者様へのケアに集中するためにも、記録業務や書類作成の効率化が急務となっています。',
+    },
+    '美容・サロン': {
+      pain: 'SNS集客・予約管理・顧客フォローに手が足りない',
+      keyword: 'リピーター獲得・SNS集客・業務効率化',
+      intro: '美容・サロン業界では、施術の質を高めながらSNS集客・顧客フォローを行うことが、競争力の源泉となっています。',
+    },
+    '士業・コンサル': {
+      pain: '書類作成・顧客管理・提案資料作成に多くの時間を使っている',
+      keyword: '業務効率化・提案力向上・顧客満足度アップ',
+      intro: '士業・コンサル業では、クライアントへの提案品質を高めながら、書類作成など定型業務の効率化が重要課題です。',
+    },
+    '教育・スクール': {
+      pain: '教材作成・生徒管理・保護者対応に時間がかかる',
+      keyword: '教育の質向上・運営効率化・保護者満足度アップ',
+      intro: '教育・スクール運営では、授業の質向上と同時に、教材作成・生徒管理・保護者対応など多くの業務が求められます。',
+    },
+    '物流・運送': {
+      pain: '配送管理・ドライバー管理・書類作成の効率化が課題',
+      keyword: '配送効率向上・コスト削減・業務のデジタル化',
+      intro: '物流・運送業では、配送効率の向上とドライバー不足への対応が、業界全体の喫緊の課題となっています。',
+    },
+    '金融・保険': {
+      pain: '顧客対応・書類作成・コンプライアンス管理に多くのリソースを使っている',
+      keyword: '顧客対応効率化・コンプライアンス強化・業務のDX',
+      intro: '金融・保険業界では、厳格なコンプライアンス対応を維持しながら、顧客サービスの質を向上させることが求められています。',
+    },
+    'その他': {
+      pain: '日常業務の効率化・デジタル化に課題がある',
+      keyword: '業務効率化・コスト削減・生産性向上',
+      intro: '多くの企業様において、日々の業務効率化とデジタル化への対応が、経営上の重要課題となっています。',
+    },
+  };
+
+  // ── 丁寧さ表現 ──
+  const politeExpr = {
+    casual: {
+      greeting: (company, name) => `${company}${name ? ' ' + name : ''}、\nはじめまして。`,
+      intro: '突然のご連絡失礼します。',
+      closing: 'ぜひ一度お話しできればと思います。\nよろしくお願いします。',
+      sign: 'よろしくお願いします',
+    },
+    normal: {
+      greeting: (company, name) => `${company}\n${name ? name + '\n' : ''}はじめてご連絡申し上げます。`,
+      intro: '突然のご連絡、誠に失礼いたします。',
+      closing: 'ご多忙のところ恐縮ではございますが、ぜひ一度ご検討いただければ幸いです。\nどうぞよろしくお願いいたします。',
+      sign: 'よろしくお願いいたします',
+    },
+    formal: {
+      greeting: (company, name) => `${company}\n${name ? name + ' 様\n' : ''}平素より大変お世話になっております。`,
+      intro: '突然のご連絡をお許しください。',
+      closing: 'ご多用の折、誠に恐れ入りますが、何卒ご検討賜りますようお願い申し上げます。',
+      sign: 'どうぞよろしくお願い申し上げます',
+    },
+    very_formal: {
+      greeting: (company, name) => `${company}\n${name ? name + ' 様\n' : ''}拝啓　時下ますますご清栄のこととお慶び申し上げます。`,
+      intro: '突然のご書状にてご連絡いたしますご無礼をお許しください。',
+      closing: 'ご多用中誠に恐れ入りますが、何卒ご高覧の上、ご検討賜りますようお願い申し上げます。\n敬具',
+      sign: 'どうぞよろしくお願い申し上げます',
+    },
+  };
+
+  // ── 文書タイプ別テンプレート生成 ──
+  function generateVariants(params) {
+    const { toCompany, toIndustry, toName, fromCompany, fromIndustry, service, appeal } = params;
+    const ctx = industryContext[toIndustry] || industryContext['その他'];
+    const expr = politeExpr[currentPolite];
+    const greeting = expr.greeting(toCompany, toName);
+    const isLong = currentLength === 'long';
+    const isShort = currentLength === 'short';
+
+    const variants = [];
+
+    // パターンA：課題提起型
+    const subjectA = generateSubject('A', toIndustry, service, toCompany);
+    const bodyA = buildBody({
+      greeting, expr, toCompany, toIndustry, fromCompany, fromIndustry, service, appeal, ctx,
+      approach: 'problem', isLong, isShort,
+    });
+    variants.push({ subject: subjectA, body: bodyA, label: 'A（課題提起型）', desc: '相手の業種特有の課題から入る説得力のあるアプローチ' });
+
+    // パターンB：価値提案型
+    const subjectB = generateSubject('B', toIndustry, service, toCompany);
+    const bodyB = buildBody({
+      greeting, expr, toCompany, toIndustry, fromCompany, fromIndustry, service, appeal, ctx,
+      approach: 'value', isLong, isShort,
+    });
+    variants.push({ subject: subjectB, body: bodyB, label: 'B（価値提案型）', desc: 'サービスの価値・メリットを前面に出すアプローチ' });
+
+    // パターンC：実績・事例型
+    const subjectC = generateSubject('C', toIndustry, service, toCompany);
+    const bodyC = buildBody({
+      greeting, expr, toCompany, toIndustry, fromCompany, fromIndustry, service, appeal, ctx,
+      approach: 'case', isLong, isShort,
+    });
+    variants.push({ subject: subjectC, body: bodyC, label: 'C（実績・信頼型）', desc: '信頼感・実績を重視したアプローチ' });
+
+    return variants;
+  }
+
+  function generateSubject(pattern, industry, service, company) {
+    const subjects = {
+      A: [
+        `【${industry}向け】${service}のご提案`,
+        `${service}について、ご相談させてください`,
+        `${industry}の業務効率化についてご提案`,
+      ],
+      B: [
+        `${service}のご紹介`,
+        `業務効率化・コスト削減のご提案`,
+        `【${service}】詳細のご案内`,
+      ],
+      C: [
+        `${service}導入のご提案（${industry}実績あり）`,
+        `導入企業様の声もございます｜${service}のご案内`,
+        `信頼と実績の${service}についてご提案`,
+      ],
+    };
+    const list = subjects[pattern];
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  function buildBody({ greeting, expr, toCompany, toIndustry, fromCompany, fromIndustry, service, appeal, ctx, approach, isLong, isShort }) {
+    const typeTemplates = {
+      sales: buildSalesMail,
+      inquiry: buildInquiryMail,
+      collab: buildCollabMail,
+      intro: buildIntroMail,
+      thanks: buildThanksMail,
+      follow: buildFollowMail,
+    };
+    const fn = typeTemplates[currentType] || buildSalesMail;
+    return fn({ greeting, expr, toCompany, toIndustry, fromCompany, fromIndustry, service, appeal, ctx, approach, isLong, isShort });
+  }
+
+  function buildSalesMail({ greeting, expr, toCompany, toIndustry, fromCompany, fromIndustry, service, appeal, ctx, approach, isLong, isShort }) {
+    let body = greeting + '\n\n';
+    body += `${fromCompany}の${fromIndustry}を担当しております者と申します。\n`;
+    body += expr.intro + '\n\n';
+
+    if (approach === 'problem') {
+      body += ctx.intro + '\n\n';
+      if (!isShort) body += `弊社では、${toIndustry}の企業様が抱える「${ctx.pain}」というお悩みに対し、${service}を通じて${ctx.keyword}をご支援しております。\n\n`;
+      if (isLong) body += `特に、${toCompany}様のような企業様に対して、貴社の現状に合わせたカスタマイズ提案が可能です。\n\n`;
+    } else if (approach === 'value') {
+      body += `この度は、${toIndustry}の企業様向けに${service}のご案内をさせていただきたく、ご連絡いたしました。\n\n`;
+      if (!isShort) body += `本サービスは、${ctx.keyword}を実現するためのソリューションとして、多くの${toIndustry}の企業様にご活用いただいております。\n\n`;
+      if (isLong) body += `導入後は、業務効率が大幅に改善され、従業員様の負担軽減と生産性向上を同時に実現できます。\n\n`;
+    } else {
+      body += `${toIndustry}の企業様向けに${service}の導入支援を行っております${fromCompany}と申します。\n\n`;
+      if (!isShort) body += `これまで${toIndustry}の複数の企業様にご導入いただき、${ctx.keyword}の面でご好評いただいております。\n\n`;
+      if (isLong) body += `導入企業様からは「${ctx.keyword}が実現できた」とのお声を多数いただいており、${toCompany}様にもぜひご活用いただければと考えております。\n\n`;
+    }
+
+    if (appeal) body += `${appeal}\n\n`;
+    if (!isShort) body += `まずは詳細資料のご送付や、オンラインでの簡単なご説明（30分程度）をご提案させていただけますでしょうか。\n\n`;
+    body += expr.closing + '\n';
+    return body;
+  }
+
+  function buildInquiryMail({ greeting, expr, toCompany, toIndustry, fromCompany, service, appeal, ctx }) {
+    let body = greeting + '\n\n';
+    body += `${fromCompany}と申します。${service}について、お問い合わせさせていただきます。\n\n`;
+    body += `【お問い合わせ内容】\n${service}の詳細および料金についてお聞かせいただけますでしょうか。\n\n`;
+    if (appeal) body += `${appeal}\n\n`;
+    body += `ご返信をお待ちしております。\n`;
+    body += expr.sign + '\n';
+    return body;
+  }
+
+  function buildCollabMail({ greeting, expr, toCompany, toIndustry, fromCompany, fromIndustry, service, appeal, ctx, isLong }) {
+    let body = greeting + '\n\n';
+    body += `${fromCompany}の${fromIndustry}担当と申します。${expr.intro}\n\n`;
+    body += `この度、${toCompany}様と${service}における協業の可能性についてご相談させていただきたく、ご連絡いたしました。\n\n`;
+    body += `弊社は${fromIndustry}を専門とし、${service}を通じてお客様の${ctx.keyword}を支援しております。\n\n`;
+    if (isLong) body += `${toCompany}様のお持ちのノウハウと弊社のサービスを組み合わせることで、お互いにとってより大きな価値を生み出せると考えております。\n\n`;
+    if (appeal) body += `${appeal}\n\n`;
+    body += `まずは30分程度、オンラインでお話しさせていただける機会をいただけますでしょうか。\n\n`;
+    body += expr.closing + '\n';
+    return body;
+  }
+
+  function buildIntroMail({ greeting, expr, toCompany, toIndustry, fromCompany, fromIndustry, service, appeal, ctx, isLong }) {
+    let body = greeting + '\n\n';
+    body += `${fromCompany}と申します。${expr.intro}\n\n`;
+    body += `本日は、${toIndustry}の企業様向けに開発いたしました「${service}」についてご紹介させていただきます。\n\n`;
+    body += `【${service}の概要】\n`;
+    body += `・${ctx.keyword}を実現するサービスです\n`;
+    if (isLong) {
+      body += `・${toIndustry}の業務フローに合わせた設計\n`;
+      body += `・導入後のサポート体制も充実\n`;
+    }
+    body += '\n';
+    if (appeal) body += `${appeal}\n\n`;
+    body += `詳細資料のご送付も可能です。ご興味ございましたらお気軽にご返信ください。\n\n`;
+    body += expr.closing + '\n';
+    return body;
+  }
+
+  function buildThanksMail({ greeting, expr, toCompany, toIndustry, fromCompany, service, appeal }) {
+    let body = greeting + '\n\n';
+    body += `先日はお時間をいただき、誠にありがとうございました。\n\n`;
+    body += `${service}についてご説明させていただきましたが、改めてお礼申し上げます。\n\n`;
+    if (appeal) body += `${appeal}\n\n`;
+    body += `引き続きご検討いただけますと幸いです。\nご不明な点がございましたら、どうぞお気軽にご連絡ください。\n\n`;
+    body += expr.closing + '\n';
+    return body;
+  }
+
+  function buildFollowMail({ greeting, expr, toCompany, toIndustry, fromCompany, service, appeal }) {
+    let body = greeting + '\n\n';
+    body += `先日、${service}についてご連絡させていただいた${fromCompany}でございます。\n\n`;
+    body += `その後、ご検討状況はいかがでしょうか。\n`;
+    body += `ご多用の中、大変恐れ入りますが、ご確認いただけますと幸いです。\n\n`;
+    if (appeal) body += `${appeal}\n\n`;
+    body += `もしご不明な点やご質問がございましたら、お気軽にお申し付けください。\n引き続きよろしくお願いいたします。\n\n`;
+    body += expr.closing + '\n';
+    return body;
+  }
+
+  // ── 署名生成 ──
+  function generateSign(fromCompany, fromIndustry) {
+    return `━━━━━━━━━━━━━━━━━━━━
+${fromCompany}
+${fromIndustry}担当
+Tel: 000-0000-0000
+Email: info@example.com
+━━━━━━━━━━━━━━━━━━━━`;
+  }
+
+  // ── 生成実行 ──
+  function generateAll() {
+    const toCompany = document.getElementById('toCompany').value.trim();
+    const toIndustry = document.getElementById('toIndustry').value;
+    const toName = document.getElementById('toName').value.trim();
+    const fromCompany = document.getElementById('fromCompany').value.trim();
+    const fromIndustry = document.getElementById('fromIndustry').value;
+    const service = document.getElementById('service').value.trim();
+    const appeal = document.getElementById('appeal').value.trim();
+
+    if (!toCompany || !toIndustry || !fromCompany || !service) {
+      alert('相手の会社名・業種・自社名・提案内容は必須です');
+      return;
+    }
+
+    generatedVariants = generateVariants({ toCompany, toIndustry, toName, fromCompany, fromIndustry, service, appeal });
+    activeVar = 0;
+
+    document.getElementById('resultSection').style.display = 'block';
+    showVar(0, document.querySelector('.var-tab'));
+    document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function showVar(idx, el) {
+    activeVar = idx;
+    document.querySelectorAll('.var-tab').forEach(t => t.classList.remove('active'));
+    if (el) el.classList.add('active');
+    const v = generatedVariants[idx];
+    if (!v) return;
+
+    const fromCompany = document.getElementById('fromCompany').value.trim();
+    const fromIndustry = document.getElementById('fromIndustry').value;
+    const sign = generateSign(fromCompany, fromIndustry);
+
+    document.getElementById('varContent').innerHTML = `
+      <div style="margin-bottom:0.5rem">
+        <span class="industry-badge">${v.label}</span>
+        <span style="font-size:0.78rem;color:var(--muted)">${v.desc}</span>
+      </div>
+
+      <div class="result-block">
+        <div class="result-block-header">
+          <div class="result-block-title">✉️ 件名（Subject）</div>
+          <button class="copy-btn" onclick="copyBlock(this, 'subject${idx}')">📋 コピー</button>
+        </div>
+        <div class="result-text subject" id="subject${idx}">${esc(v.subject)}</div>
+      </div>
+
+      <div class="result-block">
+        <div class="result-block-header">
+          <div class="result-block-title">📝 本文</div>
+          <button class="copy-btn" onclick="copyBlock(this, 'body${idx}')">📋 コピー</button>
+        </div>
+        <div class="result-text" id="body${idx}">${esc(v.body)}</div>
+      </div>
+
+      <div class="result-block">
+        <div class="result-block-header">
+          <div class="result-block-title">✍️ 署名例</div>
+          <button class="copy-btn" onclick="copyBlock(this, 'sign${idx}')">📋 コピー</button>
+        </div>
+        <div class="result-text" id="sign${idx}">${esc(sign)}</div>
+      </div>
+    `;
+  }
+
+  function copyBlock(btn, id) {
+    const text = document.getElementById(id)?.textContent || '';
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ コピー済み';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 コピー'; btn.classList.remove('copied'); }, 2000);
+      showToast();
+    });
+  }
+
+  function copyAll() {
+    const v = generatedVariants[activeVar];
+    if (!v) return;
+    const fromCompany = document.getElementById('fromCompany').value.trim();
+    const fromIndustry = document.getElementById('fromIndustry').value;
+    const sign = generateSign(fromCompany, fromIndustry);
+    const text = `【件名】\n${v.subject}\n\n【本文】\n${v.body}\n【署名】\n${sign}`;
+    navigator.clipboard.writeText(text).then(() => showToast('📋 全文コピーしました！'));
+  }
+
+  function resetAll() {
+    document.getElementById('resultSection').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── トースト ──
+  let toastTimer;
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg || '📋 コピーしました！';
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
+  }
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
