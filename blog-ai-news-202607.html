@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="2026年7月時点のAI業界の潮流を解説。モデル性能競争から安全性・実装重視へ、AIエージェントの業務基盤化、業界共通の安全基準づくり、中小企業が導入時に見積もるべきコストを紹介。" />
+  <title>2026年7月最新｜AI業界で今起きていること | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ========== 記事ヘッダー ========== */
+    .post-hero {
+      padding: 140px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .post-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(79,142,247,0.1), transparent 70%);
+      pointer-events: none;
+    }
+    .post-hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      margin-bottom: 28px;
+      transition: var(--transition);
+    }
+    .post-back:hover { color: var(--c-blue); }
+    .post-cat-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 50px;
+      background: rgba(79,142,247,0.12);
+      color: var(--c-blue);
+      border: 1px solid rgba(79,142,247,0.25);
+      margin-bottom: 20px;
+    }
+    #post-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 20px;
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+    }
+
+    /* ========== 記事本文 ========== */
+    .post-body-section { padding: 0 0 120px; }
+    .post-layout {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .post-card {
+      padding: 48px 56px;
+      margin-bottom: 32px;
+    }
+    #post-body h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 36px 0 14px;
+      padding-left: 14px;
+      border-left: 3px solid var(--c-blue);
+    }
+    #post-body h2:first-child { margin-top: 0; }
+    #post-body p {
+      font-size: 0.95rem;
+      color: var(--c-text-sub);
+      line-height: 1.95;
+      margin-bottom: 16px;
+    }
+    #post-body ul {
+      list-style: none;
+      margin: 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    #post-body ul li {
+      font-size: 0.92rem;
+      color: var(--c-text-sub);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.8;
+    }
+    #post-body ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--c-blue);
+      font-size: 0.75rem;
+      top: 4px;
+    }
+    #post-body a {
+      color: var(--c-blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: var(--transition);
+    }
+    #post-body a:hover { color: var(--c-purple2); }
+    #post-body strong { color: var(--c-text); font-weight: 600; }
+
+    /* ========== 機能リスト ========== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 8px 0 20px;
+    }
+    .feature-item {
+      padding: 20px 22px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+    }
+    .feature-item h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .feature-item p {
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      line-height: 1.7;
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ========== CTA ========== */
+    .post-cta {
+      padding: 36px 40px;
+      text-align: center;
+      border-color: rgba(79,142,247,0.2);
+    }
+    .post-cta h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .post-cta p {
+      font-size: 0.9rem;
+      color: var(--c-text-sub);
+      margin-bottom: 24px;
+    }
+    .post-cta-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .post-card { padding: 32px 20px; }
+      .post-cta { padding: 28px 20px; }
+      .post-hero { padding: 120px 0 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="blog.html" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="contact.html" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== 記事ヘッダー ========== -->
+  <section class="post-hero">
+    <div class="container">
+      <div class="post-hero-inner">
+
+        <a href="blog.html" class="post-back">← ブログ一覧へ戻る</a>
+
+        <div class="post-cat-label" data-cat="ai">AI</div>
+
+        <h1 id="post-title">2026年7月最新｜AI業界で今起きていること</h1>
+
+        <div class="post-meta">
+          <span>2026.07.09</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 記事本文 ========== -->
+  <section class="post-body-section">
+    <div class="container">
+      <div class="post-layout">
+
+        <div class="post-card glass-card">
+          <div id="post-body">
+
+            <p>生成AIをめぐる状況は、ここ数年でめまぐるしく変化してきました。2026年7月現在、業界の話題は「どのモデルが一番賢いか」という単純な性能競争から、少しずつ違う段階に移りつつあります。中小企業・個人事業主の立場でAIをどう使っていけばいいか、最新の潮流を分かりやすく整理します。</p>
+
+            <h2>「モデル性能」から「安全性・実装・運用設計」へ</h2>
+            <p>これまでのAI開発競争は、ベンチマークスコアや処理速度など「モデル単体の性能」を競う色が強い時期が続いていました。しかし直近では、性能そのものよりも「安全に使える設計になっているか」「実際の業務にどう組み込むか」「運用し続けられる体制があるか」といった、実装・運用面に重心が移りつつあります。</p>
+            <p>これは、AIがすでに一部の技術者だけのものではなく、一般企業の日常業務に入り込み始めたことの表れともいえます。性能が多少優れていても、安全に運用できなければ実務では使えない、という考え方が広がってきています。</p>
+
+            <h2>AIエージェント、実験段階から業務基盤へ</h2>
+            <p>「AIエージェント」と呼ばれる、AIが複数のタスクを自律的にこなす仕組みも、この1年で大きく位置づけが変わりました。以前は技術デモや実験的な取り組みが中心でしたが、現在は問い合わせ対応・データ整理・レポート作成など、企業の日常業務にAIエージェントを組み込む動きが本格化しています。</p>
+            <p>一方で、AIエージェントに業務を任せる以上、「どこまで人が確認するか」「誤った判断をした場合にどう対処するか」といった運用ルールの整備も同時に求められるようになっています。</p>
+
+            <h2>業界共通の安全基準づくりへ向かう動き</h2>
+            <p>これまでAIの安全性に関するルールは、開発する企業ごとに独自の基準で運用されているケースが多く見られました。しかし利用者や企業側からは「どの基準を信頼すればいいのか分かりにくい」という声もあり、業界全体で共通の安全基準や評価の枠組みを整備しようという動きが進みつつあります。</p>
+            <p>特定のルールがすぐに統一されるわけではありませんが、今後AIツールを選ぶ際には「安全性についてどのような基準・情報開示をしているか」が、選定基準のひとつとして重視されていく可能性があります。</p>
+
+            <h2>中小企業が導入時に見積もるべき3つのコスト</h2>
+            <p>AIチャットボットや自動化ツールの導入を検討する中小企業・個人事業主にとって、こうした潮流は決して他人事ではありません。ツールを選ぶ際には、次の3つのコストをあらかじめ見積もっておくことが重要です。</p>
+            <div class="feature-grid">
+              <div class="feature-item">
+                <h4>① API利用料</h4>
+                <p>利用量に応じて課金されるツールの場合、想定以上に使うと月々のコストが膨らみます。無料枠の範囲や従量課金の単価を事前に確認しましょう。</p>
+              </div>
+              <div class="feature-item">
+                <h4>② 運用コスト</h4>
+                <p>導入して終わりではなく、設定変更・出力内容のチェック・トラブル対応など、継続的な運用にかかる人的コストも見込んでおく必要があります。</p>
+              </div>
+              <div class="feature-item">
+                <h4>③ セキュリティ</h4>
+                <p>顧客情報や社内情報を入力するツールは、データの取り扱い方針・保存場所・アクセス権限などを確認し、情報漏えいリスクを最小限に抑えることが欠かせません。</p>
+              </div>
+            </div>
+
+            <h2>まとめ</h2>
+            <p>AI業界は「とにかく高性能なモデルを追いかける」時代から、「安全に、実務で使い続けられる形に落とし込む」時代へと軸足を移しつつあります。中小企業・個人事業主にとっても、目先の便利さだけでなく、コストとセキュリティの両面から見積もったうえでAIツールを選ぶ姿勢が、これからますます重要になっていくでしょう。</p>
+
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="post-cta glass-card">
+          <h3>自社に合ったAI活用を相談してみる</h3>
+          <p>どのAIツールを、どう導入すればいいか分からない方は、AI業務改善アドバイザーやAI相談機能をぜひご活用ください。</p>
+          <div class="post-cta-btns">
+            <a href="consult.html" class="btn btn-primary">AI相談をしてみる →</a>
+            <a href="blog.html" class="btn btn-glass">ブログ一覧へ</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/aimt0studio?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="blog.html">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="consult.html">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

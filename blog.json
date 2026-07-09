@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "ai-news-2026-07",
+      "title": "2026年7月最新｜AI業界で今起きていること",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "date": "2026.07.09",
+      "summary": "モデル性能競争から安全性・実装重視へ。AIエージェントの業務基盤化、業界共通の安全基準づくり、中小企業が見積もるべきコストなど最新動向を解説。",
+      "url": "blog-ai-news-202607.html"
+    },
+    {
+      "id": "member-registration-guide",
+      "title": "AI MT0 Studioの会員登録でできること｜マイページ機能まとめ",
+      "category": "update",
+      "categoryLabel": "アップデート",
+      "date": "2026.07.09",
+      "summary": "会員登録の流れと、マイページでできること（プロフィール編集・お気に入り機能・AI相談履歴の確認）をまとめて紹介します。",
+      "url": "blog-member-guide.html"
+    },
+    {
       "id": "manual-tool-intro",
       "title": "AI業務マニュアル作成 Pro Lite｜無料で使える本格マニュアル自動作成ツール",
       "category": "tools",
