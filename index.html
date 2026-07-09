@@ -33,6 +33,7 @@
         <a href="#tools" class="nav-link">AIツール</a>
         <a href="#blog" class="nav-link">ブログ</a>
         <a href="#roadmap" class="nav-link">開発予定</a>
+        <a href="login.html" class="nav-link" id="nav-auth-link">ログイン</a>
         <a href="contact.html" class="nav-btn">お問い合わせ</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="メニュー">
@@ -495,11 +496,14 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
   <script src="script.js"></script>
   <script src="blog.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       initIndexBlog();
+      syncAuthNav();
     });
   </script>
 </body>

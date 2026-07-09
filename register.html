@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI MT0 Studio 新規会員登録。メールアドレスとパスワードで簡単に登録できます。" />
+  <title>新規登録 | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .auth-hero {
+      padding: 160px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(155,89,245,0.13), transparent 70%);
+      pointer-events: none;
+    }
+    .auth-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .auth-hero p { color: var(--c-text-sub); font-size: 1rem; }
+    .auth-section { padding: 0 0 120px; }
+    .auth-card {
+      max-width: 460px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+    .auth-card-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .auth-error {
+      display: none;
+      font-size: 0.85rem;
+      color: #f87171;
+      background: rgba(248,113,113,0.1);
+      border: 1px solid rgba(248,113,113,0.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 20px;
+    }
+    .auth-success {
+      display: none;
+      font-size: 0.85rem;
+      color: #22c55e;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 20px;
+    }
+    .auth-links {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.88rem;
+      color: var(--c-text-sub);
+    }
+    .auth-links a { color: var(--c-blue); }
+    .auth-links a:hover { color: var(--c-purple2); }
+    .field-hint { font-size: 0.75rem; color: var(--c-text-sub); margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="index.html#blog" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="login.html" class="nav-btn">ログイン</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="auth-hero">
+    <div class="container">
+      <span class="section-eyebrow">SIGN UP</span>
+      <h1>新規会員登録</h1>
+      <p>メールアドレスとパスワードで、すぐに登録できます。</p>
+    </div>
+  </section>
+
+  <!-- ========== FORM ========== -->
+  <section class="auth-section">
+    <div class="container">
+      <div class="auth-card glass-card">
+        <h2 class="auth-card-title">アカウントを作成</h2>
+
+        <div class="auth-error" id="register-error"></div>
+        <div class="auth-success" id="register-success"></div>
+
+        <form id="register-form">
+          <div class="form-group">
+            <label for="display-name">お名前 <span class="required">*</span></label>
+            <input type="text" id="display-name" placeholder="山田 太郎" required autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label for="email">メールアドレス <span class="required">*</span></label>
+            <input type="email" id="email" placeholder="you@example.com" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="password">パスワード <span class="required">*</span></label>
+            <input type="password" id="password" placeholder="••••••••" required autocomplete="new-password" minlength="6" />
+            <p class="field-hint">6文字以上で入力してください。</p>
+          </div>
+          <div class="form-group">
+            <label for="password-confirm">パスワード（確認） <span class="required">*</span></label>
+            <input type="password" id="password-confirm" placeholder="••••••••" required autocomplete="new-password" minlength="6" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="register-submit">登録する</button>
+        </form>
+
+        <div class="auth-links">
+          すでにアカウントをお持ちの方は <a href="login.html">ログイン</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/tora22101643233?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="index.html#blog">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="index.html#consult">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const errorEl = document.getElementById('register-error');
+    const successEl = document.getElementById('register-success');
+
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.style.display = 'block';
+      successEl.style.display = 'none';
+    }
+    function showSuccess(msg) {
+      successEl.textContent = msg;
+      successEl.style.display = 'block';
+      errorEl.style.display = 'none';
+    }
+
+    (async () => {
+      const { data: { session } } = await sbClient.auth.getSession();
+      if (session) window.location.href = 'mypage.html';
+    })();
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('register-submit');
+      const displayName = document.getElementById('display-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const passwordConfirm = document.getElementById('password-confirm').value;
+
+      if (password !== passwordConfirm) {
+        showError('パスワードが一致しません。');
+        return;
+      }
+      if (password.length < 6) {
+        showError('パスワードは6文字以上で入力してください。');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = '登録中...';
+
+      const { error } = await sbClient.auth.signUp({
+        email,
+        password,
+        options: { data: { display_name: displayName } },
+      });
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = '登録する';
+
+      if (error) {
+        showError(error.message.includes('already registered') || error.message.includes('User already registered')
+          ? 'このメールアドレスはすでに登録されています。'
+          : error.message);
+        return;
+      }
+
+      document.getElementById('register-form').style.display = 'none';
+      showSuccess('登録ありがとうございます。確認メールを送信しました。メール内のリンクをクリックして登録を完了してください。');
+    });
+  </script>
+</body>
+</html>

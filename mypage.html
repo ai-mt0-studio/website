@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI MT0 Studio マイページ。会員情報の確認・編集ができます。" />
+  <title>マイページ | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .auth-hero {
+      padding: 160px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(79,142,247,0.13), transparent 70%);
+      pointer-events: none;
+    }
+    .auth-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .auth-hero p { color: var(--c-text-sub); font-size: 1rem; }
+    .auth-section { padding: 0 0 120px; }
+
+    .mypage-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 32px;
+      align-items: start;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .mypage-side { display: flex; flex-direction: column; gap: 16px; }
+    .mypage-avatar-card {
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .mypage-avatar {
+      width: 76px; height: 76px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: var(--grad-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .mypage-name { font-size: 1.05rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .mypage-email { font-size: 0.82rem; color: var(--c-text-sub); word-break: break-all; }
+    .mypage-admin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #fbbf24;
+      background: rgba(251,191,36,0.1);
+      border: 1px solid rgba(251,191,36,0.3);
+      border-radius: 50px;
+      padding: 4px 12px;
+    }
+    .mypage-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px;
+    }
+    .mypage-nav a, .mypage-nav button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--c-text-sub);
+      background: none;
+      border: none;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .mypage-nav a:hover, .mypage-nav button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .mypage-nav .danger { color: #f87171; }
+    .mypage-nav .danger:hover { color: #f87171; background: rgba(248,113,113,0.1); }
+
+    .mypage-main { padding: 40px; }
+    .mypage-main h2 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .info-row:last-of-type { border-bottom: none; }
+    .info-label { font-size: 0.82rem; color: var(--c-text-sub); }
+    .info-value { font-size: 0.92rem; color: var(--c-text); }
+
+    .auth-error, .auth-success {
+      display: none;
+      font-size: 0.85rem;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 20px;
+    }
+    .auth-error { color: #f87171; background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25); }
+    .auth-success { color: #22c55e; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25); }
+
+    #loading-state { text-align: center; padding: 80px 0; color: var(--c-text-sub); }
+
+    @media (max-width: 768px) {
+      .mypage-grid { grid-template-columns: 1fr; }
+      .mypage-main { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="index.html#blog" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <button class="nav-btn" id="header-logout">ログアウト</button>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="auth-hero">
+    <div class="container">
+      <span class="section-eyebrow">MY PAGE</span>
+      <h1>マイページ</h1>
+      <p>会員情報の確認・編集ができます。</p>
+    </div>
+  </section>
+
+  <section class="auth-section">
+    <div class="container">
+
+      <div id="loading-state">読み込み中...</div>
+
+      <div class="mypage-grid" id="mypage-content" style="display:none;">
+        <!-- LEFT -->
+        <div class="mypage-side">
+          <div class="mypage-avatar-card glass-card">
+            <div class="mypage-avatar" id="avatar-initial">?</div>
+            <div class="mypage-name" id="side-name">-</div>
+            <div class="mypage-email" id="side-email">-</div>
+            <span class="mypage-admin-badge" id="admin-badge" style="display:none;">★ 管理者</span>
+          </div>
+          <div class="mypage-nav glass-card">
+            <a href="admin.html" id="admin-link" style="display:none;">管理者画面へ</a>
+            <button type="button" class="danger" id="logout-btn">ログアウト</button>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="mypage-main glass-card">
+          <h2>会員情報</h2>
+
+          <div class="auth-error" id="mypage-error"></div>
+          <div class="auth-success" id="mypage-success"></div>
+
+          <div class="info-row">
+            <span class="info-label">メールアドレス</span>
+            <span class="info-value" id="info-email">-</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">登録日</span>
+            <span class="info-value" id="info-created">-</span>
+          </div>
+
+          <form id="profile-form" style="margin-top:20px;">
+            <div class="form-group">
+              <label for="display-name">表示名</label>
+              <input type="text" id="display-name" placeholder="お名前" />
+            </div>
+            <button type="submit" class="btn btn-primary" id="profile-save">保存する</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/tora22101643233?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="index.html#blog">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="index.html#consult">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const errorEl = document.getElementById('mypage-error');
+    const successEl = document.getElementById('mypage-success');
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.style.display = 'block';
+      successEl.style.display = 'none';
+    }
+    function showSuccess(msg) {
+      successEl.textContent = msg;
+      successEl.style.display = 'block';
+      errorEl.style.display = 'none';
+    }
+
+    function fmtDate(iso) {
+      if (!iso) return '-';
+      const d = new Date(iso);
+      return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+    }
+
+    let currentSession = null;
+
+    async function init() {
+      const session = await requireLogin();
+      if (!session) return;
+      currentSession = session;
+
+      const result = await getCurrentProfile();
+      const profile = result ? result.profile : null;
+
+      const email = session.user.email;
+      const displayName = (profile && profile.display_name) || email.split('@')[0];
+
+      document.getElementById('side-name').textContent = displayName;
+      document.getElementById('side-email').textContent = email;
+      document.getElementById('info-email').textContent = email;
+      document.getElementById('info-created').textContent = fmtDate(profile ? profile.created_at : session.user.created_at);
+      document.getElementById('avatar-initial').textContent = displayName.charAt(0).toUpperCase();
+      document.getElementById('display-name').value = (profile && profile.display_name) || '';
+
+      if (profile && profile.is_admin) {
+        document.getElementById('admin-badge').style.display = 'inline-flex';
+        document.getElementById('admin-link').style.display = 'block';
+      }
+
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('mypage-content').style.display = 'grid';
+    }
+    init();
+
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const saveBtn = document.getElementById('profile-save');
+      const newName = document.getElementById('display-name').value.trim();
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = '保存中...';
+
+      const { error } = await sbClient
+        .from('profiles')
+        .update({ display_name: newName })
+        .eq('id', currentSession.user.id);
+
+      saveBtn.disabled = false;
+      saveBtn.textContent = '保存する';
+
+      if (error) { showError(error.message); return; }
+
+      document.getElementById('side-name').textContent = newName || currentSession.user.email.split('@')[0];
+      document.getElementById('avatar-initial').textContent = (newName || currentSession.user.email).charAt(0).toUpperCase();
+      showSuccess('会員情報を更新しました。');
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', signOutAndRedirect);
+    document.getElementById('header-logout').addEventListener('click', signOutAndRedirect);
+  </script>
+</body>
+</html>
