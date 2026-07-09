@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="業務マニュアルがない会社が抱えるリスクと、マニュアル作成の3つのメリット、効果的な作り方のコツ5つを解説。AIを使ったマニュアル作成のすすめも紹介。" />
+  <title>業務マニュアルを作るメリットと効果的な作り方【中小企業向け】 | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ========== 記事ヘッダー ========== */
+    .post-hero {
+      padding: 140px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .post-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(79,142,247,0.1), transparent 70%);
+      pointer-events: none;
+    }
+    .post-hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      margin-bottom: 28px;
+      transition: var(--transition);
+    }
+    .post-back:hover { color: var(--c-blue); }
+    .post-cat-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 50px;
+      background: rgba(79,142,247,0.12);
+      color: var(--c-blue);
+      border: 1px solid rgba(79,142,247,0.25);
+      margin-bottom: 20px;
+    }
+    #post-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 20px;
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+    }
+
+    /* ========== 記事本文 ========== */
+    .post-body-section { padding: 0 0 120px; }
+    .post-layout {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .post-card {
+      padding: 48px 56px;
+      margin-bottom: 32px;
+    }
+    #post-body h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 36px 0 14px;
+      padding-left: 14px;
+      border-left: 3px solid var(--c-blue);
+    }
+    #post-body h2:first-child { margin-top: 0; }
+    #post-body p {
+      font-size: 0.95rem;
+      color: var(--c-text-sub);
+      line-height: 1.95;
+      margin-bottom: 16px;
+    }
+    #post-body ul {
+      list-style: none;
+      margin: 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    #post-body ul li {
+      font-size: 0.92rem;
+      color: var(--c-text-sub);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.8;
+    }
+    #post-body ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--c-blue);
+      font-size: 0.75rem;
+      top: 4px;
+    }
+    #post-body a {
+      color: var(--c-blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: var(--transition);
+    }
+    #post-body a:hover { color: var(--c-purple2); }
+    #post-body strong { color: var(--c-text); font-weight: 600; }
+
+    /* ========== 機能リスト ========== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 8px 0 20px;
+    }
+    .feature-item {
+      padding: 20px 22px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+    }
+    .feature-item h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .feature-item p {
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      line-height: 1.7;
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ========== CTA ========== */
+    .post-cta {
+      padding: 36px 40px;
+      text-align: center;
+      border-color: rgba(79,142,247,0.2);
+    }
+    .post-cta h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .post-cta p {
+      font-size: 0.9rem;
+      color: var(--c-text-sub);
+      margin-bottom: 24px;
+    }
+    .post-cta-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .post-card { padding: 32px 20px; }
+      .post-cta { padding: 28px 20px; }
+      .post-hero { padding: 120px 0 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="blog.html" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="contact.html" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== 記事ヘッダー ========== -->
+  <section class="post-hero">
+    <div class="container">
+      <div class="post-hero-inner">
+
+        <a href="blog.html" class="post-back">← ブログ一覧へ戻る</a>
+
+        <div class="post-cat-label" data-cat="ai">AI</div>
+
+        <h1 id="post-title">業務マニュアルを作るメリットと効果的な作り方【中小企業向け】</h1>
+
+        <div class="post-meta">
+          <span>2026.07.08</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 記事本文 ========== -->
+  <section class="post-body-section">
+    <div class="container">
+      <div class="post-layout">
+
+        <div class="post-card glass-card">
+          <div id="post-body">
+
+            <h2>マニュアルがない会社が抱えるリスク</h2>
+            <p>中小企業では「マニュアルを作る時間がない」「口頭で教えれば十分」という理由から、業務マニュアルが整備されていないケースが少なくありません。しかし、マニュアル不在は次のようなリスクを生みます。</p>
+            <ul>
+              <li><strong>属人化</strong>：特定の担当者しか業務のやり方がわからず、その人が休むと業務が止まってしまう。</li>
+              <li><strong>引き継ぎ失敗</strong>：退職・異動の際に口頭説明だけでは情報が抜け落ち、後任者が同じミスを繰り返す。</li>
+              <li><strong>品質のばらつき</strong>：担当者によってやり方が異なり、サービスや成果物の品質が安定しない。</li>
+            </ul>
+            <p>これらのリスクは、事業規模が大きくなるほど、また人の入れ替わりが多いほど深刻化していきます。</p>
+
+            <h2>マニュアル作成の3つのメリット</h2>
+            <div class="feature-grid">
+              <div class="feature-item">
+                <h4>① 教育コストの削減</h4>
+                <p>新人教育のたびに一から説明する必要がなくなり、教える側・教わる側双方の時間を削減できます。</p>
+              </div>
+              <div class="feature-item">
+                <h4>② 業務品質の均一化</h4>
+                <p>誰が担当しても同じ手順・同じ品質で業務を遂行できるようになり、顧客からの信頼にもつながります。</p>
+              </div>
+              <div class="feature-item">
+                <h4>③ 引き継ぎの円滑化</h4>
+                <p>担当者交代時も、マニュアルを渡すだけで必要な情報が漏れなく伝わり、業務の停滞を防げます。</p>
+              </div>
+            </div>
+
+            <h2>効果的なマニュアルの作り方のコツ5つ</h2>
+            <ul>
+              <li><strong>① 目的を明記する</strong>：手順だけでなく「何のためにその作業をするのか」を書くことで、応用の効く理解につながります。</li>
+              <li><strong>② 手順は誰が読んでも同じ動きができるレベルまで具体化する</strong>：「適切に」「しっかり」といった曖昧な表現は避け、数値や具体的な操作で記載します。</li>
+              <li><strong>③ 注意点・よくあるミスを併記する</strong>：手順の中でミスが起きやすい箇所を明示することで、事故やクレームを未然に防げます。</li>
+              <li><strong>④ チェックリストを用意する</strong>：作業完了後に確認すべき項目をリスト化しておくと、抜け漏れのある提出・納品を防止できます。</li>
+              <li><strong>⑤ 定期的に更新する</strong>：業務フローやツールは変化するため、作って終わりにせず定期的に見直す仕組みを作りましょう。</li>
+            </ul>
+
+            <h2>AIを使ったマニュアル作成のすすめ</h2>
+            <p>マニュアル作成が後回しになりがちな最大の理由は「時間がかかること」です。ゼロから構成を考え、文章を整えるには相応の労力がかかります。そこでおすすめなのが、AIを活用したマニュアル作成です。</p>
+            <p>業種や業務内容を入力するだけで、目的・準備するもの・手順・注意事項・トラブル対処・チェックリスト・引き継ぎ事項までを自動で構成してくれるため、ゼロから作るよりも大幅に時間を短縮できます。生成された内容をたたき台にして、自社の実情に合わせて微調整するだけで、実用的なマニュアルが完成します。</p>
+
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="post-cta glass-card">
+          <h3>AIで業務マニュアルを今すぐ作ってみる</h3>
+          <p>API不要・完全無料・インストール不要。業種・業務内容を入力するだけで本格的なマニュアルを自動作成できます。</p>
+          <div class="post-cta-btns">
+            <a href="manual-tool.html" class="btn btn-primary">無料でマニュアルを作る →</a>
+            <a href="blog.html" class="btn btn-glass">ブログ一覧へ</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/aimt0studio?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="blog.html">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="index.html#consult">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

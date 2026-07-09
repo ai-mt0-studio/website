@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "manual-tool-intro",
+      "title": "AI業務マニュアル作成 Pro Lite｜無料で使える本格マニュアル自動作成ツール",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.08",
+      "summary": "業種・業務内容を入力するだけで、誰でも使える本格的な業務マニュアルを自動作成。引き継ぎ・新人教育に最適な無料ツールの紹介。",
+      "url": "blog-manual-tool.html"
+    },
+    {
+      "id": "manual-tips",
+      "title": "業務マニュアルを作るメリットと効果的な作り方【中小企業向け】",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "date": "2026.07.08",
+      "summary": "マニュアルがない会社が抱えるリスクと、作成のメリット・効果的な作り方のコツ5つ、AIを使ったマニュアル作成のすすめを解説。",
+      "url": "blog-manual-tips.html"
+    },
+    {
       "id": "sales-mail-tool-intro",
       "title": "AI営業文作成 Pro Lite｜無料で使える営業メール自動生成ツール",
       "category": "tools",
