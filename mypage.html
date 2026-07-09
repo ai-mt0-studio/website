@@ -194,6 +194,30 @@
     .action-btn.danger { color: #f87171; }
     .action-btn.danger:hover { border-color: #f87171; }
 
+    /* ===== AI相談履歴 ===== */
+    .consult-history-list { display: flex; flex-direction: column; gap: 12px; }
+    .consult-history-card { padding: 20px 24px; }
+    .consult-history-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .consult-history-date { font-size: 0.78rem; color: var(--c-text-sub); }
+    .consult-history-question { font-size: 0.9rem; color: var(--c-text); white-space: pre-wrap; line-height: 1.7; }
+    .status-pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+    .status-pill.pending  { color: var(--c-text-sub); background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); }
+    .status-pill.progress { color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); }
+    .status-pill.done     { color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
+
     .upcoming-section { max-width: 900px; margin: 40px auto 0; }
     .upcoming-title {
       font-family: var(--font-display);
@@ -272,6 +296,7 @@
         <div class="mypage-tabs">
           <button class="cat-btn mypage-tab-btn active" data-tab="profile">プロフィール</button>
           <button class="cat-btn mypage-tab-btn" data-tab="favorites">お気に入り</button>
+          <button class="cat-btn mypage-tab-btn" data-tab="consultations">AI相談履歴</button>
         </div>
 
         <!-- ===== プロフィール ===== -->
@@ -349,6 +374,11 @@
           <div class="fav-grid" id="favorites-list"></div>
         </div>
 
+        <!-- ===== AI相談履歴 ===== -->
+        <div class="mypage-panel" id="panel-consultations">
+          <div class="consult-history-list" id="consultations-list"></div>
+        </div>
+
       </div>
 
     </div>
@@ -386,7 +416,7 @@
         <div class="footer-col">
           <h4>サポート</h4>
           <a href="contact.html">お問い合わせ</a>
-          <a href="index.html#consult">AI相談</a>
+          <a href="consult.html">AI相談</a>
           <a href="terms.html">利用規約</a>
           <a href="privacy.html">プライバシーポリシー</a>
         </div>
@@ -522,6 +552,40 @@
       });
     }
 
+    function statusClass(status) {
+      if (status === '完了') return 'done';
+      if (status === '対応中') return 'progress';
+      return 'pending';
+    }
+
+    async function loadConsultations() {
+      const listEl = document.getElementById('consultations-list');
+      const { data: items, error } = await sbClient
+        .from('ai_consultations')
+        .select('*')
+        .eq('user_id', currentSession.user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        listEl.innerHTML = `<div class="empty-state">読み込みに失敗しました。</div>`;
+        return;
+      }
+      if (!items.length) {
+        listEl.innerHTML = `<div class="empty-state">まだAI相談の送信履歴はありません。<a href="consult.html" style="color:var(--c-blue);">AI相談フォームはこちら</a></div>`;
+        return;
+      }
+
+      listEl.innerHTML = items.map(c => `
+        <div class="consult-history-card glass-card">
+          <div class="consult-history-head">
+            <span class="consult-history-date">${fmtDate(c.created_at)}${c.consultation_type ? ' ・ ' + escHtml(c.consultation_type) : ''}</span>
+            <span class="status-pill ${statusClass(c.status)}">${escHtml(c.status || '未対応')}</span>
+          </div>
+          <div class="consult-history-question">${escHtml(c.question)}</div>
+        </div>
+      `).join('');
+    }
+
     async function init() {
       const session = await requireLogin();
       if (!session) return;
@@ -550,6 +614,7 @@
       document.getElementById('mypage-body').style.display = 'block';
 
       loadFavorites();
+      loadConsultations();
     }
     init();
 

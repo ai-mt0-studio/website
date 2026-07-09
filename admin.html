@@ -126,6 +126,55 @@
     /* ===== SEARCH ===== */
     .admin-search { margin-bottom: 20px; max-width: 320px; }
 
+    /* ===== AI相談管理 ===== */
+    .consult-filters { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .consult-filters .admin-search { margin-bottom: 0; }
+    .consult-filters select {
+      padding: 12px 16px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      color: var(--c-text);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+    }
+    .consult-filters select option { background: #0a0d1a; color: var(--c-text); }
+
+    .admin-consult-list { display: flex; flex-direction: column; gap: 12px; }
+    .admin-consult-card { padding: 20px 24px; }
+    .admin-consult-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .admin-consult-meta { font-size: 0.78rem; color: var(--c-text-sub); }
+    .admin-consult-meta strong { color: #fff; font-weight: 600; }
+    .admin-consult-question { font-size: 0.9rem; color: var(--c-text); white-space: pre-wrap; line-height: 1.7; margin-bottom: 14px; }
+    .admin-consult-status-row { display: flex; align-items: center; gap: 10px; }
+    .admin-consult-status-row select {
+      padding: 8px 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      color: var(--c-text);
+      font-size: 0.85rem;
+    }
+    .admin-consult-status-row select option { background: #0a0d1a; color: var(--c-text); }
+    .status-pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+    .status-pill.pending  { color: var(--c-text-sub); background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); }
+    .status-pill.progress { color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); }
+    .status-pill.done     { color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
+
     /* ===== CRUD FORM ===== */
     .crud-card { padding: 28px; margin-bottom: 24px; }
     .crud-card-header {
@@ -211,7 +260,7 @@
           <button class="cat-btn admin-tab-btn" data-tab="users">ユーザー管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="tools">ツール管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="announcements">お知らせ管理</button>
-          <button class="cat-btn admin-tab-btn soon" data-tab="ai-consult">AI相談管理<span class="soon-label">(今後対応)</span></button>
+          <button class="cat-btn admin-tab-btn" data-tab="ai-consult">AI相談管理</button>
           <button class="cat-btn admin-tab-btn soon" data-tab="sales">売上管理<span class="soon-label">(今後対応)</span></button>
         </div>
 
@@ -356,13 +405,18 @@
           </div>
         </div>
 
-        <!-- ===== AI相談管理（今後対応） ===== -->
+        <!-- ===== AI相談管理 ===== -->
         <div class="admin-panel" id="panel-ai-consult">
-          <div class="placeholder-card glass-card">
-            <div class="icon">💬</div>
-            <h3>AI相談管理</h3>
-            <p>この機能は今後対応予定です。会員のAI相談履歴（<code>ai_consultations</code>テーブル）はすでに準備済みで、実装を待つのみです。</p>
+          <div class="consult-filters">
+            <input type="text" class="admin-search" id="consult-search" placeholder="メールアドレス・相談内容で検索" />
+            <select id="consult-status-filter">
+              <option value="">すべてのステータス</option>
+              <option value="未対応">未対応</option>
+              <option value="対応中">対応中</option>
+              <option value="完了">完了</option>
+            </select>
           </div>
+          <div class="admin-consult-list" id="admin-consult-list"></div>
         </div>
 
         <!-- ===== 売上管理（今後対応） ===== -->
@@ -410,7 +464,7 @@
         <div class="footer-col">
           <h4>サポート</h4>
           <a href="contact.html">お問い合わせ</a>
-          <a href="index.html#consult">AI相談</a>
+          <a href="consult.html">AI相談</a>
           <a href="terms.html">利用規約</a>
           <a href="privacy.html">プライバシーポリシー</a>
         </div>
@@ -784,6 +838,83 @@
       });
     }
 
+    // ===== AI相談管理 =====
+    let allConsultations = [];
+
+    function statusClass(status) {
+      if (status === '完了') return 'done';
+      if (status === '対応中') return 'progress';
+      return 'pending';
+    }
+
+    function renderAiConsultations(items) {
+      const listEl = document.getElementById('admin-consult-list');
+      if (!items.length) {
+        listEl.innerHTML = `<div class="placeholder-card glass-card"><p style="color:var(--c-text-sub);">該当する相談はありません。</p></div>`;
+        return;
+      }
+
+      listEl.innerHTML = items.map(c => `
+        <div class="admin-consult-card glass-card">
+          <div class="admin-consult-head">
+            <div class="admin-consult-meta">
+              <strong>${escHtml(c.email || '-')}</strong>
+              　${fmtDate(c.created_at)}${c.consultation_type ? ' ・ ' + escHtml(c.consultation_type) : ''}
+            </div>
+            <span class="status-pill ${statusClass(c.status)}">${escHtml(c.status || '未対応')}</span>
+          </div>
+          <div class="admin-consult-question">${escHtml(c.question)}</div>
+          <div class="admin-consult-status-row">
+            <label style="font-size:0.82rem;color:var(--c-text-sub);">ステータス</label>
+            <select data-consult-id="${c.id}">
+              <option value="未対応" ${c.status === '未対応' ? 'selected' : ''}>未対応</option>
+              <option value="対応中" ${c.status === '対応中' ? 'selected' : ''}>対応中</option>
+              <option value="完了" ${c.status === '完了' ? 'selected' : ''}>完了</option>
+            </select>
+          </div>
+        </div>
+      `).join('');
+
+      listEl.querySelectorAll('[data-consult-id]').forEach(sel => {
+        sel.addEventListener('change', () => updateConsultationStatus(sel.dataset.consultId, sel.value));
+      });
+    }
+
+    function applyConsultFilters() {
+      const q = document.getElementById('consult-search').value.trim().toLowerCase();
+      const statusFilter = document.getElementById('consult-status-filter').value;
+      const filtered = allConsultations.filter(c => {
+        const matchesQuery = !q || (c.email || '').toLowerCase().includes(q) || (c.question || '').toLowerCase().includes(q);
+        const matchesStatus = !statusFilter || c.status === statusFilter;
+        return matchesQuery && matchesStatus;
+      });
+      renderAiConsultations(filtered);
+    }
+
+    document.getElementById('consult-search').addEventListener('input', applyConsultFilters);
+    document.getElementById('consult-status-filter').addEventListener('change', applyConsultFilters);
+
+    async function updateConsultationStatus(id, status) {
+      const { error } = await sbClient
+        .from('ai_consultations')
+        .update({ status, updated_at: new Date().toISOString() })
+        .eq('id', id);
+      if (error) { showError(error.message); return; }
+      showSuccess('ステータスを更新しました。');
+      await loadAiConsultations();
+    }
+
+    async function loadAiConsultations() {
+      const { data: items, error } = await sbClient
+        .from('ai_consultations')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) { showError(error.message); return; }
+      allConsultations = items;
+      applyConsultFilters();
+    }
+
     // ===== 初期化 =====
     // requireAdmin() が未ログイン/非管理者を即リダイレクトする（本当の保護はDB側RLS）
     async function init() {
@@ -794,7 +925,7 @@
       document.getElementById('loading-state').style.display = 'none';
       document.getElementById('admin-content').style.display = 'block';
 
-      await Promise.all([loadMembers(), loadTools(), loadAnnouncements()]);
+      await Promise.all([loadMembers(), loadTools(), loadAnnouncements(), loadAiConsultations()]);
     }
     init();
 

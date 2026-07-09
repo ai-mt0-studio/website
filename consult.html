@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI MT0 StudioへのAI相談。業務効率化やAI活用について、会員登録済みの方はフォームからお気軽にご相談いただけます。" />
+  <title>AI相談 | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .auth-hero {
+      padding: 160px 0 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(79,142,247,0.13), transparent 70%);
+      pointer-events: none;
+    }
+    .auth-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .auth-hero p { color: var(--c-text-sub); font-size: 1rem; }
+    .auth-section { padding: 0 0 120px; }
+
+    .consult-card { max-width: 560px; margin: 0 auto; padding: 40px; }
+    .consult-card-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .consult-card-sub {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      margin-bottom: 24px;
+    }
+
+    .type-row { display: flex; gap: 12px; margin-bottom: 24px; }
+    .type-option {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.88rem;
+      color: var(--c-text-sub);
+    }
+    .type-option input { accent-color: var(--c-blue); }
+    .type-option:has(input:checked) { border-color: var(--c-blue); color: #fff; background: rgba(79,142,247,0.08); }
+
+    .login-required-card { max-width: 480px; margin: 0 auto; padding: 40px; text-align: center; }
+    .login-required-card .icon { font-size: 2.2rem; margin-bottom: 16px; }
+    .login-required-card h3 { font-family: var(--font-display); color: #fff; margin-bottom: 8px; }
+    .login-required-card p { color: var(--c-text-sub); font-size: 0.9rem; margin-bottom: 24px; }
+
+    .auth-error, .auth-success {
+      display: none;
+      font-size: 0.85rem;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 20px;
+    }
+    .auth-error { color: #f87171; background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25); }
+    .auth-success { color: #22c55e; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25); }
+
+    #loading-state { text-align: center; padding: 80px 0; color: var(--c-text-sub); }
+
+    .consult-perks { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+    .consult-perks li { font-size: 0.85rem; color: var(--c-text-sub); }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="index.html#blog" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="mypage.html" class="nav-btn" id="nav-mypage-link" style="display:none;">マイページ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="auth-hero">
+    <div class="container">
+      <span class="section-eyebrow">AI CONSULTATION</span>
+      <h1>AI相談</h1>
+      <p>「どこから始めればいい？」など、AIに関するお悩みをお気軽にご相談ください。</p>
+    </div>
+  </section>
+
+  <section class="auth-section">
+    <div class="container">
+
+      <div id="loading-state">読み込み中...</div>
+
+      <!-- 未ログイン時 -->
+      <div class="login-required-card glass-card" id="login-required" style="display:none;">
+        <div class="icon">🔒</div>
+        <h3>ログインが必要です</h3>
+        <p>AI相談フォームのご利用には会員登録・ログインが必要です。</p>
+        <a href="login.html" class="btn btn-primary">ログインする</a>
+        <p style="margin-top:16px;font-size:0.82rem;">アカウントをお持ちでない方は <a href="register.html" style="color:var(--c-blue);">新規登録</a></p>
+      </div>
+
+      <!-- ログイン時：相談フォーム -->
+      <div class="consult-card glass-card" id="consult-form-wrap" style="display:none;">
+        <h2 class="consult-card-title">AI相談フォーム</h2>
+        <p class="consult-card-sub">送信いただいた内容は担当より折り返しご連絡します。</p>
+
+        <ul class="consult-perks">
+          <li>✅ 初回相談無料</li>
+          <li>✅ 個人・法人どちらでも対応</li>
+          <li>✅ オンライン対応可</li>
+        </ul>
+
+        <div class="auth-error" id="consult-error"></div>
+        <div class="auth-success" id="consult-success"></div>
+
+        <form id="consult-form">
+          <div class="type-row">
+            <label class="type-option">
+              <input type="radio" name="consultation-type" value="個人" checked /> 個人
+            </label>
+            <label class="type-option">
+              <input type="radio" name="consultation-type" value="法人" /> 法人
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="question">相談内容 <span class="required">*</span></label>
+            <textarea id="question" rows="6" placeholder="例：経費の仕訳を自動化したいのですが、何から始めればよいですか？" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="consult-submit">送信する</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/tora22101643233?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="index.html#blog">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="consult.html">AI相談</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const errorEl = document.getElementById('consult-error');
+    const successEl = document.getElementById('consult-success');
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.style.display = 'block';
+      successEl.style.display = 'none';
+    }
+    function showSuccess(msg) {
+      successEl.textContent = msg;
+      successEl.style.display = 'block';
+      errorEl.style.display = 'none';
+    }
+
+    let currentSession = null;
+
+    async function init() {
+      const { data: { session } } = await sbClient.auth.getSession();
+      document.getElementById('loading-state').style.display = 'none';
+
+      if (!session) {
+        document.getElementById('login-required').style.display = 'block';
+        return;
+      }
+
+      currentSession = session;
+      document.getElementById('nav-mypage-link').style.display = 'inline-flex';
+      document.getElementById('consult-form-wrap').style.display = 'block';
+    }
+    init();
+
+    document.getElementById('consult-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('consult-submit');
+      const question = document.getElementById('question').value.trim();
+      const type = document.querySelector('input[name="consultation-type"]:checked').value;
+
+      if (!question) { showError('相談内容を入力してください。'); return; }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = '送信中...';
+
+      const { error } = await sbClient.from('ai_consultations').insert({
+        user_id: currentSession.user.id,
+        email: currentSession.user.email,
+        consultation_type: type,
+        question,
+      });
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送信する';
+
+      if (error) { showError(error.message); return; }
+
+      document.getElementById('consult-form').reset();
+      showSuccess('送信しました。担当より折り返しご連絡します。マイページの「AI相談履歴」からいつでも内容を確認できます。');
+    });
+  </script>
+</body>
+</html>
