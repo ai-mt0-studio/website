@@ -13,7 +13,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="AI MT0 Studio 管理者画面。会員一覧の確認・権限管理ができます。" />
+  <meta name="description" content="AI MT0 Studio 管理者画面。会員一覧・ツール・お知らせの管理ができます。" />
   <title>管理者画面 | AI MT0 Studio</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -44,20 +44,20 @@
     .auth-hero p { color: var(--c-text-sub); font-size: 1rem; }
     .auth-section { padding: 0 0 120px; }
 
-    #loading-state, #denied-state { text-align: center; padding: 80px 0; color: var(--c-text-sub); }
-    #denied-state { display: none; }
-    .denied-card {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 40px;
-      text-align: center;
-    }
-    .denied-card h2 { font-family: var(--font-display); color: #fff; margin-bottom: 12px; }
-    .denied-card p { color: var(--c-text-sub); margin-bottom: 24px; }
+    #loading-state { text-align: center; padding: 80px 0; color: var(--c-text-sub); }
 
+    /* ===== TABS ===== */
+    .admin-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+    .admin-tab-btn.soon { opacity: 0.6; }
+    .admin-tab-btn .soon-label { font-size: 0.68rem; margin-left: 4px; opacity: 0.8; }
+
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+
+    /* ===== DASHBOARD ===== */
     .admin-stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 20px;
       margin-bottom: 32px;
     }
@@ -70,6 +70,7 @@
     }
     .admin-stat-label { font-size: 0.78rem; color: var(--c-text-sub); margin-top: 4px; }
 
+    /* ===== TABLE ===== */
     .admin-table-wrap { overflow-x: auto; padding: 8px; }
     table.admin-table {
       width: 100%;
@@ -96,6 +97,7 @@
     .admin-table tr:last-child td { border-bottom: none; }
     .member-name { font-weight: 600; color: #fff; }
     .member-email { color: var(--c-text-sub); font-size: 0.82rem; }
+    .cell-desc { color: var(--c-text-sub); font-size: 0.82rem; max-width: 260px; }
     .admin-pill {
       display: inline-block;
       font-size: 0.72rem;
@@ -105,7 +107,9 @@
     }
     .admin-pill.yes { color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); }
     .admin-pill.no { color: var(--c-text-sub); background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); }
-    .toggle-admin-btn {
+    .admin-pill.on { color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
+    .row-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .action-btn {
       font-size: 0.78rem;
       padding: 6px 14px;
       border-radius: 50px;
@@ -115,7 +119,38 @@
       cursor: pointer;
       transition: var(--transition);
     }
-    .toggle-admin-btn:hover { border-color: var(--c-blue); color: #fff; }
+    .action-btn:hover { border-color: var(--c-blue); color: #fff; }
+    .action-btn.danger { color: #f87171; }
+    .action-btn.danger:hover { border-color: #f87171; }
+
+    /* ===== SEARCH ===== */
+    .admin-search { margin-bottom: 20px; max-width: 320px; }
+
+    /* ===== CRUD FORM ===== */
+    .crud-card { padding: 28px; margin-bottom: 24px; }
+    .crud-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .crud-card-header h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    #tool-form, #announcement-form { display: none; }
+    #tool-form.open, #announcement-form.open { display: block; }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+    .checkbox-row input { width: 16px; height: 16px; }
+    .checkbox-row label { font-size: 0.88rem; color: var(--c-text-sub); }
+    .form-actions { display: flex; gap: 10px; }
+
+    .placeholder-card { padding: 48px; text-align: center; }
+    .placeholder-card .icon { font-size: 2.2rem; margin-bottom: 16px; }
+    .placeholder-card h3 { font-family: var(--font-display); color: #fff; margin-bottom: 8px; }
+    .placeholder-card p { color: var(--c-text-sub); font-size: 0.9rem; }
 
     .auth-error, .auth-success {
       display: none;
@@ -126,6 +161,10 @@
     }
     .auth-error { color: #f87171; background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25); }
     .auth-success { color: #22c55e; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25); }
+
+    @media (max-width: 900px) {
+      .admin-stats { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -153,7 +192,7 @@
     <div class="container">
       <span class="section-eyebrow">ADMIN</span>
       <h1>管理者画面</h1>
-      <p>会員一覧の確認と権限管理ができます。</p>
+      <p>会員・ツール・お知らせの管理ができます。</p>
     </div>
   </section>
 
@@ -162,48 +201,175 @@
 
       <div id="loading-state">読み込み中...</div>
 
-      <div id="denied-state">
-        <div class="denied-card glass-card">
-          <h2>アクセス権がありません</h2>
-          <p>このページは管理者のみ閲覧できます。</p>
-          <a href="mypage.html" class="btn btn-glass">マイページへ戻る</a>
-        </div>
-      </div>
-
       <div id="admin-content" style="display:none;">
+
         <div class="auth-error" id="admin-error"></div>
         <div class="auth-success" id="admin-success"></div>
 
-        <div class="admin-stats">
-          <div class="admin-stat glass-card">
-            <div class="admin-stat-num" id="stat-total">0</div>
-            <div class="admin-stat-label">総会員数</div>
-          </div>
-          <div class="admin-stat glass-card">
-            <div class="admin-stat-num" id="stat-admins">0</div>
-            <div class="admin-stat-label">管理者数</div>
-          </div>
-          <div class="admin-stat glass-card">
-            <div class="admin-stat-num" id="stat-new">0</div>
-            <div class="admin-stat-label">今月の新規登録</div>
+        <div class="admin-tabs">
+          <button class="cat-btn admin-tab-btn active" data-tab="dashboard">ダッシュボード</button>
+          <button class="cat-btn admin-tab-btn" data-tab="users">ユーザー管理</button>
+          <button class="cat-btn admin-tab-btn" data-tab="tools">ツール管理</button>
+          <button class="cat-btn admin-tab-btn" data-tab="announcements">お知らせ管理</button>
+          <button class="cat-btn admin-tab-btn soon" data-tab="ai-consult">AI相談管理<span class="soon-label">(今後対応)</span></button>
+          <button class="cat-btn admin-tab-btn soon" data-tab="sales">売上管理<span class="soon-label">(今後対応)</span></button>
+        </div>
+
+        <!-- ===== ダッシュボード ===== -->
+        <div class="admin-panel active" id="panel-dashboard">
+          <div class="admin-stats">
+            <div class="admin-stat glass-card">
+              <div class="admin-stat-num" id="stat-total">0</div>
+              <div class="admin-stat-label">総会員数</div>
+            </div>
+            <div class="admin-stat glass-card">
+              <div class="admin-stat-num" id="stat-admins">0</div>
+              <div class="admin-stat-label">管理者数</div>
+            </div>
+            <div class="admin-stat glass-card">
+              <div class="admin-stat-num" id="stat-7d">0</div>
+              <div class="admin-stat-label">新規登録（過去7日）</div>
+            </div>
+            <div class="admin-stat glass-card">
+              <div class="admin-stat-num" id="stat-30d">0</div>
+              <div class="admin-stat-label">新規登録（過去30日）</div>
+            </div>
           </div>
         </div>
 
-        <div class="admin-table-wrap glass-card">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>会員</th>
-                <th>登録日</th>
-                <th>権限</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="member-list"></tbody>
-          </table>
+        <!-- ===== ユーザー管理 ===== -->
+        <div class="admin-panel" id="panel-users">
+          <input type="text" class="admin-search" id="user-search" placeholder="メールアドレス・名前で検索" />
+          <div class="admin-table-wrap glass-card">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>会員</th>
+                  <th>登録日</th>
+                  <th>権限</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="member-list"></tbody>
+            </table>
+          </div>
         </div>
+
+        <!-- ===== ツール管理 ===== -->
+        <div class="admin-panel" id="panel-tools">
+          <div class="crud-card glass-card">
+            <div class="crud-card-header">
+              <h3>ツール一覧</h3>
+              <button class="btn btn-glass btn-sm" id="tool-add-toggle">+ 新規追加</button>
+            </div>
+
+            <form id="tool-form">
+              <input type="hidden" id="tool-id" />
+              <div class="form-group">
+                <label for="tool-name">ツール名 <span class="required">*</span></label>
+                <input type="text" id="tool-name" required />
+              </div>
+              <div class="form-group">
+                <label for="tool-desc">説明</label>
+                <textarea id="tool-desc" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="tool-url">URL</label>
+                <input type="text" id="tool-url" placeholder="tool-name.html" />
+              </div>
+              <div class="form-group">
+                <label for="tool-price">価格（円）</label>
+                <input type="number" id="tool-price" min="0" />
+              </div>
+              <div class="checkbox-row">
+                <input type="checkbox" id="tool-active" checked />
+                <label for="tool-active">公開する</label>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="tool-submit">追加する</button>
+                <button type="button" class="btn btn-glass" id="tool-cancel">キャンセル</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="admin-table-wrap glass-card">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ツール名</th>
+                  <th>価格</th>
+                  <th>状態</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="tool-list"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== お知らせ管理 ===== -->
+        <div class="admin-panel" id="panel-announcements">
+          <div class="crud-card glass-card">
+            <div class="crud-card-header">
+              <h3>お知らせ一覧</h3>
+              <button class="btn btn-glass btn-sm" id="announcement-add-toggle">+ 新規追加</button>
+            </div>
+
+            <form id="announcement-form">
+              <input type="hidden" id="announcement-id" />
+              <div class="form-group">
+                <label for="announcement-title">タイトル <span class="required">*</span></label>
+                <input type="text" id="announcement-title" required />
+              </div>
+              <div class="form-group">
+                <label for="announcement-body">本文</label>
+                <textarea id="announcement-body" rows="4"></textarea>
+              </div>
+              <div class="checkbox-row">
+                <input type="checkbox" id="announcement-published" />
+                <label for="announcement-published">公開する</label>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="announcement-submit">追加する</button>
+                <button type="button" class="btn btn-glass" id="announcement-cancel">キャンセル</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="admin-table-wrap glass-card">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>タイトル</th>
+                  <th>状態</th>
+                  <th>更新日</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="announcement-list"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== AI相談管理（今後対応） ===== -->
+        <div class="admin-panel" id="panel-ai-consult">
+          <div class="placeholder-card glass-card">
+            <div class="icon">💬</div>
+            <h3>AI相談管理</h3>
+            <p>この機能は今後対応予定です。会員のAI相談履歴（<code>ai_consultations</code>テーブル）はすでに準備済みで、実装を待つのみです。</p>
+          </div>
+        </div>
+
+        <!-- ===== 売上管理（今後対応） ===== -->
+        <div class="admin-panel" id="panel-sales">
+          <div class="placeholder-card glass-card">
+            <div class="icon">📊</div>
+            <h3>売上管理</h3>
+            <p>この機能は今後対応予定です。購入履歴（<code>purchases</code>テーブル）はすでに準備済みで、実装を待つのみです。</p>
+          </div>
+        </div>
+
       </div>
-
     </div>
   </section>
 
@@ -260,6 +426,7 @@
       errorEl.textContent = msg;
       errorEl.style.display = 'block';
       successEl.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     function showSuccess(msg) {
       successEl.textContent = msg;
@@ -271,27 +438,37 @@
       const d = new Date(iso);
       return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
     }
+    function escHtml(s) {
+      return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
 
     let myUserId = null;
+    let allMembers = [];
 
-    async function loadMembers() {
-      const { data: members, error } = await sbClient
-        .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
+    // ===== タブ切り替え =====
+    document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
 
-      if (error) { showError(error.message); return; }
-
+    // ===== ダッシュボード =====
+    function renderDashboard(members) {
       const now = new Date();
-      const thisMonth = members.filter(m => {
-        const d = new Date(m.created_at);
-        return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-      }).length;
+      const d7 = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const d30 = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
       document.getElementById('stat-total').textContent = members.length;
       document.getElementById('stat-admins').textContent = members.filter(m => m.is_admin).length;
-      document.getElementById('stat-new').textContent = thisMonth;
+      document.getElementById('stat-7d').textContent = members.filter(m => new Date(m.created_at) >= d7).length;
+      document.getElementById('stat-30d').textContent = members.filter(m => new Date(m.created_at) >= d30).length;
+    }
 
+    // ===== ユーザー管理 =====
+    function renderMembers(members) {
       const listEl = document.getElementById('member-list');
       listEl.innerHTML = members.map(m => `
         <tr>
@@ -302,7 +479,7 @@
           <td>${fmtDate(m.created_at)}</td>
           <td><span class="admin-pill ${m.is_admin ? 'yes' : 'no'}">${m.is_admin ? '管理者' : '一般会員'}</span></td>
           <td>
-            <button class="toggle-admin-btn" data-id="${m.id}" data-admin="${m.is_admin}" ${m.id === myUserId ? 'disabled title="自分の権限は変更できません"' : ''}>
+            <button class="action-btn toggle-admin-btn" data-id="${m.id}" data-admin="${m.is_admin}" ${m.id === myUserId ? 'disabled title="自分の権限は変更できません"' : ''}>
               ${m.is_admin ? '権限を外す' : '管理者にする'}
             </button>
           </td>
@@ -314,9 +491,13 @@
       });
     }
 
-    function escHtml(s) {
-      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
+    document.getElementById('user-search').addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      const filtered = !q ? allMembers : allMembers.filter(m =>
+        m.email.toLowerCase().includes(q) || (m.display_name || '').toLowerCase().includes(q)
+      );
+      renderMembers(filtered);
+    });
 
     async function toggleAdmin(btn) {
       const id = btn.dataset.id;
@@ -333,23 +514,230 @@
       loadMembers();
     }
 
-    async function init() {
-      const session = await requireLogin();
-      if (!session) return;
-      myUserId = session.user.id;
+    async function loadMembers() {
+      const { data: members, error } = await sbClient
+        .from('profiles')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-      const result = await getCurrentProfile();
-      const profile = result ? result.profile : null;
+      if (error) { showError(error.message); return; }
 
-      document.getElementById('loading-state').style.display = 'none';
+      allMembers = members;
+      renderDashboard(members);
+      renderMembers(members);
+    }
 
-      if (!profile || !profile.is_admin) {
-        document.getElementById('denied-state').style.display = 'block';
+    // ===== ツール管理 =====
+    const toolForm = document.getElementById('tool-form');
+    document.getElementById('tool-add-toggle').addEventListener('click', () => {
+      resetToolForm();
+      toolForm.classList.toggle('open');
+    });
+    document.getElementById('tool-cancel').addEventListener('click', () => {
+      resetToolForm();
+      toolForm.classList.remove('open');
+    });
+
+    function resetToolForm() {
+      document.getElementById('tool-id').value = '';
+      document.getElementById('tool-name').value = '';
+      document.getElementById('tool-desc').value = '';
+      document.getElementById('tool-url').value = '';
+      document.getElementById('tool-price').value = '';
+      document.getElementById('tool-active').checked = true;
+      document.getElementById('tool-submit').textContent = '追加する';
+    }
+
+    function editTool(tool) {
+      document.getElementById('tool-id').value = tool.id;
+      document.getElementById('tool-name').value = tool.name;
+      document.getElementById('tool-desc').value = tool.description || '';
+      document.getElementById('tool-url').value = tool.url || '';
+      document.getElementById('tool-price').value = tool.price ?? '';
+      document.getElementById('tool-active').checked = tool.is_active;
+      document.getElementById('tool-submit').textContent = '更新する';
+      toolForm.classList.add('open');
+      toolForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    toolForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('tool-id').value;
+      const payload = {
+        name: document.getElementById('tool-name').value.trim(),
+        description: document.getElementById('tool-desc').value.trim(),
+        url: document.getElementById('tool-url').value.trim(),
+        price: document.getElementById('tool-price').value === '' ? null : Number(document.getElementById('tool-price').value),
+        is_active: document.getElementById('tool-active').checked,
+      };
+
+      const { error } = id
+        ? await sbClient.from('tools').update(payload).eq('id', id)
+        : await sbClient.from('tools').insert(payload);
+
+      if (error) { showError(error.message); return; }
+      showSuccess(id ? 'ツールを更新しました。' : 'ツールを追加しました。');
+      resetToolForm();
+      toolForm.classList.remove('open');
+      loadTools();
+    });
+
+    async function deleteTool(id) {
+      if (!confirm('このツールを削除しますか？')) return;
+      const { error } = await sbClient.from('tools').delete().eq('id', id);
+      if (error) { showError(error.message); return; }
+      showSuccess('ツールを削除しました。');
+      loadTools();
+    }
+
+    async function loadTools() {
+      const { data: tools, error } = await sbClient
+        .from('tools')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) { showError(error.message); return; }
+
+      const listEl = document.getElementById('tool-list');
+      if (!tools.length) {
+        listEl.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--c-text-sub);">まだツールが登録されていません</td></tr>`;
         return;
       }
+      listEl.innerHTML = tools.map(t => `
+        <tr>
+          <td>
+            <div class="member-name">${escHtml(t.name)}</div>
+            <div class="cell-desc">${escHtml(t.description || '')}</div>
+          </td>
+          <td>${t.price != null ? '¥' + Number(t.price).toLocaleString('ja-JP') : '-'}</td>
+          <td><span class="admin-pill ${t.is_active ? 'on' : 'no'}">${t.is_active ? '公開中' : '非公開'}</span></td>
+          <td>
+            <div class="row-actions">
+              <button class="action-btn" data-edit-tool="${t.id}">編集</button>
+              <button class="action-btn danger" data-delete-tool="${t.id}">削除</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
 
+      listEl.querySelectorAll('[data-edit-tool]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tool = tools.find(t => t.id === btn.dataset.editTool);
+          if (tool) editTool(tool);
+        });
+      });
+      listEl.querySelectorAll('[data-delete-tool]').forEach(btn => {
+        btn.addEventListener('click', () => deleteTool(btn.dataset.deleteTool));
+      });
+    }
+
+    // ===== お知らせ管理 =====
+    const announcementForm = document.getElementById('announcement-form');
+    document.getElementById('announcement-add-toggle').addEventListener('click', () => {
+      resetAnnouncementForm();
+      announcementForm.classList.toggle('open');
+    });
+    document.getElementById('announcement-cancel').addEventListener('click', () => {
+      resetAnnouncementForm();
+      announcementForm.classList.remove('open');
+    });
+
+    function resetAnnouncementForm() {
+      document.getElementById('announcement-id').value = '';
+      document.getElementById('announcement-title').value = '';
+      document.getElementById('announcement-body').value = '';
+      document.getElementById('announcement-published').checked = false;
+      document.getElementById('announcement-submit').textContent = '追加する';
+    }
+
+    function editAnnouncement(a) {
+      document.getElementById('announcement-id').value = a.id;
+      document.getElementById('announcement-title').value = a.title;
+      document.getElementById('announcement-body').value = a.body || '';
+      document.getElementById('announcement-published').checked = a.published;
+      document.getElementById('announcement-submit').textContent = '更新する';
+      announcementForm.classList.add('open');
+      announcementForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    announcementForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('announcement-id').value;
+      const payload = {
+        title: document.getElementById('announcement-title').value.trim(),
+        body: document.getElementById('announcement-body').value.trim(),
+        published: document.getElementById('announcement-published').checked,
+        updated_at: new Date().toISOString(),
+      };
+
+      const { error } = id
+        ? await sbClient.from('announcements').update(payload).eq('id', id)
+        : await sbClient.from('announcements').insert({ ...payload, created_by: myUserId });
+
+      if (error) { showError(error.message); return; }
+      showSuccess(id ? 'お知らせを更新しました。' : 'お知らせを追加しました。');
+      resetAnnouncementForm();
+      announcementForm.classList.remove('open');
+      loadAnnouncements();
+    });
+
+    async function deleteAnnouncement(id) {
+      if (!confirm('このお知らせを削除しますか？')) return;
+      const { error } = await sbClient.from('announcements').delete().eq('id', id);
+      if (error) { showError(error.message); return; }
+      showSuccess('お知らせを削除しました。');
+      loadAnnouncements();
+    }
+
+    async function loadAnnouncements() {
+      const { data: items, error } = await sbClient
+        .from('announcements')
+        .select('*')
+        .order('updated_at', { ascending: false });
+
+      if (error) { showError(error.message); return; }
+
+      const listEl = document.getElementById('announcement-list');
+      if (!items.length) {
+        listEl.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--c-text-sub);">まだお知らせがありません</td></tr>`;
+        return;
+      }
+      listEl.innerHTML = items.map(a => `
+        <tr>
+          <td><div class="member-name">${escHtml(a.title)}</div></td>
+          <td><span class="admin-pill ${a.published ? 'on' : 'no'}">${a.published ? '公開中' : '下書き'}</span></td>
+          <td>${fmtDate(a.updated_at)}</td>
+          <td>
+            <div class="row-actions">
+              <button class="action-btn" data-edit-announcement="${a.id}">編集</button>
+              <button class="action-btn danger" data-delete-announcement="${a.id}">削除</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      listEl.querySelectorAll('[data-edit-announcement]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const a = items.find(x => x.id === btn.dataset.editAnnouncement);
+          if (a) editAnnouncement(a);
+        });
+      });
+      listEl.querySelectorAll('[data-delete-announcement]').forEach(btn => {
+        btn.addEventListener('click', () => deleteAnnouncement(btn.dataset.deleteAnnouncement));
+      });
+    }
+
+    // ===== 初期化 =====
+    // requireAdmin() が未ログイン/非管理者を即リダイレクトする（本当の保護はDB側RLS）
+    async function init() {
+      const result = await requireAdmin();
+      if (!result) return;
+      myUserId = result.session.user.id;
+
+      document.getElementById('loading-state').style.display = 'none';
       document.getElementById('admin-content').style.display = 'block';
-      loadMembers();
+
+      await Promise.all([loadMembers(), loadTools(), loadAnnouncements()]);
     }
     init();
 

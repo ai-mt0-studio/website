@@ -39,6 +39,26 @@ async function signOutAndRedirect() {
   window.location.href = 'login.html';
 }
 
+// 管理者専用ページの入口ガード。
+// 未ログイン → login.html、管理者でない → mypage.html?denied=1 へ即リダイレクト。
+// これはUX目的の一次チェックであり、実際のデータ保護はDB側のRLS（is_admin()）が担う。
+async function requireAdmin() {
+  const session = await requireLogin();
+  if (!session) return null;
+
+  const { data: profile, error } = await sbClient
+    .from('profiles')
+    .select('*')
+    .eq('id', session.user.id)
+    .single();
+
+  if (error || !profile || !profile.is_admin) {
+    window.location.href = 'mypage.html?denied=1';
+    return null;
+  }
+  return { session, profile };
+}
+
 // index.html などのヘッダーで「ログイン / マイページ」リンクを出し分ける
 async function syncAuthNav() {
   const link = document.getElementById('nav-auth-link');

@@ -139,9 +139,50 @@
 
     #loading-state { text-align: center; padding: 80px 0; color: var(--c-text-sub); }
 
+    .denied-banner {
+      display: none;
+      max-width: 900px;
+      margin: 0 auto 24px;
+      font-size: 0.88rem;
+      color: #f87171;
+      background: rgba(248,113,113,0.1);
+      border: 1px solid rgba(248,113,113,0.25);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+    }
+
+    .upcoming-section { max-width: 900px; margin: 40px auto 0; }
+    .upcoming-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .upcoming-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .upcoming-card { padding: 24px; text-align: center; opacity: 0.85; }
+    .upcoming-card .icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .upcoming-card h4 { font-size: 0.92rem; font-weight: 600; color: #fff; margin-bottom: 6px; }
+    .upcoming-card p { font-size: 0.78rem; color: var(--c-text-sub); margin-bottom: 12px; }
+    .soon-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #fbbf24;
+      background: rgba(251,191,36,0.1);
+      border: 1px solid rgba(251,191,36,0.3);
+      border-radius: 50px;
+      padding: 3px 12px;
+    }
+
     @media (max-width: 768px) {
       .mypage-grid { grid-template-columns: 1fr; }
       .mypage-main { padding: 28px 20px; }
+      .upcoming-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -181,6 +222,8 @@
 
       <div id="loading-state">読み込み中...</div>
 
+      <div class="denied-banner" id="denied-banner">アクセス権がありません。管理者画面は管理者のみ閲覧できます。</div>
+
       <div class="mypage-grid" id="mypage-content" style="display:none;">
         <!-- LEFT -->
         <div class="mypage-side">
@@ -219,6 +262,30 @@
             </div>
             <button type="submit" class="btn btn-primary" id="profile-save">保存する</button>
           </form>
+        </div>
+      </div>
+
+      <div class="upcoming-section" id="upcoming-section" style="display:none;">
+        <div class="upcoming-title">今後実装予定の機能</div>
+        <div class="upcoming-grid">
+          <div class="upcoming-card glass-card">
+            <div class="icon">⭐</div>
+            <h4>お気に入り</h4>
+            <p>気になるAIツールを保存できるようになります。</p>
+            <span class="soon-badge">準備中</span>
+          </div>
+          <div class="upcoming-card glass-card">
+            <div class="icon">🛒</div>
+            <h4>購入済みツール</h4>
+            <p>購入・利用中のツールを一覧で確認できるようになります。</p>
+            <span class="soon-badge">準備中</span>
+          </div>
+          <div class="upcoming-card glass-card">
+            <div class="icon">💬</div>
+            <h4>AI相談履歴</h4>
+            <p>過去のAI相談内容を振り返れるようになります。</p>
+            <span class="soon-badge">準備中</span>
+          </div>
         </div>
       </div>
 
@@ -293,6 +360,10 @@
 
     let currentSession = null;
 
+    if (new URLSearchParams(window.location.search).get('denied') === '1') {
+      document.getElementById('denied-banner').style.display = 'block';
+    }
+
     async function init() {
       const session = await requireLogin();
       if (!session) return;
@@ -318,6 +389,7 @@
 
       document.getElementById('loading-state').style.display = 'none';
       document.getElementById('mypage-content').style.display = 'grid';
+      document.getElementById('upcoming-section').style.display = 'block';
     }
     init();
 
