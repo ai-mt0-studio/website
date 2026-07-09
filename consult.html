@@ -97,6 +97,19 @@
 
     .consult-perks { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
     .consult-perks li { font-size: 0.85rem; color: var(--c-text-sub); }
+
+    .paid-notice {
+      display: none;
+      margin: 14px 0 24px;
+      padding: 14px 16px;
+      background: rgba(251,191,36,0.05);
+      border: 1px solid rgba(251,191,36,0.2);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--c-text);
+      line-height: 1.7;
+    }
+    .paid-notice strong { color: #fbbf24; }
   </style>
 </head>
 <body>
@@ -154,6 +167,8 @@
           <li>✅ 個人・法人どちらでも対応</li>
           <li>✅ オンライン対応可</li>
         </ul>
+
+        <div class="paid-notice" id="paid-notice"></div>
 
         <div class="auth-error" id="consult-error"></div>
         <div class="auth-success" id="consult-success"></div>
@@ -240,6 +255,25 @@
 
     let currentSession = null;
 
+    async function getPastConsultCount() {
+      const { count, error } = await sbClient
+        .from('ai_consultations')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', currentSession.user.id);
+      if (error) { console.error(error); return 0; }
+      return count || 0;
+    }
+
+    function renderPaidNotice(pastCount) {
+      const noticeEl = document.getElementById('paid-notice');
+      if (pastCount === 0) {
+        noticeEl.style.display = 'none';
+        return;
+      }
+      noticeEl.innerHTML = `2回目以降のご相談は有料となります(<strong>${CONSULT_PAID_PRICE.toLocaleString('ja-JP')}円/回</strong>)。送信後、お支払い方法について担当よりメールでご案内します。`;
+      noticeEl.style.display = 'block';
+    }
+
     async function init() {
       const { data: { session } } = await sbClient.auth.getSession();
       document.getElementById('loading-state').style.display = 'none';
@@ -252,6 +286,8 @@
       currentSession = session;
       document.getElementById('nav-mypage-link').style.display = 'inline-flex';
       document.getElementById('consult-form-wrap').style.display = 'block';
+
+      renderPaidNotice(await getPastConsultCount());
     }
     init();
 
@@ -266,11 +302,15 @@
       submitBtn.disabled = true;
       submitBtn.textContent = '送信中...';
 
+      const pastCount = await getPastConsultCount();
+      const isFirstTime = pastCount === 0;
+
       const { error } = await sbClient.from('ai_consultations').insert({
         user_id: currentSession.user.id,
         email: currentSession.user.email,
         consultation_type: type,
         question,
+        is_first_time: isFirstTime,
       });
 
       submitBtn.disabled = false;
@@ -279,7 +319,12 @@
       if (error) { showError(error.message); return; }
 
       document.getElementById('consult-form').reset();
-      showSuccess('送信しました。担当より折り返しご連絡します。マイページの「AI相談履歴」からいつでも内容を確認できます。');
+      showSuccess(
+        isFirstTime
+          ? '送信しました。担当より折り返しご連絡します。マイページの「AI相談履歴」からいつでも内容を確認できます。'
+          : `送信しました。今回のご相談は有料(${CONSULT_PAID_PRICE.toLocaleString('ja-JP')}円)となります。お支払い方法について担当よりメールでご案内します。`
+      );
+      renderPaidNotice(await getPastConsultCount());
     });
   </script>
 </body>

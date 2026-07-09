@@ -175,6 +175,27 @@
     .status-pill.progress { color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); }
     .status-pill.done     { color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
 
+    .pill-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .fee-pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+    .fee-pill.free { color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
+    .fee-pill.paid { color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); }
+
+    .payment-check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: var(--c-text-sub);
+    }
+    .payment-check-row input { width: 15px; height: 15px; }
+
     /* ===== CRUD FORM ===== */
     .crud-card { padding: 28px; margin-bottom: 24px; }
     .crud-card-header {
@@ -861,7 +882,10 @@
               <strong>${escHtml(c.email || '-')}</strong>
               　${fmtDate(c.created_at)}${c.consultation_type ? ' ・ ' + escHtml(c.consultation_type) : ''}
             </div>
-            <span class="status-pill ${statusClass(c.status)}">${escHtml(c.status || '未対応')}</span>
+            <div class="pill-group">
+              <span class="fee-pill ${c.is_first_time ? 'free' : 'paid'}">${c.is_first_time ? '初回無料' : `有料(${CONSULT_PAID_PRICE.toLocaleString('ja-JP')}円)`}</span>
+              <span class="status-pill ${statusClass(c.status)}">${escHtml(c.status || '未対応')}</span>
+            </div>
           </div>
           <div class="admin-consult-question">${escHtml(c.question)}</div>
           <div class="admin-consult-status-row">
@@ -872,11 +896,19 @@
               <option value="完了" ${c.status === '完了' ? 'selected' : ''}>完了</option>
             </select>
           </div>
+          ${!c.is_first_time ? `
+          <div class="payment-check-row">
+            <input type="checkbox" id="payment-${c.id}" data-payment-id="${c.id}" ${c.payment_confirmed ? 'checked' : ''} />
+            <label for="payment-${c.id}">入金確認済み</label>
+          </div>` : ''}
         </div>
       `).join('');
 
       listEl.querySelectorAll('[data-consult-id]').forEach(sel => {
         sel.addEventListener('change', () => updateConsultationStatus(sel.dataset.consultId, sel.value));
+      });
+      listEl.querySelectorAll('[data-payment-id]').forEach(cb => {
+        cb.addEventListener('change', () => updatePaymentConfirmed(cb.dataset.paymentId, cb.checked));
       });
     }
 
@@ -901,6 +933,16 @@
         .eq('id', id);
       if (error) { showError(error.message); return; }
       showSuccess('ステータスを更新しました。');
+      await loadAiConsultations();
+    }
+
+    async function updatePaymentConfirmed(id, confirmed) {
+      const { error } = await sbClient
+        .from('ai_consultations')
+        .update({ payment_confirmed: confirmed, updated_at: new Date().toISOString() })
+        .eq('id', id);
+      if (error) { showError(error.message); return; }
+      showSuccess('入金確認状況を更新しました。');
       await loadAiConsultations();
     }
 

@@ -6,6 +6,9 @@
 const SUPABASE_URL = 'https://ntefttoofbntaeaphkad.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_t5SkEWwmbXKHOVX6pYEpUw_9ogyU5Rw';
 
+// 2回目以降のAI相談の価格（円）。変更する場合はここを書き換えるだけでOK。
+const CONSULT_PAID_PRICE = 5000;
+
 const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // 現在のセッションを取得。未ログインなら login.html へリダイレクト。
