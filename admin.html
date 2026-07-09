@@ -277,7 +277,11 @@
                 <label for="tool-url">URL</label>
                 <input type="text" id="tool-url" placeholder="tool-name.html" />
               </div>
-              <div class="form-group">
+              <div class="checkbox-row">
+                <input type="checkbox" id="tool-free" />
+                <label for="tool-free">無料ツールにする</label>
+              </div>
+              <div class="form-group" id="tool-price-group">
                 <label for="tool-price">価格（円）</label>
                 <input type="number" id="tool-price" min="0" />
               </div>
@@ -297,6 +301,7 @@
               <thead>
                 <tr>
                   <th>ツール名</th>
+                  <th>種別</th>
                   <th>価格</th>
                   <th>状態</th>
                   <th></th>
@@ -341,8 +346,8 @@
               <thead>
                 <tr>
                   <th>タイトル</th>
+                  <th>公開日</th>
                   <th>状態</th>
-                  <th>更新日</th>
                   <th></th>
                 </tr>
               </thead>
@@ -538,14 +543,22 @@
       toolForm.classList.remove('open');
     });
 
+    function syncToolPriceVisibility() {
+      const isFree = document.getElementById('tool-free').checked;
+      document.getElementById('tool-price-group').style.display = isFree ? 'none' : '';
+    }
+    document.getElementById('tool-free').addEventListener('change', syncToolPriceVisibility);
+
     function resetToolForm() {
       document.getElementById('tool-id').value = '';
       document.getElementById('tool-name').value = '';
       document.getElementById('tool-desc').value = '';
       document.getElementById('tool-url').value = '';
       document.getElementById('tool-price').value = '';
+      document.getElementById('tool-free').checked = false;
       document.getElementById('tool-active').checked = true;
       document.getElementById('tool-submit').textContent = '追加する';
+      syncToolPriceVisibility();
     }
 
     function editTool(tool) {
@@ -554,8 +567,10 @@
       document.getElementById('tool-desc').value = tool.description || '';
       document.getElementById('tool-url').value = tool.url || '';
       document.getElementById('tool-price').value = tool.price ?? '';
+      document.getElementById('tool-free').checked = tool.is_free;
       document.getElementById('tool-active').checked = tool.is_active;
       document.getElementById('tool-submit').textContent = '更新する';
+      syncToolPriceVisibility();
       toolForm.classList.add('open');
       toolForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -563,11 +578,13 @@
     toolForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('tool-id').value;
+      const isFree = document.getElementById('tool-free').checked;
       const payload = {
         name: document.getElementById('tool-name').value.trim(),
         description: document.getElementById('tool-desc').value.trim(),
         url: document.getElementById('tool-url').value.trim(),
-        price: document.getElementById('tool-price').value === '' ? null : Number(document.getElementById('tool-price').value),
+        is_free: isFree,
+        price: isFree || document.getElementById('tool-price').value === '' ? null : Number(document.getElementById('tool-price').value),
         is_active: document.getElementById('tool-active').checked,
       };
 
@@ -590,6 +607,13 @@
       loadTools();
     }
 
+    async function toggleToolActive(id, current) {
+      const { error } = await sbClient.from('tools').update({ is_active: !current }).eq('id', id);
+      if (error) { showError(error.message); return; }
+      showSuccess('公開状態を更新しました。');
+      loadTools();
+    }
+
     async function loadTools() {
       const { data: tools, error } = await sbClient
         .from('tools')
@@ -600,7 +624,7 @@
 
       const listEl = document.getElementById('tool-list');
       if (!tools.length) {
-        listEl.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--c-text-sub);">まだツールが登録されていません</td></tr>`;
+        listEl.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--c-text-sub);">まだツールが登録されていません</td></tr>`;
         return;
       }
       listEl.innerHTML = tools.map(t => `
@@ -609,10 +633,12 @@
             <div class="member-name">${escHtml(t.name)}</div>
             <div class="cell-desc">${escHtml(t.description || '')}</div>
           </td>
-          <td>${t.price != null ? '¥' + Number(t.price).toLocaleString('ja-JP') : '-'}</td>
+          <td><span class="admin-pill ${t.is_free ? 'on' : 'yes'}">${t.is_free ? '無料' : '有料'}</span></td>
+          <td>${!t.is_free && t.price != null ? '¥' + Number(t.price).toLocaleString('ja-JP') : '-'}</td>
           <td><span class="admin-pill ${t.is_active ? 'on' : 'no'}">${t.is_active ? '公開中' : '非公開'}</span></td>
           <td>
             <div class="row-actions">
+              <button class="action-btn" data-toggle-tool="${t.id}" data-active="${t.is_active}">${t.is_active ? '非公開にする' : '公開する'}</button>
               <button class="action-btn" data-edit-tool="${t.id}">編集</button>
               <button class="action-btn danger" data-delete-tool="${t.id}">削除</button>
             </div>
@@ -628,6 +654,9 @@
       });
       listEl.querySelectorAll('[data-delete-tool]').forEach(btn => {
         btn.addEventListener('click', () => deleteTool(btn.dataset.deleteTool));
+      });
+      listEl.querySelectorAll('[data-toggle-tool]').forEach(btn => {
+        btn.addEventListener('click', () => toggleToolActive(btn.dataset.toggleTool, btn.dataset.active === 'true'));
       });
     }
 
@@ -663,18 +692,25 @@
     announcementForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('announcement-id').value;
+      const published = document.getElementById('announcement-published').checked;
       const payload = {
         title: document.getElementById('announcement-title').value.trim(),
         body: document.getElementById('announcement-body').value.trim(),
-        published: document.getElementById('announcement-published').checked,
+        published,
         updated_at: new Date().toISOString(),
       };
 
-      const { error } = id
-        ? await sbClient.from('announcements').update(payload).eq('id', id)
-        : await sbClient.from('announcements').insert({ ...payload, created_by: myUserId });
+      if (id) {
+        const existing = allAnnouncements.find(a => a.id === id);
+        if (published && !(existing && existing.published_at)) payload.published_at = new Date().toISOString();
+        const { error } = await sbClient.from('announcements').update(payload).eq('id', id);
+        if (error) { showError(error.message); return; }
+      } else {
+        if (published) payload.published_at = new Date().toISOString();
+        const { error } = await sbClient.from('announcements').insert({ ...payload, created_by: myUserId });
+        if (error) { showError(error.message); return; }
+      }
 
-      if (error) { showError(error.message); return; }
       showSuccess(id ? 'お知らせを更新しました。' : 'お知らせを追加しました。');
       resetAnnouncementForm();
       announcementForm.classList.remove('open');
@@ -689,6 +725,19 @@
       loadAnnouncements();
     }
 
+    async function toggleAnnouncementPublished(item) {
+      const nextPublished = !item.published;
+      const payload = { published: nextPublished, updated_at: new Date().toISOString() };
+      if (nextPublished && !item.published_at) payload.published_at = new Date().toISOString();
+
+      const { error } = await sbClient.from('announcements').update(payload).eq('id', item.id);
+      if (error) { showError(error.message); return; }
+      showSuccess('公開状態を更新しました。');
+      loadAnnouncements();
+    }
+
+    let allAnnouncements = [];
+
     async function loadAnnouncements() {
       const { data: items, error } = await sbClient
         .from('announcements')
@@ -696,6 +745,7 @@
         .order('updated_at', { ascending: false });
 
       if (error) { showError(error.message); return; }
+      allAnnouncements = items;
 
       const listEl = document.getElementById('announcement-list');
       if (!items.length) {
@@ -705,10 +755,11 @@
       listEl.innerHTML = items.map(a => `
         <tr>
           <td><div class="member-name">${escHtml(a.title)}</div></td>
+          <td>${fmtDate(a.published_at)}</td>
           <td><span class="admin-pill ${a.published ? 'on' : 'no'}">${a.published ? '公開中' : '下書き'}</span></td>
-          <td>${fmtDate(a.updated_at)}</td>
           <td>
             <div class="row-actions">
+              <button class="action-btn" data-toggle-announcement="${a.id}">${a.published ? '下書きに戻す' : '公開する'}</button>
               <button class="action-btn" data-edit-announcement="${a.id}">編集</button>
               <button class="action-btn danger" data-delete-announcement="${a.id}">削除</button>
             </div>
@@ -724,6 +775,12 @@
       });
       listEl.querySelectorAll('[data-delete-announcement]').forEach(btn => {
         btn.addEventListener('click', () => deleteAnnouncement(btn.dataset.deleteAnnouncement));
+      });
+      listEl.querySelectorAll('[data-toggle-announcement]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const a = items.find(x => x.id === btn.dataset.toggleAnnouncement);
+          if (a) toggleAnnouncementPublished(a);
+        });
       });
     }
 

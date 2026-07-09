@@ -151,6 +151,49 @@
       padding: 12px 18px;
     }
 
+    /* ===== TABS ===== */
+    .mypage-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
+    .mypage-panel { display: none; }
+    .mypage-panel.active { display: block; }
+
+    /* ===== AVATAR UPLOAD ===== */
+    .mypage-avatar { position: relative; overflow: hidden; }
+    .mypage-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .avatar-upload-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      color: var(--c-blue);
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .avatar-upload-label:hover { color: var(--c-purple2); }
+    .avatar-upload-label input { display: none; }
+
+    /* ===== FAVORITES ===== */
+    .fav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .fav-card { padding: 22px; text-align: center; }
+    .fav-card .icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .fav-card-name { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 14px; min-height: 2.6em; }
+    .fav-card-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .empty-state { text-align: center; color: var(--c-text-sub); font-size: 0.9rem; padding: 40px 0; }
+    .action-btn {
+      font-size: 0.78rem;
+      padding: 6px 14px;
+      border-radius: 50px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--c-text);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .action-btn:hover { border-color: var(--c-blue); color: #fff; }
+    .action-btn.danger { color: #f87171; }
+    .action-btn.danger:hover { border-color: #f87171; }
+
     .upcoming-section { max-width: 900px; margin: 40px auto 0; }
     .upcoming-title {
       font-family: var(--font-display);
@@ -161,7 +204,7 @@
     }
     .upcoming-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 16px;
     }
     .upcoming-card { padding: 24px; text-align: center; opacity: 0.85; }
@@ -224,69 +267,88 @@
 
       <div class="denied-banner" id="denied-banner">アクセス権がありません。管理者画面は管理者のみ閲覧できます。</div>
 
-      <div class="mypage-grid" id="mypage-content" style="display:none;">
-        <!-- LEFT -->
-        <div class="mypage-side">
-          <div class="mypage-avatar-card glass-card">
-            <div class="mypage-avatar" id="avatar-initial">?</div>
-            <div class="mypage-name" id="side-name">-</div>
-            <div class="mypage-email" id="side-email">-</div>
-            <span class="mypage-admin-badge" id="admin-badge" style="display:none;">★ 管理者</span>
-          </div>
-          <div class="mypage-nav glass-card">
-            <a href="admin.html" id="admin-link" style="display:none;">管理者画面へ</a>
-            <button type="button" class="danger" id="logout-btn">ログアウト</button>
-          </div>
+      <div id="mypage-body" style="display:none;">
+
+        <div class="mypage-tabs">
+          <button class="cat-btn mypage-tab-btn active" data-tab="profile">プロフィール</button>
+          <button class="cat-btn mypage-tab-btn" data-tab="favorites">お気に入り</button>
         </div>
 
-        <!-- RIGHT -->
-        <div class="mypage-main glass-card">
-          <h2>会員情報</h2>
-
-          <div class="auth-error" id="mypage-error"></div>
-          <div class="auth-success" id="mypage-success"></div>
-
-          <div class="info-row">
-            <span class="info-label">メールアドレス</span>
-            <span class="info-value" id="info-email">-</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">登録日</span>
-            <span class="info-value" id="info-created">-</span>
-          </div>
-
-          <form id="profile-form" style="margin-top:20px;">
-            <div class="form-group">
-              <label for="display-name">表示名</label>
-              <input type="text" id="display-name" placeholder="お名前" />
+        <!-- ===== プロフィール ===== -->
+        <div class="mypage-panel active" id="panel-profile">
+          <div class="mypage-grid">
+            <!-- LEFT -->
+            <div class="mypage-side">
+              <div class="mypage-avatar-card glass-card">
+                <div class="mypage-avatar" id="avatar-display"><span id="avatar-initial">?</span></div>
+                <label class="avatar-upload-label">
+                  画像を変更
+                  <input type="file" id="avatar-input" accept="image/*" />
+                </label>
+                <div class="mypage-name" id="side-name">-</div>
+                <div class="mypage-email" id="side-email">-</div>
+                <span class="mypage-admin-badge" id="admin-badge" style="display:none;">★ 管理者</span>
+              </div>
+              <div class="mypage-nav glass-card">
+                <a href="admin.html" id="admin-link" style="display:none;">管理者画面へ</a>
+                <button type="button" class="danger" id="logout-btn">ログアウト</button>
+              </div>
             </div>
-            <button type="submit" class="btn btn-primary" id="profile-save">保存する</button>
-          </form>
-        </div>
-      </div>
 
-      <div class="upcoming-section" id="upcoming-section" style="display:none;">
-        <div class="upcoming-title">今後実装予定の機能</div>
-        <div class="upcoming-grid">
-          <div class="upcoming-card glass-card">
-            <div class="icon">⭐</div>
-            <h4>お気に入り</h4>
-            <p>気になるAIツールを保存できるようになります。</p>
-            <span class="soon-badge">準備中</span>
+            <!-- RIGHT -->
+            <div class="mypage-main glass-card">
+              <h2>会員情報</h2>
+
+              <div class="auth-error" id="mypage-error"></div>
+              <div class="auth-success" id="mypage-success"></div>
+
+              <div class="info-row">
+                <span class="info-label">メールアドレス</span>
+                <span class="info-value" id="info-email">-</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">登録日</span>
+                <span class="info-value" id="info-created">-</span>
+              </div>
+
+              <form id="profile-form" style="margin-top:20px;">
+                <div class="form-group">
+                  <label for="full-name">氏名</label>
+                  <input type="text" id="full-name" placeholder="山田 太郎" />
+                </div>
+                <div class="form-group">
+                  <label for="display-name">表示名</label>
+                  <input type="text" id="display-name" placeholder="お名前" />
+                </div>
+                <button type="submit" class="btn btn-primary" id="profile-save">保存する</button>
+              </form>
+            </div>
           </div>
-          <div class="upcoming-card glass-card">
-            <div class="icon">🛒</div>
-            <h4>購入済みツール</h4>
-            <p>購入・利用中のツールを一覧で確認できるようになります。</p>
-            <span class="soon-badge">準備中</span>
-          </div>
-          <div class="upcoming-card glass-card">
-            <div class="icon">💬</div>
-            <h4>AI相談履歴</h4>
-            <p>過去のAI相談内容を振り返れるようになります。</p>
-            <span class="soon-badge">準備中</span>
+
+          <div class="upcoming-section" id="upcoming-section">
+            <div class="upcoming-title">今後実装予定の機能</div>
+            <div class="upcoming-grid">
+              <div class="upcoming-card glass-card">
+                <div class="icon">🛒</div>
+                <h4>購入済みツール</h4>
+                <p>購入・利用中のツールを一覧で確認できるようになります。</p>
+                <span class="soon-badge">準備中</span>
+              </div>
+              <div class="upcoming-card glass-card">
+                <div class="icon">💬</div>
+                <h4>AI相談履歴</h4>
+                <p>過去のAI相談内容を振り返れるようになります。</p>
+                <span class="soon-badge">準備中</span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- ===== お気に入り ===== -->
+        <div class="mypage-panel" id="panel-favorites">
+          <div class="fav-grid" id="favorites-list"></div>
+        </div>
+
       </div>
 
     </div>
@@ -337,6 +399,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-client.js"></script>
+  <script src="tools-catalog.js"></script>
   <script src="script.js"></script>
   <script>
     const errorEl = document.getElementById('mypage-error');
@@ -358,10 +421,105 @@
       return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
     }
 
+    function escHtml(s) {
+      return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
     let currentSession = null;
 
     if (new URLSearchParams(window.location.search).get('denied') === '1') {
       document.getElementById('denied-banner').style.display = 'block';
+    }
+
+    // ===== タブ切り替え =====
+    document.querySelectorAll('.mypage-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mypage-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.mypage-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ===== アバター表示 =====
+    function applyAvatar(url, fallbackChar) {
+      const el = document.getElementById('avatar-display');
+      if (url) {
+        el.innerHTML = `<img src="${url}" alt="アイコン画像" />`;
+      } else {
+        el.innerHTML = `<span id="avatar-initial">${escHtml(fallbackChar || '?')}</span>`;
+      }
+    }
+
+    document.getElementById('avatar-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { showError('画像サイズは2MB以内にしてください。'); return; }
+
+      const ext = (file.name.split('.').pop() || 'png').toLowerCase();
+      const path = `${currentSession.user.id}/avatar.${ext}`;
+
+      const { error: uploadError } = await sbClient.storage
+        .from('avatars')
+        .upload(path, file, { upsert: true, cacheControl: '3600' });
+      if (uploadError) { showError(uploadError.message); return; }
+
+      const { data: pub } = sbClient.storage.from('avatars').getPublicUrl(path);
+      const avatarUrl = pub.publicUrl + '?t=' + Date.now();
+
+      const { error: updateError } = await sbClient
+        .from('profiles')
+        .update({ avatar_url: avatarUrl })
+        .eq('id', currentSession.user.id);
+      if (updateError) { showError(updateError.message); return; }
+
+      applyAvatar(avatarUrl);
+      showSuccess('アイコン画像を更新しました。');
+    });
+
+    // ===== お気に入り一覧 =====
+    async function loadFavorites() {
+      const listEl = document.getElementById('favorites-list');
+      const { data: favs, error } = await sbClient
+        .from('favorites')
+        .select('tool_slug, created_at')
+        .eq('user_id', currentSession.user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        listEl.innerHTML = `<div class="empty-state">読み込みに失敗しました。</div>`;
+        return;
+      }
+      if (!favs.length) {
+        listEl.innerHTML = `<div class="empty-state">まだお気に入りはありません。ツール一覧のハートマークから追加できます。</div>`;
+        return;
+      }
+
+      listEl.innerHTML = favs.map(f => {
+        const info = TOOL_CATALOG[f.tool_slug] || { name: f.tool_slug, icon: '🔧', url: '#' };
+        const external = info.url.startsWith('http');
+        return `
+          <div class="fav-card glass-card">
+            <div class="icon">${info.icon}</div>
+            <div class="fav-card-name">${escHtml(info.name)}</div>
+            <div class="fav-card-actions">
+              <a href="${info.url}" ${external ? 'target="_blank"' : ''} class="btn btn-glass btn-sm">開く</a>
+              <button type="button" class="action-btn danger" data-remove-slug="${escHtml(f.tool_slug)}">解除</button>
+            </div>
+          </div>`;
+      }).join('');
+
+      listEl.querySelectorAll('[data-remove-slug]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          btn.disabled = true;
+          await sbClient
+            .from('favorites')
+            .delete()
+            .eq('user_id', currentSession.user.id)
+            .eq('tool_slug', btn.dataset.removeSlug);
+          loadFavorites();
+        });
+      });
     }
 
     async function init() {
@@ -379,8 +537,9 @@
       document.getElementById('side-email').textContent = email;
       document.getElementById('info-email').textContent = email;
       document.getElementById('info-created').textContent = fmtDate(profile ? profile.created_at : session.user.created_at);
-      document.getElementById('avatar-initial').textContent = displayName.charAt(0).toUpperCase();
       document.getElementById('display-name').value = (profile && profile.display_name) || '';
+      document.getElementById('full-name').value = (profile && profile.full_name) || '';
+      applyAvatar(profile && profile.avatar_url, displayName.charAt(0).toUpperCase());
 
       if (profile && profile.is_admin) {
         document.getElementById('admin-badge').style.display = 'inline-flex';
@@ -388,8 +547,9 @@
       }
 
       document.getElementById('loading-state').style.display = 'none';
-      document.getElementById('mypage-content').style.display = 'grid';
-      document.getElementById('upcoming-section').style.display = 'block';
+      document.getElementById('mypage-body').style.display = 'block';
+
+      loadFavorites();
     }
     init();
 
@@ -397,13 +557,14 @@
       e.preventDefault();
       const saveBtn = document.getElementById('profile-save');
       const newName = document.getElementById('display-name').value.trim();
+      const newFullName = document.getElementById('full-name').value.trim();
 
       saveBtn.disabled = true;
       saveBtn.textContent = '保存中...';
 
       const { error } = await sbClient
         .from('profiles')
-        .update({ display_name: newName })
+        .update({ display_name: newName, full_name: newFullName })
         .eq('id', currentSession.user.id);
 
       saveBtn.disabled = false;
@@ -411,8 +572,11 @@
 
       if (error) { showError(error.message); return; }
 
-      document.getElementById('side-name').textContent = newName || currentSession.user.email.split('@')[0];
-      document.getElementById('avatar-initial').textContent = (newName || currentSession.user.email).charAt(0).toUpperCase();
+      const label = newName || currentSession.user.email.split('@')[0];
+      document.getElementById('side-name').textContent = label;
+      if (!document.getElementById('avatar-display').querySelector('img')) {
+        applyAvatar(null, label.charAt(0).toUpperCase());
+      }
       showSuccess('会員情報を更新しました。');
     });
 
