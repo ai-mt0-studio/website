@@ -1,6 +1,15 @@
 {
   "articles": [
     {
+      "id": "ai-side-job-start-2026",
+      "title": "AIツールで始める副業｜初心者でもできる自動化のはじめ方",
+      "category": "side",
+      "categoryLabel": "副業",
+      "date": "2026.07.10",
+      "summary": "AIツールを使うことで副業のハードルはどう下がるのか。始め方の3ステップ、AIと相性のいい副業4選、注意点まで初心者向けに解説。",
+      "url": "blog-ai-side-job.html"
+    },
+    {
       "id": "ai-news-2026-07",
       "title": "2026年7月最新｜AI業界で今起きていること",
       "category": "ai",
