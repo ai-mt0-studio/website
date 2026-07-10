@@ -103,7 +103,10 @@ async function initBlogPost() {
     return;
   }
 
-  document.title = article.title + ' | AI Solutions';
+  document.title = article.title + ' | AI MT0 Studio';
+
+  var descEl = document.querySelector('meta[name="description"]');
+  if (descEl && article.summary) descEl.setAttribute('content', article.summary);
 
   var titleEl  = document.getElementById('post-title');
   var catEl    = document.getElementById('post-category');
@@ -114,4 +117,18 @@ async function initBlogPost() {
   if (catEl)  { catEl.textContent    = article.categoryLabel; catEl.dataset.cat = article.category; }
   if (dateEl)   dateEl.textContent   = article.date;
   if (bodyEl)   bodyEl.innerHTML     = article.content;
+
+  var ld = document.createElement('script');
+  ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    'headline': article.title,
+    'description': article.summary,
+    'datePublished': article.date,
+    'author': { '@type': 'Organization', 'name': 'AI MT0 Studio' },
+    'publisher': { '@type': 'Organization', 'name': 'AI MT0 Studio' },
+    'url': location.href
+  });
+  document.head.appendChild(ld);
 }

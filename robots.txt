@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /mypage.html
+
+Sitemap: https://profound-pie-e55477.netlify.app/sitemap.xml

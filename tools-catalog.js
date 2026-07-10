@@ -16,4 +16,8 @@ const TOOL_CATALOG = {
   'advisor-tool':    { name: 'AI業務改善アドバイザー Pro Lite（無料）', icon: '🔍', url: 'advisor-tool.html' },
   'sales-mail-tool': { name: 'AI営業文作成 Pro Lite（無料）',     icon: '✉️', url: 'sales-mail-tool.html' },
   'manual-tool':     { name: 'AI業務マニュアル作成 Pro Lite（無料）', icon: '📋', url: 'manual-tool.html' },
+  'prompt-manager':  { name: 'AIプロンプト管理ツール Pro Lite（無料）', icon: '✦', url: 'prompt-manager.html' },
+  'diagnosis-tool':  { name: 'AI業務改善診断ツール',             icon: '🏢', url: 'diagnosis-tool.html' },
+  'report-tool-app': { name: 'AI日報生成ツール',                 icon: '📝', url: 'report-tool.html' },
+  'sns-tool-app':    { name: 'SNS投稿自動生成ツール',            icon: '✦', url: 'sns-tool.html' },
 };

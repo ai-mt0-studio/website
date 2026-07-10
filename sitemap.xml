@@ -3,23 +3,30 @@
 
   <url>
     <loc>https://profound-pie-e55477.netlify.app/</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://profound-pie-e55477.netlify.app/blog.html</loc>
-    <lastmod>2026-07-01</lastmod>
+    <loc>https://profound-pie-e55477.netlify.app/tools.html</loc>
+    <lastmod>2026-07-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://profound-pie-e55477.netlify.app/blog-post.html</loc>
-    <lastmod>2026-07-01</lastmod>
+    <loc>https://profound-pie-e55477.netlify.app/blog.html</loc>
+    <lastmod>2026-07-10</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/consult.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <url>
@@ -29,6 +36,177 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- ===== AIツール ===== -->
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/business-os.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/advisor-tool.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/sales-mail-tool.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/manual-tool.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/doc-tool.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/invoice-tool.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/graph-tool.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/prompt-manager.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/report-tool.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/sns-tool.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/diagnosis-tool.html</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- ===== ブログ記事 ===== -->
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-ai-news-202607.html</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-member-guide.html</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-manual-tool.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-manual-tips.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-sales-mail.html</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-ai-tips.html</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-advisor.html</loc>
+    <lastmod>2026-07-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-ai-basics.html</loc>
+    <lastmod>2026-07-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-business-os.html</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-ai-efficiency.html</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-post.html?id=chatgpt-vs-claude-2026</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-post.html?id=ai-side-job-roadmap</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-post.html?id=ai-revenue-tool-v1</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- ===== その他 ===== -->
   <url>
     <loc>https://profound-pie-e55477.netlify.app/privacy.html</loc>
     <lastmod>2026-07-01</lastmod>
