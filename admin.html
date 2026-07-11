@@ -246,6 +246,89 @@
     @media (max-width: 900px) {
       .admin-stats { grid-template-columns: repeat(2, 1fr); }
     }
+
+    /* ===== 通知ベル ===== */
+    .notif-bell-wrap { position: relative; }
+    .notif-bell-btn {
+      position: relative;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      font-size: 1.05rem;
+      color: var(--c-text);
+      transition: var(--transition);
+    }
+    .notif-bell-btn:hover { border-color: var(--c-blue); color: #fff; }
+    .notif-badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      min-width: 18px; height: 18px;
+      padding: 0 4px;
+      border-radius: 50px;
+      background: #f87171;
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .notif-dropdown {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      width: 340px;
+      max-height: 460px;
+      display: flex;
+      flex-direction: column;
+      background: #0a0d1a;
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      z-index: 200;
+      overflow: hidden;
+    }
+    .notif-dropdown-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--glass-border);
+      font-size: 0.85rem;
+      color: #fff;
+      font-weight: 600;
+    }
+    .notif-list { overflow-y: auto; max-height: 300px; }
+    .notif-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--glass-border);
+      cursor: pointer;
+      transition: var(--transition);
+      background: transparent;
+    }
+    .notif-item:hover { background: rgba(255,255,255,0.03); }
+    .notif-item.unread { background: rgba(79,142,247,0.06); }
+    .notif-item-title { font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+    .notif-item-body { font-size: 0.78rem; color: var(--c-text-sub); margin-bottom: 4px; }
+    .notif-item-time { font-size: 0.7rem; color: var(--c-text-sub); }
+    .notif-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-blue); flex-shrink: 0; }
+    .notif-empty { padding: 32px 16px; text-align: center; font-size: 0.82rem; color: var(--c-text-sub); }
+    .notif-add-note { padding: 14px 16px; border-top: 1px solid var(--glass-border); }
+    #notif-add-form { flex-direction: column; gap: 8px; margin-top: 10px; }
+    #notif-add-form input, #notif-add-form textarea {
+      padding: 8px 10px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      color: var(--c-text);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+    }
+    @media (max-width: 600px) {
+      .notif-dropdown { width: calc(100vw - 32px); right: -8px; }
+    }
   </style>
 </head>
 <body>
@@ -260,6 +343,27 @@
       <nav class="nav" id="nav">
         <a href="mypage.html" class="nav-link">マイページ</a>
         <a href="index.html#tools" class="nav-link">AIツール</a>
+        <div class="notif-bell-wrap" id="notif-bell-wrap">
+          <button type="button" class="notif-bell-btn" id="notif-bell-btn" aria-label="通知">
+            🔔
+            <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
+          </button>
+          <div class="notif-dropdown" id="notif-dropdown" style="display:none;">
+            <div class="notif-dropdown-header">
+              <span>通知</span>
+              <button type="button" class="action-btn" id="notif-mark-all">すべて既読にする</button>
+            </div>
+            <div class="notif-list" id="notif-list"></div>
+            <div class="notif-add-note">
+              <button type="button" class="action-btn" id="notif-add-toggle">+ 管理者へのお知らせを追加</button>
+              <form id="notif-add-form" style="display:none;">
+                <input type="text" id="notif-add-title" placeholder="タイトル" required />
+                <textarea id="notif-add-body" placeholder="内容（任意）" rows="2"></textarea>
+                <button type="submit" class="btn btn-primary btn-sm">追加</button>
+              </form>
+            </div>
+          </div>
+        </div>
         <button class="nav-btn" id="header-logout">ログアウト</button>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="メニュー">
@@ -1082,6 +1186,143 @@
       applyInquiryFilters();
     }
 
+    // ===== 通知 =====
+    let allNotifications = [];
+
+    function notifIcon(type) {
+      if (type === 'signup') return '👤';
+      if (type === 'ai_consult') return '💬';
+      if (type === 'inquiry') return '📩';
+      return '📌';
+    }
+
+    function fmtDateTime(iso) {
+      if (!iso) return '-';
+      const d = new Date(iso);
+      return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    }
+
+    function renderNotifBadge() {
+      const unread = allNotifications.filter(n => !n.is_read).length;
+      const badge = document.getElementById('notif-badge');
+      if (unread > 0) {
+        badge.textContent = unread > 99 ? '99+' : unread;
+        badge.style.display = 'flex';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    function renderNotifList() {
+      const listEl = document.getElementById('notif-list');
+      if (!allNotifications.length) {
+        listEl.innerHTML = `<div class="notif-empty">通知はありません</div>`;
+        return;
+      }
+      listEl.innerHTML = allNotifications.slice(0, 20).map(n => `
+        <button type="button" class="notif-item ${n.is_read ? '' : 'unread'}" data-notif-id="${n.id}" data-notif-link="${escHtml(n.link || '')}">
+          <div class="notif-item-title">${!n.is_read ? '<span class="notif-dot"></span>' : ''}${notifIcon(n.type)} ${escHtml(n.title)}</div>
+          ${n.body ? `<div class="notif-item-body">${escHtml(n.body)}</div>` : ''}
+          <div class="notif-item-time">${fmtDateTime(n.created_at)}</div>
+        </button>
+      `).join('');
+
+      listEl.querySelectorAll('[data-notif-id]').forEach(btn => {
+        btn.addEventListener('click', () => onNotifClick(btn.dataset.notifId, btn.dataset.notifLink));
+      });
+    }
+
+    async function onNotifClick(id, link) {
+      const n = allNotifications.find(x => x.id === id);
+      if (n && !n.is_read) await markNotifRead(id);
+      if (link) {
+        const m = link.match(/tab=([\w-]+)/);
+        if (m) {
+          const tabBtn = document.querySelector(`.admin-tab-btn[data-tab="${m[1]}"]`);
+          if (tabBtn) tabBtn.click();
+        }
+      }
+      closeNotifDropdown();
+    }
+
+    async function markNotifRead(id) {
+      const { error } = await sbClient.from('notifications').update({ is_read: true }).eq('id', id);
+      if (error) { console.error(error); return; }
+      const n = allNotifications.find(x => x.id === id);
+      if (n) n.is_read = true;
+      renderNotifBadge();
+      renderNotifList();
+    }
+
+    async function markAllNotifRead() {
+      const unreadIds = allNotifications.filter(n => !n.is_read).map(n => n.id);
+      if (!unreadIds.length) return;
+      const { error } = await sbClient.from('notifications').update({ is_read: true }).in('id', unreadIds);
+      if (error) { console.error(error); return; }
+      allNotifications.forEach(n => n.is_read = true);
+      renderNotifBadge();
+      renderNotifList();
+    }
+
+    function openNotifDropdown() { document.getElementById('notif-dropdown').style.display = 'flex'; }
+    function closeNotifDropdown() {
+      document.getElementById('notif-dropdown').style.display = 'none';
+      document.getElementById('notif-add-form').style.display = 'none';
+    }
+
+    document.getElementById('notif-bell-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const dd = document.getElementById('notif-dropdown');
+      if (dd.style.display === 'flex') closeNotifDropdown();
+      else openNotifDropdown();
+    });
+    document.addEventListener('click', (e) => {
+      const wrap = document.getElementById('notif-bell-wrap');
+      if (wrap && !wrap.contains(e.target)) closeNotifDropdown();
+    });
+    document.getElementById('notif-mark-all').addEventListener('click', markAllNotifRead);
+
+    document.getElementById('notif-add-toggle').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const form = document.getElementById('notif-add-form');
+      form.style.display = form.style.display === 'flex' ? 'none' : 'flex';
+    });
+    document.getElementById('notif-add-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('notif-add-title').value.trim();
+      const body = document.getElementById('notif-add-body').value.trim();
+      if (!title) return;
+      const { error } = await sbClient.from('notifications').insert({ type: 'admin_note', title, body: body || null });
+      if (error) { showError(error.message); return; }
+      document.getElementById('notif-add-title').value = '';
+      document.getElementById('notif-add-body').value = '';
+      document.getElementById('notif-add-form').style.display = 'none';
+      await loadNotifications();
+    });
+
+    async function loadNotifications() {
+      const { data, error } = await sbClient
+        .from('notifications')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50);
+      if (error) { console.error(error); return; }
+      allNotifications = data;
+      renderNotifBadge();
+      renderNotifList();
+    }
+
+    function subscribeNotifications() {
+      sbClient
+        .channel('admin-notifications')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications' }, (payload) => {
+          allNotifications.unshift(payload.new);
+          renderNotifBadge();
+          renderNotifList();
+        })
+        .subscribe();
+    }
+
     // ===== 初期化 =====
     // requireAdmin() が未ログイン/非管理者を即リダイレクトする（本当の保護はDB側RLS）
     async function init() {
@@ -1092,7 +1333,8 @@
       document.getElementById('loading-state').style.display = 'none';
       document.getElementById('admin-content').style.display = 'block';
 
-      await Promise.all([loadMembers(), loadTools(), loadAnnouncements(), loadAiConsultations(), loadInquiries()]);
+      await Promise.all([loadMembers(), loadTools(), loadAnnouncements(), loadAiConsultations(), loadInquiries(), loadNotifications()]);
+      subscribeNotifications();
     }
     init();
 
