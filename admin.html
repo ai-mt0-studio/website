@@ -228,6 +228,33 @@
     .checkbox-row label { font-size: 0.88rem; color: var(--c-text-sub); }
     .form-actions { display: flex; gap: 10px; }
 
+    /* ===== ランキング（売上・人気ツール共通） ===== */
+    .ranking-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .ranking-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+    }
+    .ranking-rank {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--c-text-sub);
+      width: 28px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+    .ranking-item:nth-child(1) .ranking-rank { color: #fbbf24; }
+    .ranking-item:nth-child(2) .ranking-rank { color: #cbd5e1; }
+    .ranking-item:nth-child(3) .ranking-rank { color: #d97706; }
+    .ranking-name { flex: 1; font-size: 0.9rem; color: #fff; }
+    .ranking-value { font-size: 0.85rem; color: var(--c-text-sub); flex-shrink: 0; }
+    .ranking-empty { padding: 24px; text-align: center; color: var(--c-text-sub); font-size: 0.88rem; }
+
     .placeholder-card { padding: 48px; text-align: center; }
     .placeholder-card .icon { font-size: 2.2rem; margin-bottom: 16px; }
     .placeholder-card h3 { font-family: var(--font-display); color: #fff; margin-bottom: 8px; }
@@ -399,7 +426,7 @@
           <button class="cat-btn admin-tab-btn" data-tab="announcements">お知らせ管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="ai-consult">AI相談管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="inquiries">お問い合わせ管理</button>
-          <button class="cat-btn admin-tab-btn soon" data-tab="sales">売上管理<span class="soon-label">(今後対応)</span></button>
+          <button class="cat-btn admin-tab-btn" data-tab="sales">売上管理</button>
         </div>
 
         <!-- ===== ダッシュボード ===== -->
@@ -632,12 +659,74 @@
           <div class="admin-inquiry-list" id="admin-inquiry-list"></div>
         </div>
 
-        <!-- ===== 売上管理（今後対応） ===== -->
+        <!-- ===== 売上管理 ===== -->
         <div class="admin-panel" id="panel-sales">
-          <div class="placeholder-card glass-card">
-            <div class="icon">📊</div>
-            <h3>売上管理</h3>
-            <p>この機能は今後対応予定です。購入履歴（<code>purchases</code>テーブル）はすでに準備済みで、実装を待つのみです。</p>
+          <div class="admin-stats" id="sales-stats">
+            <div class="admin-stat glass-card">
+              <div class="admin-stat-num" id="sales-stat-today">¥0</div>
+              <div class="admin-stat-label">今日の売上</div>
+            </div>
+            <div class="admin-stat glass-card">
+              <div class="admin-stat-num" id="sales-stat-month">¥0</div>
+              <div class="admin-stat-label">今月の売上</div>
+            </div>
+            <div class="admin-stat glass-card">
+              <div class="admin-stat-num" id="sales-stat-total">¥0</div>
+              <div class="admin-stat-label">累計売上</div>
+            </div>
+            <div class="admin-stat glass-card">
+              <div class="admin-stat-num" id="sales-stat-count">0</div>
+              <div class="admin-stat-label">販売数</div>
+            </div>
+          </div>
+
+          <div class="crud-card glass-card">
+            <div class="crud-card-header">
+              <h3>人気商品ランキング</h3>
+            </div>
+            <ol class="ranking-list" id="sales-ranking-list"></ol>
+          </div>
+
+          <div class="crud-card glass-card">
+            <div class="crud-card-header">
+              <h3>売上を記録</h3>
+            </div>
+            <form id="sale-form">
+              <div class="form-group">
+                <label for="sale-product">商品名 <span class="required">*</span></label>
+                <input type="text" id="sale-product" placeholder="例：AI業務改善診断ツール" required />
+              </div>
+              <div class="form-group">
+                <label for="sale-amount">金額（円） <span class="required">*</span></label>
+                <input type="number" id="sale-amount" min="0" required />
+              </div>
+              <div class="form-group">
+                <label for="sale-date">販売日 <span class="required">*</span></label>
+                <input type="date" id="sale-date" required />
+              </div>
+              <div class="form-group">
+                <label for="sale-note">メモ（任意）</label>
+                <input type="text" id="sale-note" />
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="sale-submit">記録する</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="admin-table-wrap glass-card">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>商品名</th>
+                  <th>金額</th>
+                  <th>販売日</th>
+                  <th>メモ</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="sales-list"></tbody>
+            </table>
           </div>
         </div>
 
@@ -1404,6 +1493,112 @@
       applyInquiryFilters();
     }
 
+    // ===== 売上管理 =====
+    let allSales = [];
+
+    function ymd(d) {
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    function renderSalesStats(sales) {
+      const today = ymd(new Date());
+      const monthPrefix = today.slice(0, 7);
+      const todayTotal = sales.filter(s => s.sold_at === today).reduce((sum, s) => sum + Number(s.amount), 0);
+      const monthTotal = sales.filter(s => (s.sold_at || '').startsWith(monthPrefix)).reduce((sum, s) => sum + Number(s.amount), 0);
+      const allTotal = sales.reduce((sum, s) => sum + Number(s.amount), 0);
+
+      document.getElementById('sales-stat-today').textContent = '¥' + todayTotal.toLocaleString('ja-JP');
+      document.getElementById('sales-stat-month').textContent = '¥' + monthTotal.toLocaleString('ja-JP');
+      document.getElementById('sales-stat-total').textContent = '¥' + allTotal.toLocaleString('ja-JP');
+      document.getElementById('sales-stat-count').textContent = sales.length;
+    }
+
+    function renderSalesRanking(sales) {
+      const listEl = document.getElementById('sales-ranking-list');
+      if (!sales.length) {
+        listEl.innerHTML = `<div class="ranking-empty">まだ売上データがありません</div>`;
+        return;
+      }
+      const byProduct = {};
+      sales.forEach(s => {
+        if (!byProduct[s.product_name]) byProduct[s.product_name] = { count: 0, amount: 0 };
+        byProduct[s.product_name].count += 1;
+        byProduct[s.product_name].amount += Number(s.amount);
+      });
+      const ranked = Object.entries(byProduct).sort((a, b) => b[1].count - a[1].count).slice(0, 10);
+      listEl.innerHTML = ranked.map(([name, v], idx) => `
+        <li class="ranking-item">
+          <span class="ranking-rank">${idx + 1}</span>
+          <span class="ranking-name">${escHtml(name)}</span>
+          <span class="ranking-value">${v.count}件 ／ ¥${v.amount.toLocaleString('ja-JP')}</span>
+        </li>
+      `).join('');
+    }
+
+    function renderSalesList(sales) {
+      const listEl = document.getElementById('sales-list');
+      if (!sales.length) {
+        listEl.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--c-text-sub);">まだ売上データがありません</td></tr>`;
+        return;
+      }
+      listEl.innerHTML = sales.map(s => `
+        <tr>
+          <td><div class="member-name">${escHtml(s.product_name)}</div></td>
+          <td>¥${Number(s.amount).toLocaleString('ja-JP')}</td>
+          <td>${escHtml(s.sold_at)}</td>
+          <td class="cell-desc">${escHtml(s.note || '')}</td>
+          <td><button class="action-btn danger" data-delete-sale="${s.id}">削除</button></td>
+        </tr>
+      `).join('');
+
+      listEl.querySelectorAll('[data-delete-sale]').forEach(btn => {
+        btn.addEventListener('click', () => deleteSale(btn.dataset.deleteSale));
+      });
+    }
+
+    document.getElementById('sale-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('sale-submit');
+      const payload = {
+        product_name: document.getElementById('sale-product').value.trim(),
+        amount: Number(document.getElementById('sale-amount').value),
+        sold_at: document.getElementById('sale-date').value,
+        note: document.getElementById('sale-note').value.trim() || null,
+      };
+      if (!payload.product_name || !payload.sold_at) { showError('商品名と販売日は必須です。'); return; }
+
+      submitBtn.disabled = true;
+      const { error } = await sbClient.from('sales').insert({ ...payload, created_by: myUserId });
+      submitBtn.disabled = false;
+
+      if (error) { showError(error.message); return; }
+      showSuccess('売上を記録しました。');
+      document.getElementById('sale-form').reset();
+      document.getElementById('sale-date').value = ymd(new Date());
+      loadSales();
+    });
+
+    async function deleteSale(id) {
+      if (!confirm('この売上データを削除しますか？')) return;
+      const { error } = await sbClient.from('sales').delete().eq('id', id);
+      if (error) { showError(error.message); return; }
+      showSuccess('売上データを削除しました。');
+      loadSales();
+    }
+
+    async function loadSales() {
+      const { data: sales, error } = await sbClient
+        .from('sales')
+        .select('*')
+        .order('sold_at', { ascending: false });
+
+      if (error) { showError(error.message); return; }
+      allSales = sales;
+      renderSalesStats(sales);
+      renderSalesRanking(sales);
+      renderSalesList(sales);
+    }
+
     // ===== 通知 =====
     let allNotifications = [];
 
@@ -1552,7 +1747,9 @@
       document.getElementById('loading-state').style.display = 'none';
       document.getElementById('admin-content').style.display = 'block';
 
-      await Promise.all([loadMembers(), loadTools(), loadBlogPosts(), loadAnnouncements(), loadAiConsultations(), loadInquiries(), loadNotifications()]);
+      document.getElementById('sale-date').value = ymd(new Date());
+
+      await Promise.all([loadMembers(), loadTools(), loadBlogPosts(), loadAnnouncements(), loadAiConsultations(), loadInquiries(), loadSales(), loadNotifications()]);
       subscribeNotifications();
     }
     init();
