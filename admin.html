@@ -140,9 +140,9 @@
     }
     .consult-filters select option { background: #0a0d1a; color: var(--c-text); }
 
-    .admin-consult-list { display: flex; flex-direction: column; gap: 12px; }
-    .admin-consult-card { padding: 20px 24px; }
-    .admin-consult-head {
+    .admin-consult-list, .admin-inquiry-list { display: flex; flex-direction: column; gap: 12px; }
+    .admin-consult-card, .admin-inquiry-card { padding: 20px 24px; }
+    .admin-consult-head, .admin-inquiry-head {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -150,9 +150,20 @@
       margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .admin-consult-meta { font-size: 0.78rem; color: var(--c-text-sub); }
-    .admin-consult-meta strong { color: #fff; font-weight: 600; }
-    .admin-consult-question { font-size: 0.9rem; color: var(--c-text); white-space: pre-wrap; line-height: 1.7; margin-bottom: 14px; }
+    .admin-consult-meta, .admin-inquiry-meta { font-size: 0.78rem; color: var(--c-text-sub); }
+    .admin-consult-meta strong, .admin-inquiry-meta strong { color: #fff; font-weight: 600; }
+    .admin-consult-question, .admin-inquiry-message { font-size: 0.9rem; color: var(--c-text); white-space: pre-wrap; line-height: 1.7; margin-bottom: 14px; }
+    .admin-inquiry-status-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+    .admin-inquiry-status-row select {
+      padding: 8px 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      color: var(--c-text);
+      font-size: 0.85rem;
+    }
+    .admin-inquiry-status-row select option { background: #0a0d1a; color: var(--c-text); }
+    .sort-toggle-btn { display: inline-flex; align-items: center; gap: 6px; }
     .admin-consult-status-row { display: flex; align-items: center; gap: 10px; }
     .admin-consult-status-row select {
       padding: 8px 12px;
@@ -282,6 +293,7 @@
           <button class="cat-btn admin-tab-btn" data-tab="tools">ツール管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="announcements">お知らせ管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="ai-consult">AI相談管理</button>
+          <button class="cat-btn admin-tab-btn" data-tab="inquiries">お問い合わせ管理</button>
           <button class="cat-btn admin-tab-btn soon" data-tab="sales">売上管理<span class="soon-label">(今後対応)</span></button>
         </div>
 
@@ -438,6 +450,21 @@
             </select>
           </div>
           <div class="admin-consult-list" id="admin-consult-list"></div>
+        </div>
+
+        <!-- ===== お問い合わせ管理 ===== -->
+        <div class="admin-panel" id="panel-inquiries">
+          <div class="consult-filters">
+            <input type="text" class="admin-search" id="inquiry-search" placeholder="名前・会社名・メール・内容で検索" />
+            <select id="inquiry-status-filter">
+              <option value="">すべてのステータス</option>
+              <option value="未対応">未対応</option>
+              <option value="対応中">対応中</option>
+              <option value="完了">完了</option>
+            </select>
+            <button type="button" class="action-btn sort-toggle-btn" id="inquiry-sort-toggle">受信日時：新しい順 ↓</button>
+          </div>
+          <div class="admin-inquiry-list" id="admin-inquiry-list"></div>
         </div>
 
         <!-- ===== 売上管理（今後対応） ===== -->
@@ -957,6 +984,104 @@
       applyConsultFilters();
     }
 
+    // ===== お問い合わせ管理 =====
+    let allInquiries = [];
+    let inquirySortDesc = true;
+
+    function renderInquiries(items) {
+      const listEl = document.getElementById('admin-inquiry-list');
+      if (!items.length) {
+        listEl.innerHTML = `<div class="placeholder-card glass-card"><p style="color:var(--c-text-sub);">該当するお問い合わせはありません。</p></div>`;
+        return;
+      }
+
+      listEl.innerHTML = items.map(i => `
+        <div class="admin-inquiry-card glass-card">
+          <div class="admin-inquiry-head">
+            <div class="admin-inquiry-meta">
+              <strong>${escHtml(i.name)}</strong>${i.company ? '　' + escHtml(i.company) : ''}
+              　<a href="mailto:${escHtml(i.email)}" style="color:var(--c-blue);">${escHtml(i.email)}</a>
+              　${fmtDate(i.created_at)}
+            </div>
+            <span class="status-pill ${statusClass(i.status)}">${escHtml(i.status || '未対応')}</span>
+          </div>
+          <div class="admin-inquiry-message">${escHtml(i.message)}</div>
+          <div class="admin-inquiry-status-row">
+            <label style="font-size:0.82rem;color:var(--c-text-sub);">ステータス</label>
+            <select data-inquiry-id="${i.id}">
+              <option value="未対応" ${i.status === '未対応' ? 'selected' : ''}>未対応</option>
+              <option value="対応中" ${i.status === '対応中' ? 'selected' : ''}>対応中</option>
+              <option value="完了" ${i.status === '完了' ? 'selected' : ''}>完了</option>
+            </select>
+            <button class="action-btn danger" data-delete-inquiry="${i.id}">削除</button>
+          </div>
+        </div>
+      `).join('');
+
+      listEl.querySelectorAll('[data-inquiry-id]').forEach(sel => {
+        sel.addEventListener('change', () => updateInquiryStatus(sel.dataset.inquiryId, sel.value));
+      });
+      listEl.querySelectorAll('[data-delete-inquiry]').forEach(btn => {
+        btn.addEventListener('click', () => deleteInquiry(btn.dataset.deleteInquiry));
+      });
+    }
+
+    function applyInquiryFilters() {
+      const q = document.getElementById('inquiry-search').value.trim().toLowerCase();
+      const statusFilter = document.getElementById('inquiry-status-filter').value;
+      let filtered = allInquiries.filter(i => {
+        const matchesQuery = !q ||
+          i.name.toLowerCase().includes(q) ||
+          (i.company || '').toLowerCase().includes(q) ||
+          i.email.toLowerCase().includes(q) ||
+          i.message.toLowerCase().includes(q);
+        const matchesStatus = !statusFilter || i.status === statusFilter;
+        return matchesQuery && matchesStatus;
+      });
+      filtered = filtered.slice().sort((a, b) => {
+        const diff = new Date(a.created_at) - new Date(b.created_at);
+        return inquirySortDesc ? -diff : diff;
+      });
+      renderInquiries(filtered);
+    }
+
+    document.getElementById('inquiry-search').addEventListener('input', applyInquiryFilters);
+    document.getElementById('inquiry-status-filter').addEventListener('change', applyInquiryFilters);
+    document.getElementById('inquiry-sort-toggle').addEventListener('click', () => {
+      inquirySortDesc = !inquirySortDesc;
+      document.getElementById('inquiry-sort-toggle').textContent = inquirySortDesc ? '受信日時：新しい順 ↓' : '受信日時：古い順 ↑';
+      applyInquiryFilters();
+    });
+
+    async function updateInquiryStatus(id, status) {
+      const { error } = await sbClient
+        .from('inquiries')
+        .update({ status, updated_at: new Date().toISOString() })
+        .eq('id', id);
+      if (error) { showError(error.message); return; }
+      showSuccess('ステータスを更新しました。');
+      await loadInquiries();
+    }
+
+    async function deleteInquiry(id) {
+      if (!confirm('このお問い合わせを削除しますか？')) return;
+      const { error } = await sbClient.from('inquiries').delete().eq('id', id);
+      if (error) { showError(error.message); return; }
+      showSuccess('お問い合わせを削除しました。');
+      await loadInquiries();
+    }
+
+    async function loadInquiries() {
+      const { data: items, error } = await sbClient
+        .from('inquiries')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) { showError(error.message); return; }
+      allInquiries = items;
+      applyInquiryFilters();
+    }
+
     // ===== 初期化 =====
     // requireAdmin() が未ログイン/非管理者を即リダイレクトする（本当の保護はDB側RLS）
     async function init() {
@@ -967,7 +1092,7 @@
       document.getElementById('loading-state').style.display = 'none';
       document.getElementById('admin-content').style.display = 'block';
 
-      await Promise.all([loadMembers(), loadTools(), loadAnnouncements(), loadAiConsultations()]);
+      await Promise.all([loadMembers(), loadTools(), loadAnnouncements(), loadAiConsultations(), loadInquiries()]);
     }
     init();
 

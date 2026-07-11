@@ -171,21 +171,17 @@
       color: var(--c-text-sub);
     }
 
-    /* iFrame wrapper */
-    .gform-wrapper {
-      position: relative;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--glass-border);
+    /* お問い合わせフォーム */
+    #contact-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .auth-error, .auth-success {
+      display: none;
+      font-size: 0.85rem;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 20px;
     }
-    .gform-wrapper iframe {
-      display: block;
-      width: 100%;
-      height: 820px;
-      border: none;
-      color-scheme: light; /* Googleフォームは白背景のため */
-    }
+    .auth-error { color: #f87171; background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25); }
+    .auth-success { color: #22c55e; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25); }
 
     /* フォーム下注記 */
     .form-footer-note {
@@ -304,13 +300,29 @@
               <p class="form-card-sub">フォームに入力して送信してください。折り返しご連絡いたします。</p>
             </div>
 
-            <div class="gform-wrapper">
-              <iframe
-                src="https://docs.google.com/forms/d/e/1FAIpQLSfwtBqspNWWsdzW-WdN6Tq4iZ7B_RQvRFuIC2w9wONDOx3CRw/viewform?embedded=true"
-                title="お問い合わせフォーム"
-                loading="lazy"
-              >読み込んでいます…</iframe>
-            </div>
+            <div class="auth-error" id="contact-error"></div>
+            <div class="auth-success" id="contact-success"></div>
+
+            <form id="contact-form">
+              <input type="text" id="contact-honeypot" name="company_website" tabindex="-1" autocomplete="off" />
+              <div class="form-group">
+                <label for="contact-name">お名前 <span class="required">*</span></label>
+                <input type="text" id="contact-name" required />
+              </div>
+              <div class="form-group">
+                <label for="contact-company">会社名（任意）</label>
+                <input type="text" id="contact-company" />
+              </div>
+              <div class="form-group">
+                <label for="contact-email">メールアドレス <span class="required">*</span></label>
+                <input type="email" id="contact-email" required />
+              </div>
+              <div class="form-group">
+                <label for="contact-message">お問い合わせ内容 <span class="required">*</span></label>
+                <textarea id="contact-message" rows="6" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-full" id="contact-submit">送信する</button>
+            </form>
 
             <p class="form-footer-note">
               送信いただいた情報はお問い合わせへの返信にのみ使用します。詳しくは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。
@@ -365,6 +377,54 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
   <script src="script.js"></script>
+  <script>
+    const contactErrorEl = document.getElementById('contact-error');
+    const contactSuccessEl = document.getElementById('contact-success');
+    function showContactError(msg) {
+      contactErrorEl.textContent = msg;
+      contactErrorEl.style.display = 'block';
+      contactSuccessEl.style.display = 'none';
+    }
+    function showContactSuccess(msg) {
+      contactSuccessEl.textContent = msg;
+      contactSuccessEl.style.display = 'block';
+      contactErrorEl.style.display = 'none';
+    }
+
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (document.getElementById('contact-honeypot').value) return; // ボット対策
+
+      const submitBtn = document.getElementById('contact-submit');
+      const payload = {
+        name: document.getElementById('contact-name').value.trim(),
+        company: document.getElementById('contact-company').value.trim() || null,
+        email: document.getElementById('contact-email').value.trim(),
+        message: document.getElementById('contact-message').value.trim(),
+      };
+
+      if (!payload.name || !payload.email || !payload.message) {
+        showContactError('お名前・メールアドレス・お問い合わせ内容は必須です。');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = '送信中...';
+
+      const { error } = await sbClient.from('inquiries').insert(payload);
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送信する';
+
+      if (error) { showContactError('送信に失敗しました。時間をおいて再度お試しください。'); console.error(error); return; }
+
+      showContactSuccess('お問い合わせを受け付けました。通常24時間以内にご返信します。');
+      document.getElementById('contact-form').reset();
+    });
+  </script>
 </body>
 </html>
