@@ -955,7 +955,17 @@
     // ===== ユーザー管理 =====
     function renderMembers(members) {
       const listEl = document.getElementById('member-list');
-      listEl.innerHTML = members.map(m => `
+      const adminCount = allMembers.filter(m => m.is_admin).length;
+      listEl.innerHTML = members.map(m => {
+        const isSelf = m.id === myUserId;
+        const isLastAdmin = m.is_admin && adminCount <= 1;
+        let disabledAttr = '';
+        if (isSelf) {
+          disabledAttr = 'disabled title="自分の権限は変更できません"';
+        } else if (isLastAdmin) {
+          disabledAttr = 'disabled title="最後の管理者の権限は外せません"';
+        }
+        return `
         <tr>
           <td>
             <div class="member-name">${escHtml(m.display_name || m.email.split('@')[0])}</div>
@@ -964,12 +974,13 @@
           <td>${fmtDate(m.created_at)}</td>
           <td><span class="admin-pill ${m.is_admin ? 'yes' : 'no'}">${m.is_admin ? '管理者' : '一般会員'}</span></td>
           <td>
-            <button class="action-btn toggle-admin-btn" data-id="${m.id}" data-admin="${m.is_admin}" ${m.id === myUserId ? 'disabled title="自分の権限は変更できません"' : ''}>
+            <button class="action-btn toggle-admin-btn" data-id="${m.id}" data-admin="${m.is_admin}" ${disabledAttr}>
               ${m.is_admin ? '権限を外す' : '管理者にする'}
             </button>
           </td>
         </tr>
-      `).join('');
+      `;
+      }).join('');
 
       listEl.querySelectorAll('.toggle-admin-btn').forEach(btn => {
         btn.addEventListener('click', () => toggleAdmin(btn));
