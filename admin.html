@@ -221,8 +221,8 @@
       font-weight: 600;
       color: #fff;
     }
-    #tool-form, #announcement-form { display: none; }
-    #tool-form.open, #announcement-form.open { display: block; }
+    #tool-form, #announcement-form, #blog-form { display: none; }
+    #tool-form.open, #announcement-form.open, #blog-form.open { display: block; }
     .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
     .checkbox-row input { width: 16px; height: 16px; }
     .checkbox-row label { font-size: 0.88rem; color: var(--c-text-sub); }
@@ -395,6 +395,7 @@
           <button class="cat-btn admin-tab-btn active" data-tab="dashboard">ダッシュボード</button>
           <button class="cat-btn admin-tab-btn" data-tab="users">ユーザー管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="tools">ツール管理</button>
+          <button class="cat-btn admin-tab-btn" data-tab="blog">ブログ管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="announcements">お知らせ管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="ai-consult">AI相談管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="inquiries">お問い合わせ管理</button>
@@ -494,6 +495,66 @@
                 </tr>
               </thead>
               <tbody id="tool-list"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== ブログ管理 ===== -->
+        <div class="admin-panel" id="panel-blog">
+          <div class="crud-card glass-card">
+            <div class="crud-card-header">
+              <h3>記事一覧</h3>
+              <button class="btn btn-glass btn-sm" id="blog-add-toggle">+ 新規作成</button>
+            </div>
+
+            <form id="blog-form">
+              <input type="hidden" id="blog-id" />
+              <div class="form-group">
+                <label for="blog-title">タイトル <span class="required">*</span></label>
+                <input type="text" id="blog-title" required />
+              </div>
+              <div class="form-group">
+                <label for="blog-slug">スラッグ（URL用、英数字）<span class="required">*</span></label>
+                <input type="text" id="blog-slug" required />
+              </div>
+              <div class="form-group">
+                <label for="blog-category">カテゴリ</label>
+                <select id="blog-category">
+                  <option value="ai">AI</option>
+                  <option value="side">副業</option>
+                  <option value="web">Web開発</option>
+                  <option value="tools">ツール紹介</option>
+                  <option value="update">アップデート</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="blog-summary">要約</label>
+                <textarea id="blog-summary" rows="2"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="blog-content">本文（HTML）</label>
+                <textarea id="blog-content" rows="10" placeholder="&lt;h2&gt;見出し&lt;/h2&gt;&lt;p&gt;本文...&lt;/p&gt;"></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-glass" id="blog-submit-draft" data-status="draft">下書き保存</button>
+                <button type="submit" class="btn btn-primary" id="blog-submit-publish" data-status="published">公開する</button>
+                <button type="button" class="btn btn-glass" id="blog-cancel">キャンセル</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="admin-table-wrap glass-card">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>タイトル</th>
+                  <th>カテゴリ</th>
+                  <th>公開日</th>
+                  <th>状態</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="blog-list"></tbody>
             </table>
           </div>
         </div>
@@ -866,6 +927,163 @@
       });
     }
 
+    // ===== ブログ管理 =====
+    const BLOG_CATEGORY_LABELS = { ai: 'AI', side: '副業', web: 'Web開発', tools: 'ツール紹介', update: 'アップデート' };
+    const blogForm = document.getElementById('blog-form');
+    let allBlogPosts = [];
+    let blogSlugTouched = false;
+
+    document.getElementById('blog-add-toggle').addEventListener('click', () => {
+      resetBlogForm();
+      blogForm.classList.toggle('open');
+    });
+    document.getElementById('blog-cancel').addEventListener('click', () => {
+      resetBlogForm();
+      blogForm.classList.remove('open');
+    });
+
+    function slugify(title) {
+      const base = title
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      return base || 'post-' + Date.now();
+    }
+
+    document.getElementById('blog-title').addEventListener('input', (e) => {
+      if (blogSlugTouched) return;
+      document.getElementById('blog-slug').value = slugify(e.target.value);
+    });
+    document.getElementById('blog-slug').addEventListener('input', () => { blogSlugTouched = true; });
+
+    function resetBlogForm() {
+      document.getElementById('blog-id').value = '';
+      document.getElementById('blog-title').value = '';
+      document.getElementById('blog-slug').value = '';
+      document.getElementById('blog-category').value = 'ai';
+      document.getElementById('blog-summary').value = '';
+      document.getElementById('blog-content').value = '';
+      blogSlugTouched = false;
+    }
+
+    function editBlogPost(post) {
+      document.getElementById('blog-id').value = post.id;
+      document.getElementById('blog-title').value = post.title;
+      document.getElementById('blog-slug').value = post.slug;
+      document.getElementById('blog-category').value = post.category;
+      document.getElementById('blog-summary').value = post.summary || '';
+      document.getElementById('blog-content').value = post.content || '';
+      blogSlugTouched = true;
+      blogForm.classList.add('open');
+      blogForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    async function submitBlogForm(status) {
+      const id = document.getElementById('blog-id').value;
+      const category = document.getElementById('blog-category').value;
+      const payload = {
+        title: document.getElementById('blog-title').value.trim(),
+        slug: document.getElementById('blog-slug').value.trim(),
+        category,
+        category_label: BLOG_CATEGORY_LABELS[category] || category,
+        summary: document.getElementById('blog-summary').value.trim(),
+        content: document.getElementById('blog-content').value,
+        status,
+        updated_at: new Date().toISOString(),
+      };
+      if (!payload.title || !payload.slug) { showError('タイトルとスラッグは必須です。'); return; }
+      if (status === 'published') {
+        const existing = id ? allBlogPosts.find(p => p.id === id) : null;
+        if (!(existing && existing.published_at)) payload.published_at = new Date().toISOString();
+      }
+
+      const { error } = id
+        ? await sbClient.from('blog_posts').update(payload).eq('id', id)
+        : await sbClient.from('blog_posts').insert({ ...payload, created_by: myUserId });
+
+      if (error) { showError(error.message); return; }
+      showSuccess(status === 'published' ? '記事を公開しました。' : '下書きを保存しました。');
+      resetBlogForm();
+      blogForm.classList.remove('open');
+      loadBlogPosts();
+    }
+
+    blogForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const status = e.submitter && e.submitter.dataset.status === 'published' ? 'published' : 'draft';
+      submitBlogForm(status);
+    });
+
+    async function deleteBlogPost(id) {
+      if (!confirm('この記事を削除しますか？')) return;
+      const { error } = await sbClient.from('blog_posts').delete().eq('id', id);
+      if (error) { showError(error.message); return; }
+      showSuccess('記事を削除しました。');
+      loadBlogPosts();
+    }
+
+    async function toggleBlogPublished(post) {
+      const nextStatus = post.status === 'published' ? 'draft' : 'published';
+      const payload = { status: nextStatus, updated_at: new Date().toISOString() };
+      if (nextStatus === 'published' && !post.published_at) payload.published_at = new Date().toISOString();
+
+      const { error } = await sbClient.from('blog_posts').update(payload).eq('id', post.id);
+      if (error) { showError(error.message); return; }
+      showSuccess('公開状態を更新しました。');
+      loadBlogPosts();
+    }
+
+    async function loadBlogPosts() {
+      const { data: posts, error } = await sbClient
+        .from('blog_posts')
+        .select('*')
+        .order('updated_at', { ascending: false });
+
+      if (error) { showError(error.message); return; }
+      allBlogPosts = posts;
+
+      const listEl = document.getElementById('blog-list');
+      if (!posts.length) {
+        listEl.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--c-text-sub);">まだ記事がありません</td></tr>`;
+        return;
+      }
+      listEl.innerHTML = posts.map(p => `
+        <tr>
+          <td>
+            <div class="member-name">${escHtml(p.title)}</div>
+            <div class="cell-desc">${escHtml(p.summary || '')}</div>
+          </td>
+          <td>${escHtml(p.category_label || p.category)}</td>
+          <td>${fmtDate(p.published_at)}</td>
+          <td><span class="admin-pill ${p.status === 'published' ? 'on' : 'no'}">${p.status === 'published' ? '公開中' : '下書き'}</span></td>
+          <td>
+            <div class="row-actions">
+              <button class="action-btn" data-toggle-blog="${p.id}">${p.status === 'published' ? '下書きに戻す' : '公開する'}</button>
+              <button class="action-btn" data-edit-blog="${p.id}">編集</button>
+              <button class="action-btn danger" data-delete-blog="${p.id}">削除</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      listEl.querySelectorAll('[data-edit-blog]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const p = posts.find(x => x.id === btn.dataset.editBlog);
+          if (p) editBlogPost(p);
+        });
+      });
+      listEl.querySelectorAll('[data-delete-blog]').forEach(btn => {
+        btn.addEventListener('click', () => deleteBlogPost(btn.dataset.deleteBlog));
+      });
+      listEl.querySelectorAll('[data-toggle-blog]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const p = posts.find(x => x.id === btn.dataset.toggleBlog);
+          if (p) toggleBlogPublished(p);
+        });
+      });
+    }
+
     // ===== お知らせ管理 =====
     const announcementForm = document.getElementById('announcement-form');
     document.getElementById('announcement-add-toggle').addEventListener('click', () => {
@@ -1193,6 +1411,7 @@
       if (type === 'signup') return '👤';
       if (type === 'ai_consult') return '💬';
       if (type === 'inquiry') return '📩';
+      if (type === 'blog_published') return '📝';
       return '📌';
     }
 
@@ -1333,7 +1552,7 @@
       document.getElementById('loading-state').style.display = 'none';
       document.getElementById('admin-content').style.display = 'block';
 
-      await Promise.all([loadMembers(), loadTools(), loadAnnouncements(), loadAiConsultations(), loadInquiries(), loadNotifications()]);
+      await Promise.all([loadMembers(), loadTools(), loadBlogPosts(), loadAnnouncements(), loadAiConsultations(), loadInquiries(), loadNotifications()]);
       subscribeNotifications();
     }
     init();

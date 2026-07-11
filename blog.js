@@ -3,7 +3,7 @@
    記事データを blog.json から読み込み、各ページに描画する
    ============================================ */
 
-async function fetchBlogData() {
+async function fetchStaticBlogData() {
   try {
     const res = await fetch('blog.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -12,6 +12,47 @@ async function fetchBlogData() {
     console.error('blog.json の読み込みに失敗しました:', e);
     return { articles: [] };
   }
+}
+
+// 管理画面（admin.html ブログ管理）で作成された記事を取得
+async function fetchSupabaseBlogPosts() {
+  if (typeof sbClient === 'undefined') return [];
+  try {
+    const { data, error } = await sbClient
+      .from('blog_posts')
+      .select('*')
+      .eq('status', 'published')
+      .order('published_at', { ascending: false });
+    if (error) throw error;
+    return (data || []).map(function (p) {
+      var d = new Date(p.published_at || p.created_at);
+      return {
+        id: p.slug,
+        title: p.title,
+        category: p.category,
+        categoryLabel: p.category_label,
+        date: d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0'),
+        summary: p.summary,
+        content: p.content,
+      };
+    });
+  } catch (e) {
+    console.error('blog_posts の読み込みに失敗しました:', e);
+    return [];
+  }
+}
+
+// blog.json（既存のアーカイブ記事）と Supabase blog_posts（管理画面で作成した記事）をマージして返す
+async function fetchBlogData() {
+  const [staticData, supabaseArticles] = await Promise.all([
+    fetchStaticBlogData(),
+    fetchSupabaseBlogPosts(),
+  ]);
+  const articles = staticData.articles.concat(supabaseArticles);
+  articles.sort(function (a, b) {
+    return new Date(String(b.date).replace(/\./g, '-')) - new Date(String(a.date).replace(/\./g, '-'));
+  });
+  return { articles: articles };
 }
 
 function createBlogCard(article, readMoreUrl) {
