@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI MT0 Studioのよくある質問。会員登録・料金・AI相談・AIツールについてのご質問にお答えします。" />
+  <title>よくある質問 | AI MT0 Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .policy-hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .policy-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(79,142,247,0.12), transparent 70%);
+      pointer-events: none;
+    }
+    .policy-hero .section-eyebrow { margin-bottom: 16px; }
+    .policy-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .policy-hero p {
+      color: var(--c-text-sub);
+      font-size: 0.95rem;
+    }
+    .policy-body { padding: 0 0 120px; }
+
+    /* ===== カテゴリジャンプナビ ===== */
+    .faq-jump {
+      max-width: 800px;
+      margin: 0 auto 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .faq-jump a {
+      font-size: 0.82rem;
+      color: var(--c-text-sub);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      padding: 8px 18px;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .faq-jump a:hover {
+      color: #fff;
+      border-color: var(--c-blue);
+      background: rgba(79,142,247,0.08);
+    }
+
+    .faq-wrap { max-width: 800px; margin: 0 auto; }
+    .faq-category { margin-bottom: 40px; scroll-margin-top: 100px; }
+    .faq-category:last-child { margin-bottom: 0; }
+    .faq-category-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .faq-category-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 18px;
+      background: var(--grad-primary);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ===== アコーディオン ===== */
+    .faq-item {
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.02);
+      overflow: hidden;
+    }
+    .faq-item[open] {
+      border-color: rgba(79,142,247,0.3);
+    }
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #fff;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::marker { content: ''; }
+    .faq-q-mark {
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--grad-primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .faq-q-text { flex: 1; line-height: 1.6; }
+    .faq-arrow {
+      flex-shrink: 0;
+      color: var(--c-text-sub);
+      font-size: 0.8rem;
+      transition: transform .25s ease;
+    }
+    .faq-item[open] .faq-arrow { transform: rotate(180deg); color: var(--c-blue); }
+    .faq-answer {
+      padding: 0 24px 22px 64px;
+      display: flex;
+      gap: 14px;
+    }
+    .faq-a-mark {
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      margin-left: -64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      color: var(--c-text-sub);
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .faq-answer p {
+      font-size: 0.9rem;
+      color: var(--c-text-sub);
+      line-height: 1.9;
+      margin: 0;
+    }
+
+    .faq-cta {
+      max-width: 800px;
+      margin: 56px auto 0;
+      text-align: center;
+      padding: 40px;
+    }
+    .faq-cta h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .faq-cta p {
+      font-size: 0.88rem;
+      color: var(--c-text-sub);
+      margin-bottom: 24px;
+    }
+    .faq-cta-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .policy-hero { padding: 140px 0 60px; }
+      .faq-answer { padding: 0 20px 20px 20px; }
+      .faq-a-mark { display: none; }
+      .faq-item summary { padding: 18px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="index.html#blog" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="index.html#contact" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="policy-hero">
+    <div class="container">
+      <span class="section-eyebrow">FAQ</span>
+      <h1>よくある質問</h1>
+      <p>AI MT0 Studioに関するご質問にお答えします</p>
+    </div>
+  </section>
+
+  <!-- ========== FAQ CONTENT ========== -->
+  <section class="policy-body">
+    <div class="container">
+
+      <nav class="faq-jump" aria-label="カテゴリ">
+        <a href="#cat-service">サービスについて</a>
+        <a href="#cat-account">会員登録・料金</a>
+        <a href="#cat-consult">AI相談</a>
+        <a href="#cat-tools">AIツール</a>
+        <a href="#cat-other">その他</a>
+      </nav>
+
+      <div class="faq-wrap">
+
+        <div class="faq-category" id="cat-service">
+          <h2 class="faq-category-title">サービスについて</h2>
+          <div class="faq-list">
+
+            <details class="faq-item" open>
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">AI MT0 Studioとは何ですか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>AI業務効率化ツールの提供とAI相談サービスを行うプラットフォームです。無料・有料のAIツールをご利用いただけるほか、AI活用に関するお悩みをご相談いただけます。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">AI初心者でも利用できますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>はい、専門知識がなくてもご利用いただけるよう設計されています。ご不明な点はAI相談からお気軽にお問い合わせください。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">法人でも利用・依頼できますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>はい、個人・法人問わずご利用いただけます。</p>
+              </div>
+            </details>
+
+          </div>
+        </div>
+
+        <div class="faq-category" id="cat-account">
+          <h2 class="faq-category-title">会員登録・料金</h2>
+          <div class="faq-list">
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">無料で利用できますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>はい、会員登録・一部のAIツール・初回のAI相談は無料でご利用いただけます。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">会員登録は無料ですか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>はい、会員登録に費用はかかりません。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">会員登録すると何ができますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>マイページでのプロフィール編集、お気に入りツールの登録、AI相談履歴の確認などがご利用いただけます。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">無料ツールと有料ツールの違いは何ですか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>無料ツールは基本機能を無償でご利用いただけます。有料ツールはより高度な機能や個別カスタマイズに対応しており、料金は各商品ページをご確認ください。</p>
+              </div>
+            </details>
+
+          </div>
+        </div>
+
+        <div class="faq-category" id="cat-consult">
+          <h2 class="faq-category-title">AI相談</h2>
+          <div class="faq-list">
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">初回相談は無料ですか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>はい、初回のAI相談は無料です。2回目以降のご相談は有料となり、詳細は個別にご案内いたします。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">AI相談ではどんな内容を相談できますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>業務効率化やAI活用に関するお悩み全般についてご相談いただけます（例：「どこから始めればいいか分からない」「こんな自動化はできるか」など）。</p>
+              </div>
+            </details>
+
+          </div>
+        </div>
+
+        <div class="faq-category" id="cat-tools">
+          <h2 class="faq-category-title">AIツール</h2>
+          <div class="faq-list">
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">オーダーメイドAIツールとは何ですか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>個人・法人問わず、お客様のご要望をお伺いした上で、業務内容に合わせたAIツールを個別に開発するサービスです。まずはお問い合わせいただければ、内容をヒアリングした上で対応させていただきます。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">商用利用はできますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>はい、AIツールで作成した成果物は商用利用いただけます。</p>
+              </div>
+            </details>
+
+          </div>
+        </div>
+
+        <div class="faq-category" id="cat-other">
+          <h2 class="faq-category-title">その他</h2>
+          <div class="faq-list">
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">お問い合わせの返信はどれくらいで届きますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>できる限り当日中にご返信するよう努めておりますが、内容によっては1日程度お時間をいただく場合がございます。</p>
+              </div>
+            </details>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="faq-cta glass-card">
+        <h3>ご不明な点がございましたら</h3>
+        <p>解決しないお悩みは、お問い合わせまたはAI相談からお気軽にご連絡ください。</p>
+        <div class="faq-cta-btns">
+          <a href="contact.html" class="btn btn-glass">お問い合わせ</a>
+          <a href="consult.html" class="btn btn-primary">AI相談をしてみる</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="#" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="#" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="index.html#blog">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="index.html#contact">お問い合わせ</a>
+          <a href="consult.html">AI相談</a>
+          <a href="faq.html">よくある質問</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+          <a href="tokushoho.html">特定商取引法に基づく表記</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // サブページではヘッダーを常にscrolledスタイルに
+    document.getElementById('header').classList.add('scrolled');
+  </script>
+</body>
+</html>
