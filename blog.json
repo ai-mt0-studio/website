@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "ai-consult-guide-2026",
+      "title": "AI相談、こんな方におすすめ｜初めての方でも安心な理由",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "date": "2026.07.12",
+      "summary": "初回相談無料・個人法人問わず対応・相談内容は本人と管理者のみ閲覧可能。AI相談サービスを初めての方にも安心してご利用いただける理由と、実際によくある相談内容を紹介します。",
+      "url": "blog-ai-consult-guide.html"
+    },
+    {
+      "id": "transparency-2026-07",
+      "title": "安心してご利用いただくために｜AI MT0 Studioの透明性への取り組み",
+      "category": "update",
+      "categoryLabel": "アップデート",
+      "date": "2026.07.11",
+      "summary": "特定商取引法に基づく表記の整備、プライバシーポリシー・利用規約の最新化、よくある質問(FAQ)ページの新設など、安心してご利用いただくための取り組みをご紹介します。",
+      "url": "blog-transparency.html"
+    },
+    {
       "id": "ai-side-job-start-2026",
       "title": "AIツールで始める副業｜初心者でもできる自動化のはじめ方",
       "category": "side",
