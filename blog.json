@@ -1,6 +1,15 @@
 {
   "articles": [
     {
+      "id": "sme-ai-adoption-guide-2026",
+      "title": "【2026年最新】中小企業のAI導入、何から始める?補助金活用と失敗しない選び方",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "date": "2026.07.13",
+      "summary": "2026年新設「デジタル化・AI導入補助金」の概要から、AI導入でよくある失敗、失敗しない鉄則、パイロット導入から全社展開までの3ステップを解説。中小企業のAI導入・業務効率化の第一歩に。",
+      "url": "blog-ai-adoption-guide.html"
+    },
+    {
       "id": "ai-consult-guide-2026",
       "title": "AI相談、こんな方におすすめ｜初めての方でも安心な理由",
       "category": "ai",
