@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="文章作成が苦手な人でも、AI SNS投稿の作成なら数分で完成します。AIツールを使ったSNS運用の効率化を4ステップで解説。投稿例とハッシュタグ付けのコツも紹介します。" />
+  <title>AIでSNS投稿を10分で作る方法｜文章作成が苦手な人向け | AI MT0 Studio</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AIでSNS投稿を10分で作る方法｜文章作成が苦手な人向け",
+    "description": "文章作成が苦手な人でも、AI SNS投稿の作成なら数分で完成します。AIツールを使ったSNS運用の効率化を4ステップで解説。投稿例とハッシュタグ付けのコツも紹介します。",
+    "datePublished": "2026-07-14",
+    "author": { "@type": "Organization", "name": "AI MT0 Studio" },
+    "publisher": { "@type": "Organization", "name": "AI MT0 Studio" },
+    "url": "https://profound-pie-e55477.netlify.app/blog-sns-post-ai.html"
+  }
+  </script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ========== 記事ヘッダー ========== */
+    .post-hero {
+      padding: 140px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .post-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(79,142,247,0.1), transparent 70%);
+      pointer-events: none;
+    }
+    .post-hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      margin-bottom: 28px;
+      transition: var(--transition);
+    }
+    .post-back:hover { color: var(--c-blue); }
+    .post-cat-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 50px;
+      background: rgba(79,142,247,0.12);
+      color: var(--c-blue);
+      border: 1px solid rgba(79,142,247,0.25);
+      margin-bottom: 20px;
+    }
+    #post-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 20px;
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+    }
+
+    /* ========== 記事本文 ========== */
+    .post-body-section { padding: 0 0 120px; }
+    .post-layout {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .post-card {
+      padding: 48px 56px;
+      margin-bottom: 32px;
+    }
+    #post-body h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 36px 0 14px;
+      padding-left: 14px;
+      border-left: 3px solid var(--c-blue);
+    }
+    #post-body h2:first-child { margin-top: 0; }
+    #post-body p {
+      font-size: 0.95rem;
+      color: var(--c-text-sub);
+      line-height: 1.95;
+      margin-bottom: 16px;
+    }
+    #post-body ul {
+      list-style: none;
+      margin: 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    #post-body ul li {
+      font-size: 0.92rem;
+      color: var(--c-text-sub);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.8;
+    }
+    #post-body ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--c-blue);
+      font-size: 0.75rem;
+      top: 4px;
+    }
+    #post-body a {
+      color: var(--c-blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: var(--transition);
+    }
+    #post-body a:hover { color: var(--c-purple2); }
+    #post-body strong { color: var(--c-text); font-weight: 600; }
+
+    /* ========== ステップ ========== */
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 8px 0 20px;
+    }
+    .step-item {
+      display: flex;
+      gap: 16px;
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(79,142,247,0.15);
+      color: var(--c-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .step-item h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .step-item p {
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* ========== 投稿サンプル ========== */
+    .post-sample {
+      margin: 8px 0 24px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+      overflow: hidden;
+    }
+    .post-sample-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--glass-border);
+      background: rgba(79,142,247,0.06);
+    }
+    .post-sample-icon {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--grad-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .post-sample-biz {
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .post-sample-platform {
+      margin-left: auto;
+      font-size: 0.72rem;
+      color: var(--c-text-sub);
+      padding: 3px 10px;
+      border-radius: 50px;
+      border: 1px solid var(--glass-border);
+    }
+    .post-sample-body {
+      padding: 18px 20px;
+      font-size: 0.9rem;
+      color: var(--c-text);
+      line-height: 1.85;
+      white-space: pre-line;
+    }
+    .post-sample-tags {
+      padding: 0 20px 18px;
+      font-size: 0.85rem;
+      color: var(--c-blue);
+      line-height: 1.8;
+    }
+
+    /* ========== 注記 ========== */
+    .post-note {
+      font-size: 0.82rem;
+      color: var(--c-text-sub);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: -4px 0 20px;
+      line-height: 1.7;
+    }
+
+    /* ========== CTA ========== */
+    .post-cta {
+      padding: 36px 40px;
+      text-align: center;
+      border-color: rgba(79,142,247,0.2);
+    }
+    .post-cta h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .post-cta p {
+      font-size: 0.9rem;
+      color: var(--c-text-sub);
+      margin-bottom: 24px;
+    }
+    .post-cta-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .post-card { padding: 32px 20px; }
+      .post-cta { padding: 28px 20px; }
+      .post-hero { padding: 120px 0 48px; }
+      .step-item { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="blog.html" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== 記事ヘッダー ========== -->
+  <section class="post-hero">
+    <div class="container">
+      <div class="post-hero-inner">
+
+        <a href="blog.html" class="post-back">← ブログ一覧へ戻る</a>
+
+        <div class="post-cat-label" data-cat="tools">ツール紹介</div>
+
+        <h1 id="post-title">AIでSNS投稿を10分で作る方法｜文章作成が苦手な人向け</h1>
+
+        <div class="post-meta">
+          <span>2026.07.14</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 記事本文 ========== -->
+  <section class="post-body-section">
+    <div class="container">
+      <div class="post-layout">
+
+        <div class="post-card glass-card">
+          <div id="post-body">
+
+            <h2>「投稿文を考える時間がかかる」というSNS運用のお悩み</h2>
+            <p>SNS運用担当者からよく聞くのが、「投稿すること自体より、投稿文を考える時間の方が長い」という悩みです。ネタは決まっているのに、書き出しが思いつかない。文章作成が苦手で、何度も書き直してしまう。そうこうしているうちに投稿頻度が落ちてしまう、という会社は少なくありません。</p>
+            <p>この記事では、AI SNS投稿の作成ツールを使って、投稿文を10分程度で作る具体的な手順を紹介します。SNS運用の効率化を考えている方は、ぜひ参考にしてください。</p>
+
+            <h2>AIで投稿文を作る4ステップ</h2>
+            <div class="step-list">
+              <div class="step-item">
+                <div class="step-num">1</div>
+                <div>
+                  <h4>投稿の目的とターゲットを決める</h4>
+                  <p>「新商品の告知」「セミナー集客」「日常の雰囲気を伝える」など、投稿の目的を一言で決めます。誰に届けたいかもあわせて決めておくと、AIに指示するときの精度が上がります。</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">2</div>
+                <div>
+                  <h4>AIツールにテーマを入力してたたき台を生成</h4>
+                  <p><a href="sns-tool.html">SNS投稿自動生成ツール</a>にテーマを入力すると、X・Instagram・Facebook・LinkedIn向けの投稿文をAIが自動生成します。1〜2分もあれば複数パターンのたたき台が手に入ります。</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">3</div>
+                <div>
+                  <h4>媒体・トーンに合わせて調整</h4>
+                  <p>生成された文章の中から気に入ったものを選び、文字数・絵文字の量・語尾のトーンを媒体に合わせて微調整します。ゼロから書くより圧倒的に短い時間で仕上がります。</p>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">4</div>
+                <div>
+                  <h4>ハッシュタグを追加して投稿</h4>
+                  <p>最後にハッシュタグを2〜5個ほど添えて投稿します。ここまでの作業を合計すると、目安としておよそ10分程度で1本の投稿が完成します。</p>
+                </div>
+              </div>
+            </div>
+            <div class="post-note">※作業時間はテーマの内容や調整の度合いによって変動します。あくまで目安としてご参考ください。</div>
+
+            <h2>実際の投稿例</h2>
+            <p>架空のビジネスを想定して作成した投稿例を2つ紹介します。</p>
+
+            <div class="post-sample">
+              <div class="post-sample-head">
+                <div class="post-sample-icon">☕</div>
+                <div class="post-sample-biz">Sunny Table Coffee（架空のカフェ）</div>
+                <div class="post-sample-platform">Instagram想定</div>
+              </div>
+              <div class="post-sample-body">今日から新メニュー「季節のフルーツラテ」が登場しました🍑
+甘さ控えめで、忙しい午後にもすっと飲める一杯に仕上げました。
+
+店内の窓際の席がおすすめの時間帯は14時〜16時。
+ゆっくり読書したい日にもぴったりです。
+
+ぜひ味わいに来てください、スタッフ一同お待ちしています。</div>
+              <div class="post-sample-tags">#カフェ巡り #新メニュー #フルーツラテ #ランチ後のご褒美 #地元カフェ</div>
+            </div>
+
+            <div class="post-sample">
+              <div class="post-sample-head">
+                <div class="post-sample-icon">💼</div>
+                <div class="post-sample-biz">中小企業向けAI活用セミナー（架空のコンサル事業者）</div>
+                <div class="post-sample-platform">X / LinkedIn想定</div>
+              </div>
+              <div class="post-sample-body">「AIを導入したいが何から始めればいいか分からない」
+そんな中小企業の経営者・担当者向けに、無料オンラインセミナーを開催します。
+
+・AI導入でよくある失敗と回避法
+・小さく始めて効果を測る進め方
+・補助金活用のポイント
+
+参加無料、途中入退室も自由です。ご興味のある方はプロフィール欄のリンクからお申し込みください。</div>
+              <div class="post-sample-tags">#AI活用 #中小企業 #業務効率化 #セミナー #DX推進</div>
+            </div>
+
+            <h2>ハッシュタグ付けのコツ</h2>
+            <ul>
+              <li><strong>広い言葉と狭い言葉を混ぜる:</strong> 「#カフェ巡り」のような検索されやすい大きなタグと、「#地元カフェ」のような具体的なタグを組み合わせると見つけてもらいやすくなります。</li>
+              <li><strong>数を絞る:</strong> 媒体にもよりますが、詰め込みすぎるとかえって読みにくくなります。2〜5個程度を目安にしましょう。</li>
+              <li><strong>投稿内容と関連性のあるものだけを選ぶ:</strong> 内容と関係のないタグを付けると、閲覧者の期待とずれてしまい逆効果になります。</li>
+              <li><strong>自社・ブランド独自のタグを1つ持っておく:</strong> 継続して使うことで、過去の投稿をまとめて見てもらいやすくなります。</li>
+            </ul>
+
+            <h2>営業文やメールにもAIを活用しよう</h2>
+            <p>SNS投稿だけでなく、営業メールや提案文の作成に時間がかかっている場合は、<a href="sales-mail-tool.html">AI営業文作成 Pro Lite</a>もあわせて活用してみてください。会社名・業種・伝えたい内容を入力するだけで、複数パターンの文章を自動生成できる無料ツールです。ツール選びに迷ったら<a href="blog-sme-tools-7.html">中小企業向けAI業務効率化ツール7選</a>も参考にしてください。</p>
+
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="post-cta glass-card">
+          <h3>SNS投稿自動生成ツールを今すぐ使ってみる</h3>
+          <p>テーマを入力するだけで、X・Instagram・Facebook・LinkedIn向けの投稿文をAIが自動生成します。</p>
+          <div class="post-cta-btns">
+            <a href="sns-tool.html" class="btn btn-primary">SNS投稿自動生成ツールを使う →</a>
+            <a href="tools.html" class="btn btn-glass">ほかのAIツールを見る</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/aimt0studio?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="blog.html">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="consult.html">AI相談</a>
+          <a href="faq.html">よくある質問</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+          <a href="tokushoho.html">特定商取引法に基づく表記</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

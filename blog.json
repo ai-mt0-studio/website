@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "ai-sns-post-10min",
+      "title": "AIでSNS投稿を10分で作る方法｜文章作成が苦手な人向け",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.14",
+      "summary": "投稿文を考える時間がかかるというSNS運用の悩みを、AIツールで解消。テーマ入力から投稿までの4ステップ、投稿例、ハッシュタグ付けのコツを紹介します。",
+      "url": "blog-sns-post-ai.html"
+    },
+    {
+      "id": "sme-ai-tools-7",
+      "title": "中小企業向けAI業務効率化ツール7選｜無料で使えるものも紹介",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.14",
+      "summary": "人手不足・コスト・専門知識不足に悩む中小企業向けに、AI MT0 Studioが提供するAI業務効率化ツールを7つ厳選して紹介。無料/有料の違いもわかりやすく解説します。",
+      "url": "blog-sme-tools-7.html"
+    },
+    {
       "id": "sme-ai-adoption-guide-2026",
       "title": "【2026年最新】中小企業のAI導入、何から始める?補助金活用と失敗しない選び方",
       "category": "ai",
