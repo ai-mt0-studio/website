@@ -5,4 +5,4 @@ Disallow: /login.html
 Disallow: /register.html
 Disallow: /mypage.html
 
-Sitemap: https://profound-pie-e55477.netlify.app/sitemap.xml
+Sitemap: https://ai-mt0-studio.netlify.app/sitemap.xml

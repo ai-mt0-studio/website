@@ -55,8 +55,13 @@ if (consultSection) consultObserver.observe(consultSection);
 (function () {
   const canvas = document.getElementById('particles');
   if (!canvas) return;
+
+  // INP対策：モーション低減設定のユーザーには装飾アニメーションを描画しない
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+
   const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
+  let W, H, particles = [], running = false, rafId = null;
 
   function resize() {
     W = canvas.width  = window.innerWidth;
@@ -84,6 +89,7 @@ if (consultSection) consultObserver.observe(consultSection);
   for (let i = 0; i < 80; i++) particles.push(createParticle());
 
   function draw() {
+    if (!running) return;
     ctx.clearRect(0, 0, W, H);
     particles.forEach(p => {
       ctx.beginPath();
@@ -97,9 +103,22 @@ if (consultSection) consultObserver.observe(consultSection);
         Object.assign(p, createParticle(), { y: H + 10 });
       }
     });
-    requestAnimationFrame(draw);
+    rafId = requestAnimationFrame(draw);
   }
-  draw();
+
+  // CWV対策：ヒーローが画面外のときはメインスレッドを使う描画ループを止める
+  const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !running) {
+        running = true;
+        draw();
+      } else if (!entry.isIntersecting && running) {
+        running = false;
+        if (rafId) cancelAnimationFrame(rafId);
+      }
+    });
+  }, { threshold: 0 });
+  heroObserver.observe(canvas);
 })();
 
 // ---- CONTACT FORM (UI only) ----

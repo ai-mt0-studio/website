@@ -100,31 +100,47 @@ function initBlogFilter() {
   });
 }
 
-// index.html 用：最新3件を表示、続きを読む → blog.html
+// 既にHTMLに静的表示済みのカードのhrefを集める（SEO対策：SSGなしでもクロール可能な
+// 静的リンクをHTMLに埋め込んであるため、JSは重複描画せず「追加分」だけを描画する）
+function existingCardHrefs(grid) {
+  return Array.prototype.map.call(grid.querySelectorAll('.read-more'), function (a) {
+    return a.getAttribute('href');
+  });
+}
+
+// index.html 用：最新3件を表示（静的カードに無い新着のみ追記）
 async function initIndexBlog() {
   var grid = document.getElementById('blog-grid');
   if (!grid) return;
   var data = await fetchBlogData();
+  var existingHrefs = existingCardHrefs(grid);
   data.articles.slice(0, 3).forEach(function(a) {
-    grid.appendChild(createBlogCard(a, 'blog.html'));
+    var href = a.url || ('blog-post.html?id=' + a.id);
+    if (existingHrefs.indexOf(href) !== -1) return;
+    grid.appendChild(createBlogCard(a));
   });
   initBlogReveal(grid.querySelectorAll('.blog-card'));
   initBlogFilter();
 }
 
-// blog.html 用：全件表示、続きを読む → blog-post.html
+// blog.html 用：全件表示（静的カードに無い新着のみ追記、記事数を更新）
 async function initBlogList() {
   var grid = document.getElementById('blog-grid');
   if (!grid) return;
   var data = await fetchBlogData();
 
-  var countEl = document.getElementById('article-count');
-  if (countEl) countEl.textContent = data.articles.length;
-
-  grid.innerHTML = '';
+  var existingHrefs = existingCardHrefs(grid);
+  var added = 0;
   data.articles.forEach(function(a) {
+    var href = a.url || ('blog-post.html?id=' + a.id);
+    if (existingHrefs.indexOf(href) !== -1) return;
     grid.appendChild(createBlogCard(a));
+    added++;
   });
+
+  var countEl = document.getElementById('article-count');
+  if (countEl) countEl.textContent = existingHrefs.length + added;
+
   initBlogReveal(grid.querySelectorAll('.blog-card'));
   initBlogFilter();
 }
@@ -144,7 +160,8 @@ async function initBlogPost() {
     return;
   }
 
-  document.title = article.title + ' | AI MT0 Studio';
+  var pageTitle = article.title + ' | AI MT0 Studio';
+  document.title = pageTitle;
 
   var descEl = document.querySelector('meta[name="description"]');
   if (descEl && article.summary) descEl.setAttribute('content', article.summary);
@@ -159,17 +176,61 @@ async function initBlogPost() {
   if (dateEl)   dateEl.textContent   = article.date;
   if (bodyEl)   bodyEl.innerHTML     = article.content;
 
-  var ld = document.createElement('script');
-  ld.type = 'application/ld+json';
-  ld.textContent = JSON.stringify({
+  // canonical・OGP（管理画面から追加された記事など、静的HTMLが存在しない記事向けのフォールバック）
+  var canonicalUrl = location.origin + location.pathname + '?id=' + encodeURIComponent(article.id);
+  var canonicalEl = document.querySelector('link[rel="canonical"]');
+  if (!canonicalEl) {
+    canonicalEl = document.createElement('link');
+    canonicalEl.setAttribute('rel', 'canonical');
+    document.head.appendChild(canonicalEl);
+  }
+  canonicalEl.setAttribute('href', canonicalUrl);
+
+  [
+    ['property', 'og:type', 'article'],
+    ['property', 'og:site_name', 'AI MT0 Studio'],
+    ['property', 'og:title', pageTitle],
+    ['property', 'og:description', article.summary || ''],
+    ['property', 'og:url', canonicalUrl],
+    ['name', 'twitter:card', 'summary'],
+    ['name', 'twitter:title', pageTitle],
+    ['name', 'twitter:description', article.summary || ''],
+  ].forEach(function (tag) {
+    var attr = tag[0], key = tag[1], value = tag[2];
+    var el = document.querySelector('meta[' + attr + '="' + key + '"]');
+    if (!el) {
+      el = document.createElement('meta');
+      el.setAttribute(attr, key);
+      document.head.appendChild(el);
+    }
+    el.setAttribute('content', value);
+  });
+
+  var blogPosting = document.createElement('script');
+  blogPosting.type = 'application/ld+json';
+  blogPosting.textContent = JSON.stringify({
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
+    'mainEntityOfPage': { '@type': 'WebPage', '@id': canonicalUrl },
     'headline': article.title,
     'description': article.summary,
-    'datePublished': article.date,
-    'author': { '@type': 'Organization', 'name': 'AI MT0 Studio' },
-    'publisher': { '@type': 'Organization', 'name': 'AI MT0 Studio' },
-    'url': location.href
+    'datePublished': String(article.date).replace(/\./g, '-'),
+    'author': { '@type': 'Organization', 'name': 'AI MT0 Studio', 'url': location.origin + '/' },
+    'publisher': { '@type': 'Organization', 'name': 'AI MT0 Studio', 'url': location.origin + '/' },
+    'url': canonicalUrl
   });
-  document.head.appendChild(ld);
+  document.head.appendChild(blogPosting);
+
+  var breadcrumb = document.createElement('script');
+  breadcrumb.type = 'application/ld+json';
+  breadcrumb.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': 'ホーム', 'item': location.origin + '/' },
+      { '@type': 'ListItem', 'position': 2, 'name': 'ブログ', 'item': location.origin + '/blog.html' },
+      { '@type': 'ListItem', 'position': 3, 'name': article.title, 'item': canonicalUrl }
+    ]
+  });
+  document.head.appendChild(breadcrumb);
 }

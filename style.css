@@ -981,3 +981,59 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 ::-webkit-scrollbar-track { background: var(--c-bg); }
 ::-webkit-scrollbar-thumb { background: var(--c-blue-dark); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--c-blue); }
+
+/* ========== パンくずリスト ========== */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--c-text-sub);
+  margin-bottom: 20px;
+}
+.breadcrumb a { color: var(--c-text-sub); transition: var(--transition); }
+.breadcrumb a:hover { color: var(--c-blue); }
+.breadcrumb .breadcrumb-sep { color: var(--c-text-sub); opacity: 0.5; }
+.breadcrumb [aria-current="page"] {
+  color: var(--c-text);
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ========== 関連記事 ========== */
+.post-related { padding: 32px 40px; margin-bottom: 32px; }
+.post-related h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+}
+.related-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.related-list li a {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--c-blue);
+  padding-left: 18px;
+  position: relative;
+  line-height: 1.6;
+  transition: var(--transition);
+}
+.related-list li a::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+}
+.related-list li a:hover { color: var(--c-purple2); }
+@media (max-width: 768px) {
+  .post-related { padding: 24px 20px; }
+}
+
+/* ========== レイアウトシフト対策（CLS） ========== */
+/* JS描画前後で高さが大きく変わらないよう最低の高さを確保 */
+.blog-grid,
+.blog-page-grid { min-height: 480px; }
+.blog-loading { min-height: 480px; }
