@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="「営業メール AI 作成 無料」で探している方へ。ChatGPTに自分でプロンプトを書く方法との違いや、業種と提案内容を入れるだけで営業文を3パターン自動生成できる無料ツールの使い方・例文を紹介します。登録不要・API不要・インストール不要。" />
+  <title>営業メールをAIで無料作成する方法【例文つき・登録不要】 | AI MT0 Studio</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "営業メールをAIで無料作成する方法【例文つき・登録不要】",
+    "description": "「営業メール AI 作成 無料」で探している方へ。ChatGPTに自分でプロンプトを書く方法との違いや、業種と提案内容を入れるだけで営業文を3パターン自動生成できる無料ツールの使い方・例文を紹介します。登録不要・API不要・インストール不要。",
+    "datePublished": "2026-07-15",
+    "author": { "@type": "Organization", "name": "AI MT0 Studio" },
+    "publisher": { "@type": "Organization", "name": "AI MT0 Studio" },
+    "url": "https://profound-pie-e55477.netlify.app/blog-sales-mail-ai.html"
+  }
+  </script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ========== 記事ヘッダー ========== */
+    .post-hero {
+      padding: 140px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .post-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(79,142,247,0.1), transparent 70%);
+      pointer-events: none;
+    }
+    .post-hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      margin-bottom: 28px;
+      transition: var(--transition);
+    }
+    .post-back:hover { color: var(--c-blue); }
+    .post-cat-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 50px;
+      background: rgba(79,142,247,0.12);
+      color: var(--c-blue);
+      border: 1px solid rgba(79,142,247,0.25);
+      margin-bottom: 20px;
+    }
+    #post-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 20px;
+    }
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+    }
+
+    /* ========== 記事本文 ========== */
+    .post-body-section { padding: 0 0 120px; }
+    .post-layout {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .post-card {
+      padding: 48px 56px;
+      margin-bottom: 32px;
+    }
+    #post-body h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 36px 0 14px;
+      padding-left: 14px;
+      border-left: 3px solid var(--c-blue);
+    }
+    #post-body h2:first-child { margin-top: 0; }
+    #post-body p {
+      font-size: 0.95rem;
+      color: var(--c-text-sub);
+      line-height: 1.95;
+      margin-bottom: 16px;
+    }
+    #post-body ul {
+      list-style: none;
+      margin: 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    #post-body ul li {
+      font-size: 0.92rem;
+      color: var(--c-text-sub);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.8;
+    }
+    #post-body ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--c-blue);
+      font-size: 0.75rem;
+      top: 4px;
+    }
+    #post-body a {
+      color: var(--c-blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: var(--transition);
+    }
+    #post-body a:hover { color: var(--c-purple2); }
+    #post-body strong { color: var(--c-text); font-weight: 600; }
+
+    /* ========== 機能リスト ========== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 8px 0 20px;
+    }
+    .feature-item {
+      padding: 20px 22px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+    }
+    .feature-item h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .feature-item p {
+      font-size: 0.85rem;
+      color: var(--c-text-sub);
+      line-height: 1.7;
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ========== 例文ボックス ========== */
+    .example-box {
+      padding: 22px 24px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+      margin: 8px 0 20px;
+    }
+    .example-box p {
+      margin-bottom: 4px;
+    }
+    .example-box p:last-child { margin-bottom: 0; }
+
+    /* ========== CTA ========== */
+    .post-cta {
+      padding: 36px 40px;
+      text-align: center;
+      border-color: rgba(79,142,247,0.2);
+    }
+    .post-cta h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .post-cta p {
+      font-size: 0.9rem;
+      color: var(--c-text-sub);
+      margin-bottom: 24px;
+    }
+    .post-cta-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .post-card { padding: 32px 20px; }
+      .post-cta { padding: 28px 20px; }
+      .post-hero { padding: 120px 0 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header scrolled" id="header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html#services" class="nav-link">サービス</a>
+        <a href="index.html#tools" class="nav-link">AIツール</a>
+        <a href="blog.html" class="nav-link">ブログ</a>
+        <a href="index.html#roadmap" class="nav-link">開発予定</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-btn">お問い合わせ</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== 記事ヘッダー ========== -->
+  <section class="post-hero">
+    <div class="container">
+      <div class="post-hero-inner">
+
+        <a href="blog.html" class="post-back">← ブログ一覧へ戻る</a>
+
+        <div class="post-cat-label" data-cat="tools">ツール紹介</div>
+
+        <h1 id="post-title">営業メールをAIで無料作成する方法【例文つき・登録不要】</h1>
+
+        <div class="post-meta">
+          <span>2026.07.15</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 記事本文 ========== -->
+  <section class="post-body-section">
+    <div class="container">
+      <div class="post-layout">
+
+        <div class="post-card glass-card">
+          <div id="post-body">
+
+            <h2>営業メール作成に時間がかかっていませんか</h2>
+            <p>新規開拓の営業メールを1通書くのに、文面を考えるだけで15分、20分とかかってしまう。そんな悩みを抱えている方は少なくありません。特に、複数の見込み客に合わせて内容を変えたい場合、毎回ゼロから文章を組み立てるのは大きな負担です。「営業メール AI 作成 無料」で検索してこのページにたどり着いた方の多くも、同じ悩みを抱えているのではないでしょうか。</p>
+            <p>この記事では、営業文をAIで無料作成する2つの方法と、実際の例文、使い方の手順まで解説します。</p>
+
+            <h2>方法1：ChatGPTなどに自分でプロンプトを書く</h2>
+            <p>ChatGPTやClaudeなどの汎用AIチャットに「〇〇業界の企業に向けた営業メールを書いて」とプロンプトを入力すれば、営業文を作成すること自体は可能です。しかし、この方法にはいくつかの手間が伴います。</p>
+            <ul>
+              <li>毎回、業種や自社の強み、伝えたい内容を一からプロンプトに書き起こす必要がある</li>
+              <li>出力される文章のトーンや構成が安定せず、毎回微調整が必要になる</li>
+              <li>複数パターンを比較したい場合、何度もプロンプトを打ち直す手間がかかる</li>
+            </ul>
+            <p>「営業文 AI 生成 無料」自体はChatGPTでも実現できますが、プロンプトを毎回考える手間そのものはなくなりません。</p>
+
+            <h2>方法2：専用ツールなら入力するだけで自動生成</h2>
+            <p>そこでおすすめなのが、AI MT0 Studioが無料で提供している「AI営業文作成 Pro Lite」です。プロンプトを自分で書く必要はなく、業種と提案内容などの項目を入力するだけで、営業文を自動生成できます。</p>
+            <div class="feature-grid">
+              <div class="feature-item">
+                <h4>パターンA：課題提起型</h4>
+                <p>相手の業種特有の課題から入り、共感を得ながら提案につなげる文章です。</p>
+              </div>
+              <div class="feature-item">
+                <h4>パターンB：価値提案型</h4>
+                <p>自社が提供できる価値をストレートに伝える、簡潔で読みやすい文章です。</p>
+              </div>
+              <div class="feature-item">
+                <h4>パターンC：実績・事例型</h4>
+                <p>実績や事例を交えて信頼感を高める、説得力のある文章です。</p>
+              </div>
+            </div>
+            <p>1回の入力で3パターンが同時に生成されるため、状況や相手に合わせて選んだり、良い部分を組み合わせて使うことができます。</p>
+
+            <h2>実際の例文</h2>
+            <p>「IT企業向けに業務効率化サービスを提案したい」というケースで生成した営業メールの例です。</p>
+            <div class="example-box">
+              <p><strong>件名：</strong>貴社の業務効率化について、ご提案がございます</p>
+              <p>株式会社〇〇<br>ご担当者様</p>
+              <p>突然のご連絡失礼いたします。AI MT0 Studioの〇〇と申します。</p>
+              <p>IT業界の企業様では、日々の見積書作成や顧客管理に多くの工数がかかっているとお聞きします。弊社では、これらの業務をAIで効率化するツールをご提供しており、貴社の業務負担軽減にお役立ていただけるのではと思いご連絡いたしました。</p>
+              <p>もしご興味をお持ちいただけましたら、一度15分ほどお時間をいただけますと幸いです。</p>
+              <p>何卒よろしくお願いいたします。</p>
+            </div>
+            <p>このように、業種や提案内容に合わせて文面が自動で組み立てられるため、そのまま使える完成度の文章がすぐに手に入ります。</p>
+
+            <h2>使い方は3ステップ</h2>
+            <ul>
+              <li><strong>STEP1：業種を選択</strong>：相手の業種と自社の業種を選びます。</li>
+              <li><strong>STEP2：自社情報・提案内容を入力</strong>：自社名や伝えたい提案内容を入力します。</li>
+              <li><strong>STEP3：生成ボタンを押す</strong>：「営業文を生成する」ボタンを押すだけで、3パターンの営業文が自動で出力されます。</li>
+            </ul>
+
+            <h2>完全無料・API不要・インストール不要</h2>
+            <ul>
+              <li><strong>完全無料</strong>：料金は一切かかりません。何度でも生成できます。</li>
+              <li><strong>API不要</strong>：ChatGPTのAPIキーなどを取得する必要はありません。</li>
+              <li><strong>インストール不要</strong>：ブラウザからアクセスするだけで、すぐに使い始められます。</li>
+              <li><strong>登録不要</strong>：会員登録やメールアドレスの入力も不要です。</li>
+            </ul>
+            <p>営業メール作成に時間を取られている方は、ぜひ一度「AI営業文作成 Pro Lite」を試してみてください。</p>
+
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="post-cta glass-card">
+          <h3>営業メールを無料でAI作成する</h3>
+          <p>業種と提案内容を入れるだけで、営業文を3パターン自動生成。完全無料・登録不要で今すぐ使えます。</p>
+          <div class="post-cta-btns">
+            <a href="sales-mail-tool.html" class="btn btn-primary">無料で使ってみる →</a>
+            <a href="blog.html" class="btn btn-glass">ブログ一覧へ</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">AI MT0<span class="logo-accent">Studio</span></span>
+        </a>
+        <p>AIで、あなたの困りごとを解決。</p>
+        <div class="sns-links">
+          <a href="https://x.com/aimt0studio?s=11&t=sDkpQRSN3SbgmVLenfFvog" target="_blank" class="sns-btn glass-card" aria-label="X">𝕏</a>
+          <a href="#" class="sns-btn glass-card" aria-label="Instagram">📷</a>
+          <a href="https://www.youtube.com/channel/UCTy0K-QouuDBeUzkbZdzgAg" target="_blank" class="sns-btn glass-card" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>サービス</h4>
+          <a href="index.html#services">AIツール開発</a>
+          <a href="index.html#services">業務効率化</a>
+          <a href="index.html#services">経理サポート</a>
+          <a href="index.html#tools">AIツール一覧</a>
+        </div>
+        <div class="footer-col">
+          <h4>コンテンツ</h4>
+          <a href="blog.html">ブログ</a>
+          <a href="index.html#roadmap">開発ロードマップ</a>
+          <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
+        </div>
+        <div class="footer-col">
+          <h4>サポート</h4>
+          <a href="contact.html">お問い合わせ</a>
+          <a href="consult.html">AI相談</a>
+          <a href="faq.html">よくある質問</a>
+          <a href="terms.html">利用規約</a>
+          <a href="privacy.html">プライバシーポリシー</a>
+          <a href="tokushoho.html">特定商取引法に基づく表記</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AI MT0 Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -116,6 +116,20 @@
 
   <!-- ===== ブログ記事 ===== -->
   <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-sales-mail-ai.html</loc>
+    <lastmod>2026-07-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://profound-pie-e55477.netlify.app/blog-aipicks-feature.html</loc>
+    <lastmod>2026-07-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
     <loc>https://profound-pie-e55477.netlify.app/blog-ai-adoption-guide.html</loc>
     <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
