@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "ai-email-2026",
+      "title": "【2026年版】AIで営業メールを作成する方法｜無料で使えるおすすめツールも紹介",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.16",
+      "summary": "「AI 営業メール」「営業メール AI」で探している方へ。ChatGPTでのプロンプト例から、業種・提案内容を入れるだけで3パターン自動生成できる無料の「AI メール作成」ツールまで、2026年最新の活用法を解説します。",
+      "url": "blog-ai-email-2026.html"
+    },
+    {
+      "id": "member-benefits-2026",
+      "title": "AIツールを使うなら会員登録するメリットとは？履歴保存・お気に入り機能を徹底解説",
+      "category": "update",
+      "categoryLabel": "アップデート",
+      "date": "2026.07.16",
+      "summary": "「AIツール」「無料AIツール」を使いこなしたい方へ。会員登録で使える履歴保存・お気に入り機能・オーダーメイドAI相談を解説。個人でも法人でも無料で使えます。",
+      "url": "blog-member-benefits.html"
+    },
+    {
       "id": "sales-mail-ai-free-guide",
       "title": "営業メールをAIで無料作成する方法【例文つき・登録不要】",
       "category": "tools",
