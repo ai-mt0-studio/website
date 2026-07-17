@@ -66,16 +66,6 @@
       padding: 10px 14px;
       margin-bottom: 20px;
     }
-    .auth-success {
-      display: none;
-      font-size: 0.85rem;
-      color: #22c55e;
-      background: rgba(34,197,94,0.1);
-      border: 1px solid rgba(34,197,94,0.25);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      margin-bottom: 20px;
-    }
     .auth-links {
       text-align: center;
       margin-top: 24px;
@@ -126,7 +116,6 @@
         <h2 class="auth-card-title">アカウントを作成</h2>
 
         <div class="auth-error" id="register-error"></div>
-        <div class="auth-success" id="register-success"></div>
 
         <form id="register-form">
           <div class="form-group">
@@ -206,17 +195,10 @@
   <script src="script.js"></script>
   <script>
     const errorEl = document.getElementById('register-error');
-    const successEl = document.getElementById('register-success');
 
     function showError(msg) {
       errorEl.textContent = msg;
       errorEl.style.display = 'block';
-      successEl.style.display = 'none';
-    }
-    function showSuccess(msg) {
-      successEl.textContent = msg;
-      successEl.style.display = 'block';
-      errorEl.style.display = 'none';
     }
 
     (async () => {
@@ -244,19 +226,25 @@
       submitBtn.disabled = true;
       submitBtn.textContent = '登録中...';
 
-      const { error } = await sbClient.auth.signUp({
+      const { data, error } = await sbClient.auth.signUp({
         email,
         password,
         options: { data: { display_name: displayName } },
       });
 
-      submitBtn.disabled = false;
-      submitBtn.textContent = '登録する';
-
       if (error) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '登録する';
         showError(error.message.includes('already registered') || error.message.includes('User already registered')
           ? 'このメールアドレスはすでに登録されています。'
           : error.message);
+        return;
+      }
+
+      if (!data.session) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '登録する';
+        showError('登録処理でエラーが発生しました。時間をおいて再度お試しください。');
         return;
       }
 
@@ -264,8 +252,8 @@
         gtag('event', 'sign_up', { method: 'email' });
       }
 
-      document.getElementById('register-form').style.display = 'none';
-      showSuccess('登録ありがとうございます。確認メールを送信しました。メール内のリンクをクリックして登録を完了してください。');
+      submitBtn.textContent = '登録完了。移動しています...';
+      window.location.href = 'mypage.html';
     });
   </script>
 </body>
