@@ -192,9 +192,13 @@ async function initBlogPost() {
     ['property', 'og:title', pageTitle],
     ['property', 'og:description', article.summary || ''],
     ['property', 'og:url', canonicalUrl],
-    ['name', 'twitter:card', 'summary'],
+    ['property', 'og:image', location.origin + '/images/og-default.png'],
+    ['property', 'og:image:width', '1200'],
+    ['property', 'og:image:height', '630'],
+    ['name', 'twitter:card', 'summary_large_image'],
     ['name', 'twitter:title', pageTitle],
     ['name', 'twitter:description', article.summary || ''],
+    ['name', 'twitter:image', location.origin + '/images/og-default.png'],
   ].forEach(function (tag) {
     var attr = tag[0], key = tag[1], value = tag[2];
     var el = document.querySelector('meta[' + attr + '="' + key + '"]');
