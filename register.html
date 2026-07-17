@@ -260,6 +260,10 @@
         return;
       }
 
+      if (typeof gtag === 'function') {
+        gtag('event', 'sign_up', { method: 'email' });
+      }
+
       document.getElementById('register-form').style.display = 'none';
       showSuccess('登録ありがとうございます。確認メールを送信しました。メール内のリンクをクリックして登録を完了してください。');
     });
