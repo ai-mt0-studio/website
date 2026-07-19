@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "ai-sns-2026",
+      "title": "【2026年版】SNS投稿をAIで自動生成する方法｜無料ツール比較",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.19",
+      "summary": "「SNS投稿 AI 自動生成」で探している方へ。X・Instagram・Facebook・LinkedIn向けの投稿文をテーマ入力だけで一括生成できる、AI SNS投稿 無料ツールの使い方を手順つきで解説します。SNS投稿作成 AIをお探しの方はぜひ参考にしてください。",
+      "url": "blog-ai-sns-2026.html"
+    },
+    {
+      "id": "ai-business-advisor-2026",
+      "title": "【2026年版】業務改善をAIに無料相談する方法｜30秒診断ツール",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.19",
+      "summary": "「業務改善 AI 無料相談」で探している方へ。業種や困りごとを選ぶだけで、AIが業務改善の優先順位・具体的な改善方法・今すぐできることを約30秒で提案する「AI業務改善アドバイザー」の使い方を解説します。業務効率化 AI 相談の第一歩としてお試しください。",
+      "url": "blog-ai-business-advisor-2026.html"
+    },
+    {
       "id": "ai-nippo-2026",
       "title": "AIで日報を10分で作る方法｜無料ツール・プロンプト例つき",
       "category": "tools",
