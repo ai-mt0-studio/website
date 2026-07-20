@@ -291,6 +291,23 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-bottom: 40px;
   animation: fadeInUp 0.8s 0.2s ease both;
 }
+.hero-benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin-bottom: 32px;
+  animation: fadeInUp 0.8s 0.25s ease both;
+}
+.hero-benefits li {
+  font-size: 0.8rem;
+  padding: 6px 14px;
+  border-radius: 50px;
+  background: rgba(79,142,247,0.12);
+  border: 1px solid rgba(79,142,247,0.25);
+  color: var(--c-text);
+  white-space: nowrap;
+}
 .hero-actions {
   display: flex;
   gap: 16px;
@@ -436,6 +453,53 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: relative;
 }
 .service-card.coming { opacity: 0.75; }
+
+/* ============================================
+   CUSTOM AI DEVELOPMENT SPOTLIGHT
+   ============================================ */
+.custom-dev { padding: 0 0 100px; }
+.custom-dev-inner {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 48px;
+  padding: 48px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(155,89,245,0.35);
+}
+.custom-dev-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 100% 0%, rgba(155,89,245,0.18), transparent 60%);
+  pointer-events: none;
+}
+.custom-dev-text .section-title { margin-bottom: 16px; }
+.custom-dev-text p { color: var(--c-text-sub); margin-bottom: 24px; position: relative; }
+.custom-dev-list {
+  list-style: none;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+.custom-dev-list li { font-size: 0.95rem; color: var(--c-text); }
+.custom-dev-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+}
+.custom-dev-icon { font-size: 4rem; }
+.custom-dev-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
 
 /* ============================================
    TOOLS
@@ -593,6 +657,45 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   color: #fff;
   border-color: var(--c-blue);
   background: rgba(79,142,247,0.08);
+}
+
+/* ============================================
+   MEMBER BENEFITS
+   ============================================ */
+.benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+.benefit-card {
+  padding: 32px;
+  text-align: center;
+  transition: var(--transition);
+}
+.benefit-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(79,142,247,0.3);
+  box-shadow: 0 16px 48px rgba(79,142,247,0.12);
+}
+.benefit-icon { font-size: 2rem; margin-bottom: 12px; }
+.benefit-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.benefit-card p {
+  font-size: 0.88rem;
+  color: var(--c-text-sub);
+  line-height: 1.7;
+}
+.member-benefits-cta { text-align: center; }
+.member-benefits-note {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: var(--c-text-sub);
 }
 
 /* ============================================
@@ -935,6 +1038,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    ============================================ */
 @media (max-width: 900px) {
   .consult-inner { grid-template-columns: 1fr; }
+  .custom-dev-inner { grid-template-columns: 1fr; }
   .contact-inner { grid-template-columns: 1fr; }
   .footer-inner  { grid-template-columns: 1fr; gap: 40px; }
   .footer-links  { grid-template-columns: repeat(2, 1fr); }
@@ -964,7 +1068,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .hero-stats { gap: 20px; }
   .philosophy-inner { padding: 32px 24px; }
   .services-grid { grid-template-columns: 1fr; }
+  .custom-dev-inner { padding: 32px 24px; }
+  .custom-dev-examples { justify-content: flex-start; }
   .tools-grid { grid-template-columns: 1fr; }
+  .benefit-grid { grid-template-columns: 1fr; }
   .roadmap-list::before { left: 22px; }
   .contact-form { padding: 28px 20px; }
   .footer-links { grid-template-columns: 1fr; }
@@ -974,6 +1081,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .hero-actions { flex-direction: column; }
   .btn { justify-content: center; }
   .consult-inner { padding: 28px 20px; }
+  .custom-dev-inner { padding: 28px 20px; }
 }
 
 /* スクロールバー */
