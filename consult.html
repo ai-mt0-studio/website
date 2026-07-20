@@ -142,6 +142,7 @@
         <a href="index.html#blog" class="nav-link">ブログ</a>
         <a href="index.html#roadmap" class="nav-link">開発予定</a>
         <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="register.html" class="nav-btn" id="nav-cta-btn">無料会員登録</a>
         <a href="mypage.html" class="nav-btn" id="nav-mypage-link" style="display:none;">マイページ</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="メニュー">
@@ -301,6 +302,7 @@
       }
 
       currentSession = session;
+      document.getElementById('nav-cta-btn').style.display = 'none';
       document.getElementById('nav-mypage-link').style.display = 'inline-flex';
       document.getElementById('consult-form-wrap').style.display = 'block';
 

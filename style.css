@@ -511,6 +511,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 24px;
   margin-bottom: 32px;
 }
+.tools-group { margin-bottom: 56px; }
+.tools-group:last-child { margin-bottom: 0; }
+.tools-group-header { margin-bottom: 24px; }
+.tools-group-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.tools-group-sub { font-size: 0.85rem; color: var(--c-text-sub); }
 .tool-card {
   padding: 32px;
   position: relative;

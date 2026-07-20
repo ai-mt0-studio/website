@@ -119,7 +119,7 @@
         <a href="index.html#blog" class="nav-link">ブログ</a>
         <a href="index.html#roadmap" class="nav-link">開発予定</a>
         <a href="faq.html" class="nav-link">FAQ</a>
-        <a href="contact.html" class="nav-btn">お問い合わせ</a>
+        <a href="register.html" class="nav-btn" id="nav-cta-btn">無料会員登録</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="メニュー">
         <span></span><span></span><span></span>
@@ -144,155 +144,181 @@
   <!-- ========== MAIN CONTENT ========== -->
   <section class="tools-page-body">
     <div class="container">
-      <div class="tools-grid">
-
-        <div class="tool-card glass-card" data-tool-slug="doc-tool">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">✍️</div>
-          <h3 class="tool-name">資料・文章作成ツール</h3>
-          <p class="tool-desc">目的を選ぶだけでAIがビジネス文章を自動作成。リライト・要約・翻訳・誤字脱字チェックも対応。</p>
-          <div class="tool-tags">
-            <span class="tag">文書作成</span>
-            <span class="tag">自動化</span>
-          </div>
-          <div class="tool-price">
-            <p class="price-original"><s>通常価格 1,480円</s></p>
-            <p class="price-sale">🎉 公開記念価格 <span class="price-amount">980円</span></p>
-            <p class="price-note">期間限定・予告なく終了する場合があります</p>
-          </div>
-          <a href="https://note.com/safe_acacia2730/n/nd306683712ee" target="_blank" class="btn btn-glass btn-sm">詳細・購入</a>
+      <div class="tools-group">
+        <div class="tools-group-header">
+          <h2 class="tools-group-title">🟢 無料で今すぐ使えるツール</h2>
+          <p class="tools-group-sub">会員登録・APIキーとも不要。ブラウザからすぐに使えます。</p>
         </div>
+        <div class="tools-grid">
 
-        <div class="tool-card glass-card" data-tool-slug="invoice-tool">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">🧾</div>
-          <h3 class="tool-name">AI見積書・請求書作成ツール</h3>
-          <p class="tool-desc">見積書・請求書をプロ品質で素早く作成。AIが文章をサポート。インボイス対応。</p>
-          <div class="tool-tags">
-            <span class="tag">経理</span>
-            <span class="tag">自動化</span>
+          <div class="tool-card glass-card" data-tool-slug="business-os">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">🏢</div>
+            <h3 class="tool-name">AI Business OS（無料）</h3>
+            <p class="tool-desc">見積書・顧客管理・営業管理・分析グラフまで全部入り。インストール不要・登録不要で今すぐ使える無料ツール。</p>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">業務効率化</span>
+            </div>
+            <a href="business-os.html" class="btn btn-glass btn-sm">無料で使う →</a>
           </div>
-          <div class="tool-price">
-            <p class="price-original"><s>通常価格 1,480円</s></p>
-            <p class="price-sale">🎉 公開記念価格 <span class="price-amount">980円</span></p>
-            <p class="price-note">期間限定・予告なく終了する場合があります</p>
+
+          <div class="tool-card glass-card" data-tool-slug="advisor-tool">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">🔍</div>
+            <h3 class="tool-name">AI業務改善アドバイザー Pro Lite（無料）</h3>
+            <p class="tool-desc">業種・課題を入力するだけでAIが業務改善の優先順位・改善方法・今すぐできることを提案。API不要・完全無料。</p>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">業務改善</span>
+            </div>
+            <a href="advisor-tool.html" class="btn btn-glass btn-sm">無料で診断する →</a>
           </div>
-          <a href="https://note.com/safe_acacia2730/n/nbf795bc90581" target="_blank" class="btn btn-glass btn-sm">詳細・購入</a>
+
+          <div class="tool-card glass-card" data-tool-slug="sales-mail-tool">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">✉️</div>
+            <h3 class="tool-name">AI営業文作成 Pro Lite（無料）</h3>
+            <p class="tool-desc">会社名・業種・提案内容を入力するだけで、業種に合わせた営業メール・提案文を自動生成。API不要・完全無料。</p>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">営業</span>
+            </div>
+            <a href="sales-mail-tool.html" class="btn btn-glass btn-sm">無料で使う →</a>
+          </div>
+
+          <div class="tool-card glass-card" data-tool-slug="manual-tool">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">📋</div>
+            <h3 class="tool-name">AI業務マニュアル作成 Pro Lite（無料）</h3>
+            <p class="tool-desc">業種・業務内容を入力するだけで、誰でも使える本格的な業務マニュアルを自動作成。引き継ぎ・新人教育に最適。</p>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">業務効率化</span>
+            </div>
+            <a href="manual-tool.html" class="btn btn-glass btn-sm">無料で使う →</a>
+          </div>
+
+          <div class="tool-card glass-card" data-tool-slug="prompt-manager">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">✦</div>
+            <h3 class="tool-name">AIプロンプト管理ツール Pro Lite（無料）</h3>
+            <p class="tool-desc">よく使うAIプロンプトをフォルダ分け・お気に入り・検索機能で一元管理。ChatGPTやClaude利用者向け。</p>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">業務効率化</span>
+            </div>
+            <a href="prompt-manager.html" class="btn btn-glass btn-sm">無料で使う →</a>
+          </div>
+
         </div>
+      </div>
 
-        <div class="tool-card glass-card" data-tool-slug="graph-tool">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">📊</div>
-          <h3 class="tool-name">AIビジネスグラフ作成ツール</h3>
-          <p class="tool-desc">データを入力するだけでAIが最適なグラフを作成・分析・改善提案まで自動対応。プレゼン資料作成もサポート。</p>
-          <div class="tool-tags">
-            <span class="tag">データ分析</span>
-            <span class="tag">自動化</span>
-          </div>
-          <div class="tool-price">
-            <p class="price-original"><s>通常価格 1,480円</s></p>
-            <p class="price-sale">🎉 公開記念価格 <span class="price-amount">980円</span></p>
-            <p class="price-note">期間限定・予告なく終了する場合があります</p>
-          </div>
-          <a href="https://note.com/safe_acacia2730/n/n56b5beb5470f" target="_blank" class="btn btn-glass btn-sm">詳細・購入</a>
+      <div class="tools-group">
+        <div class="tools-group-header">
+          <h2 class="tools-group-title">🔑 Claude APIキーで使うツール</h2>
+          <p class="tools-group-sub">ツール自体の利用料は無料。ご自身のClaude APIキーで動作します（AI呼び出し分の実費は別途かかります）。</p>
         </div>
+        <div class="tools-grid">
 
-        <div class="tool-card glass-card" data-tool-slug="business-os">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">🏢</div>
-          <h3 class="tool-name">AI Business OS（無料）</h3>
-          <p class="tool-desc">見積書・顧客管理・営業管理・分析グラフまで全部入り。インストール不要・登録不要で今すぐ使える無料ツール。</p>
-          <div class="tool-tags">
-            <span class="tag">無料</span>
-            <span class="tag">業務効率化</span>
+          <div class="tool-card glass-card" data-tool-slug="diagnosis-tool">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">🏢</div>
+            <h3 class="tool-name">AI業務改善診断ツール</h3>
+            <p class="tool-desc">質問に答えるだけでAIが業務課題を分析し、改善提案レポートとおすすめツールを自動生成。Claude APIキーで利用。</p>
+            <div class="tool-tags">
+              <span class="tag">業務改善</span>
+              <span class="tag">自動化</span>
+            </div>
+            <a href="diagnosis-tool.html" class="btn btn-glass btn-sm">使ってみる →</a>
           </div>
-          <a href="business-os.html" class="btn btn-glass btn-sm">無料で使う →</a>
-        </div>
 
-        <div class="tool-card glass-card" data-tool-slug="advisor-tool">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">🔍</div>
-          <h3 class="tool-name">AI業務改善アドバイザー Pro Lite（無料）</h3>
-          <p class="tool-desc">業種・課題を入力するだけでAIが業務改善の優先順位・改善方法・今すぐできることを提案。API不要・完全無料。</p>
-          <div class="tool-tags">
-            <span class="tag">無料</span>
-            <span class="tag">業務改善</span>
+          <div class="tool-card glass-card" data-tool-slug="report-tool-app">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">📝</div>
+            <h3 class="tool-name">AI日報生成ツール</h3>
+            <p class="tool-desc">業務内容を入力するだけでAIが日報をビジネス文章に整形。Claude APIキーで利用できます。</p>
+            <div class="tool-tags">
+              <span class="tag">文書作成</span>
+              <span class="tag">自動化</span>
+            </div>
+            <a href="report-tool.html" class="btn btn-glass btn-sm">使ってみる →</a>
           </div>
-          <a href="advisor-tool.html" class="btn btn-glass btn-sm">無料で診断する →</a>
-        </div>
 
-        <div class="tool-card glass-card" data-tool-slug="sales-mail-tool">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">✉️</div>
-          <h3 class="tool-name">AI営業文作成 Pro Lite（無料）</h3>
-          <p class="tool-desc">会社名・業種・提案内容を入力するだけで、業種に合わせた営業メール・提案文を自動生成。API不要・完全無料。</p>
-          <div class="tool-tags">
-            <span class="tag">無料</span>
-            <span class="tag">営業</span>
+          <div class="tool-card glass-card" data-tool-slug="sns-tool-app">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">✦</div>
+            <h3 class="tool-name">SNS投稿自動生成ツール</h3>
+            <p class="tool-desc">テーマを入力するだけでX・Instagram・Facebook・LinkedIn向けの投稿文を自動生成。Claude APIキーで利用。</p>
+            <div class="tool-tags">
+              <span class="tag">SNS</span>
+              <span class="tag">自動化</span>
+            </div>
+            <a href="sns-tool.html" class="btn btn-glass btn-sm">使ってみる →</a>
           </div>
-          <a href="sales-mail-tool.html" class="btn btn-glass btn-sm">無料で使う →</a>
-        </div>
 
-        <div class="tool-card glass-card" data-tool-slug="manual-tool">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">📋</div>
-          <h3 class="tool-name">AI業務マニュアル作成 Pro Lite（無料）</h3>
-          <p class="tool-desc">業種・業務内容を入力するだけで、誰でも使える本格的な業務マニュアルを自動作成。引き継ぎ・新人教育に最適。</p>
-          <div class="tool-tags">
-            <span class="tag">無料</span>
-            <span class="tag">業務効率化</span>
+        </div>
+      </div>
+
+      <div class="tools-group">
+        <div class="tools-group-header">
+          <h2 class="tools-group-title">💰 有料ツール（公開記念価格980円）</h2>
+          <p class="tools-group-sub">note経由の買い切り型ツールです。通常価格1,480円が期間限定980円。</p>
+        </div>
+        <div class="tools-grid">
+
+          <div class="tool-card glass-card" data-tool-slug="doc-tool">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">✍️</div>
+            <h3 class="tool-name">資料・文章作成ツール</h3>
+            <p class="tool-desc">目的を選ぶだけでAIがビジネス文章を自動作成。リライト・要約・翻訳・誤字脱字チェックも対応。</p>
+            <div class="tool-tags">
+              <span class="tag">文書作成</span>
+              <span class="tag">自動化</span>
+            </div>
+            <div class="tool-price">
+              <p class="price-original"><s>通常価格 1,480円</s></p>
+              <p class="price-sale">🎉 公開記念価格 <span class="price-amount">980円</span></p>
+              <p class="price-note">期間限定・予告なく終了する場合があります</p>
+            </div>
+            <a href="https://note.com/safe_acacia2730/n/nd306683712ee" target="_blank" class="btn btn-glass btn-sm">詳細・購入</a>
           </div>
-          <a href="manual-tool.html" class="btn btn-glass btn-sm">無料で使う →</a>
-        </div>
 
-        <div class="tool-card glass-card" data-tool-slug="prompt-manager">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">✦</div>
-          <h3 class="tool-name">AIプロンプト管理ツール Pro Lite（無料）</h3>
-          <p class="tool-desc">よく使うAIプロンプトをフォルダ分け・お気に入り・検索機能で一元管理。ChatGPTやClaude利用者向け。</p>
-          <div class="tool-tags">
-            <span class="tag">無料</span>
-            <span class="tag">業務効率化</span>
+          <div class="tool-card glass-card" data-tool-slug="invoice-tool">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">🧾</div>
+            <h3 class="tool-name">AI見積書・請求書作成ツール</h3>
+            <p class="tool-desc">見積書・請求書をプロ品質で素早く作成。AIが文章をサポート。インボイス対応。</p>
+            <div class="tool-tags">
+              <span class="tag">経理</span>
+              <span class="tag">自動化</span>
+            </div>
+            <div class="tool-price">
+              <p class="price-original"><s>通常価格 1,480円</s></p>
+              <p class="price-sale">🎉 公開記念価格 <span class="price-amount">980円</span></p>
+              <p class="price-note">期間限定・予告なく終了する場合があります</p>
+            </div>
+            <a href="https://note.com/safe_acacia2730/n/nbf795bc90581" target="_blank" class="btn btn-glass btn-sm">詳細・購入</a>
           </div>
-          <a href="prompt-manager.html" class="btn btn-glass btn-sm">無料で使う →</a>
-        </div>
 
-        <div class="tool-card glass-card" data-tool-slug="diagnosis-tool">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">🏢</div>
-          <h3 class="tool-name">AI業務改善診断ツール</h3>
-          <p class="tool-desc">質問に答えるだけでAIが業務課題を分析し、改善提案レポートとおすすめツールを自動生成。Claude APIキーで利用。</p>
-          <div class="tool-tags">
-            <span class="tag">業務改善</span>
-            <span class="tag">自動化</span>
+          <div class="tool-card glass-card" data-tool-slug="graph-tool">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">📊</div>
+            <h3 class="tool-name">AIビジネスグラフ作成ツール</h3>
+            <p class="tool-desc">データを入力するだけでAIが最適なグラフを作成・分析・改善提案まで自動対応。プレゼン資料作成もサポート。</p>
+            <div class="tool-tags">
+              <span class="tag">データ分析</span>
+              <span class="tag">自動化</span>
+            </div>
+            <div class="tool-price">
+              <p class="price-original"><s>通常価格 1,480円</s></p>
+              <p class="price-sale">🎉 公開記念価格 <span class="price-amount">980円</span></p>
+              <p class="price-note">期間限定・予告なく終了する場合があります</p>
+            </div>
+            <a href="https://note.com/safe_acacia2730/n/n56b5beb5470f" target="_blank" class="btn btn-glass btn-sm">詳細・購入</a>
           </div>
-          <a href="diagnosis-tool.html" class="btn btn-glass btn-sm">使ってみる →</a>
-        </div>
 
-        <div class="tool-card glass-card" data-tool-slug="report-tool-app">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">📝</div>
-          <h3 class="tool-name">AI日報生成ツール</h3>
-          <p class="tool-desc">業務内容を入力するだけでAIが日報をビジネス文章に整形。Claude APIキーで利用できます。</p>
-          <div class="tool-tags">
-            <span class="tag">文書作成</span>
-            <span class="tag">自動化</span>
-          </div>
-          <a href="report-tool.html" class="btn btn-glass btn-sm">使ってみる →</a>
         </div>
-
-        <div class="tool-card glass-card" data-tool-slug="sns-tool-app">
-          <div class="tool-badge">NEW</div>
-          <div class="tool-icon">✦</div>
-          <h3 class="tool-name">SNS投稿自動生成ツール</h3>
-          <p class="tool-desc">テーマを入力するだけでX・Instagram・Facebook・LinkedIn向けの投稿文を自動生成。Claude APIキーで利用。</p>
-          <div class="tool-tags">
-            <span class="tag">SNS</span>
-            <span class="tag">自動化</span>
-          </div>
-          <a href="sns-tool.html" class="btn btn-glass btn-sm">使ってみる →</a>
-        </div>
-
       </div>
     </div>
   </section>
@@ -346,5 +372,10 @@
   <script src="tools-catalog.js"></script>
   <script src="favorites.js"></script>
   <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      syncAuthNav();
+    });
+  </script>
 </body>
 </html>

@@ -62,16 +62,28 @@ async function requireAdmin() {
   return { session, profile };
 }
 
-// index.html などのヘッダーで「ログイン / マイページ」リンクを出し分ける
+// ヘッダーで「ログイン / マイページ」リンク、「無料会員登録 / マイページ」ボタンを出し分ける
 async function syncAuthNav() {
   const link = document.getElementById('nav-auth-link');
-  if (!link) return;
+  const cta = document.getElementById('nav-cta-btn');
+  if (!link && !cta) return;
   const { data: { session } } = await sbClient.auth.getSession();
-  if (session) {
-    link.textContent = 'マイページ';
-    link.href = 'mypage.html';
-  } else {
-    link.textContent = 'ログイン';
-    link.href = 'login.html';
+  if (link) {
+    if (session) {
+      link.textContent = 'マイページ';
+      link.href = 'mypage.html';
+    } else {
+      link.textContent = 'ログイン';
+      link.href = 'login.html';
+    }
+  }
+  if (cta) {
+    if (session) {
+      cta.textContent = 'マイページ';
+      cta.href = 'mypage.html';
+    } else {
+      cta.textContent = '無料会員登録';
+      cta.href = 'register.html';
+    }
   }
 }
