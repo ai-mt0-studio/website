@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="全10問に答えるだけで、あなたのAI活用度を0〜100点でスコア化。AI活用初心者・中級者・上級者の3タイプ診断と、一番時間がかかっている作業に合わせたおすすめAIツールがわかる完全無料の診断ツールです。登録不要・API不要で今すぐ結果を確認できます。" />
+  <link rel="canonical" href="https://ai-mt0-studio.netlify.app/diagnosis.html" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%234f8ef7'%3E%E2%AC%A1%3C/text%3E%3C/svg%3E" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AI MT0 Studio" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:title" content="AI業務効率スコア診断 | AI MT0 Studio" />
+  <meta property="og:description" content="全10問に答えるだけで、あなたのAI活用度を0〜100点でスコア化。AI活用初心者・中級者・上級者の3タイプ診断と、一番時間がかかっている作業に合わせたおすすめAIツールがわかる完全無料の診断ツールです。登録不要・API不要で今すぐ結果を確認できます。" />
+  <meta property="og:url" content="https://ai-mt0-studio.netlify.app/diagnosis.html" />
+  <meta property="og:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI業務効率スコア診断 | AI MT0 Studio" />
+  <meta name="twitter:description" content="全10問に答えるだけで、あなたのAI活用度を0〜100点でスコア化。AI活用初心者・中級者・上級者の3タイプ診断と、おすすめAIツールがわかる完全無料の診断ツールです。" />
+  <meta name="twitter:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+<title>AI業務効率スコア診断【無料】| AI MT0 Studio</title>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://ai-mt0-studio.netlify.app/" },
+    { "@type": "ListItem", "position": 2, "name": "AIツール", "item": "https://ai-mt0-studio.netlify.app/tools.html" },
+    { "@type": "ListItem", "position": 3, "name": "AI業務効率スコア診断", "item": "https://ai-mt0-studio.netlify.app/diagnosis.html" }
+  ]
+}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "AI業務効率スコア診断",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "全10問の質問に答えるだけでAI活用度を0〜100点でスコア化し、3段階のタイプとおすすめのAIツールを診断する無料ツール。",
+  "url": "https://ai-mt0-studio.netlify.app/diagnosis.html",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --orange-400: #fb923c;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.18) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 50px; left: -120px; }
+
+  .container { max-width: 780px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+  .free-badge {
+    display: inline-block; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.4);
+    color: var(--green-400); font-size: 0.75rem; font-weight: 700;
+    padding: 0.2rem 0.85rem; border-radius: 999px; margin-top: 0.5rem;
+  }
+
+  /* 進捗 */
+  .progress-wrap { margin-bottom: 1.75rem; }
+  .progress-bar-bg { background: rgba(255,255,255,0.06); border-radius: 999px; height: 6px; margin-bottom: 0.5rem; }
+  .progress-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--purple-700), var(--blue-400)); transition: width 0.4s; }
+  .progress-text { text-align: center; font-size: 0.78rem; color: var(--muted); font-weight: 700; letter-spacing: 0.04em; }
+
+  /* カード */
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .step-title {
+    font-size: 1rem; font-weight: 800; margin-bottom: 1.25rem;
+    display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.5;
+  }
+  .step-badge {
+    background: linear-gradient(135deg, var(--purple-700), var(--blue-700));
+    color: #fff; font-size: 0.72rem; font-weight: 700;
+    padding: 0.2rem 0.65rem; border-radius: 999px; flex-shrink: 0; margin-top: 0.1rem;
+  }
+
+  /* 選択肢 */
+  .opt-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .opt-btn {
+    width: 100%; text-align: left; background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 12px; padding: 0.85rem 1rem; cursor: pointer; font-size: 0.88rem;
+    color: var(--text); font-family: inherit; transition: all 0.2s; line-height: 1.5;
+  }
+  .opt-btn:hover { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.06); }
+  .opt-btn.selected { border-color: rgba(124,58,237,0.65); background: rgba(124,58,237,0.18); color: var(--purple-400); font-weight: 700; }
+
+  /* フォーム */
+  textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.75rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none; resize: vertical; min-height: 110px; line-height: 1.7;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  textarea:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  textarea::placeholder { color: rgba(148,163,184,0.55); }
+
+  /* ボタン */
+  .btn {
+    padding: 0.75rem 1.5rem; border-radius: 12px; cursor: pointer;
+    font-size: 0.9rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+    text-decoration: none; display: inline-block; text-align: center;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+  .btn-secondary { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
+  .btn-secondary:hover { background: rgba(96,165,250,0.2); }
+  .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: var(--text); }
+  .btn-outline:hover { background: rgba(255,255,255,0.06); }
+  .btn-diagnose {
+    width: 100%; padding: 1rem; border-radius: 14px; border: none; cursor: pointer;
+    font-size: 1rem; font-weight: 700; font-family: inherit; color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    position: relative; overflow: hidden; transition: all 0.2s; margin-top: 0.5rem;
+  }
+  .btn-diagnose::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  .btn-diagnose:hover::after { left: 100%; }
+  .btn-diagnose:disabled { opacity: 0.4; cursor: not-allowed; }
+  .nav-btns { display: flex; gap: 0.75rem; justify-content: space-between; margin-top: 1rem; flex-wrap: wrap; }
+  .nav-btns .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* 診断中アニメーション */
+  .analyzing { display: none; text-align: center; padding: 2.5rem 1rem; }
+  .analyze-ring {
+    width: 80px; height: 80px; margin: 0 auto 1.25rem;
+    border: 4px solid rgba(124,58,237,0.15);
+    border-top-color: var(--purple-700);
+    border-radius: 50%; animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .analyze-text { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+  .analyze-sub { color: rgba(148,163,184,0.5); font-size: 0.78rem; }
+
+  /* 結果 */
+  .result-section { display: none; }
+
+  /* 総合スコア */
+  .score-card {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(29,78,216,0.15));
+    border: 1px solid rgba(124,58,237,0.3); border-radius: 18px; padding: 1.75rem;
+    text-align: center; margin-bottom: 1.25rem;
+  }
+  .score-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.5rem; }
+  .score-value {
+    font-size: 3.2rem; font-weight: 900; letter-spacing: -0.03em;
+    background: linear-gradient(130deg, var(--blue-300), var(--purple-400));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .score-value::after { content: ' 点'; font-size: 1.2rem; -webkit-text-fill-color: var(--muted); }
+  .score-tier {
+    display: inline-block; margin: 0.6rem 0 0.9rem; font-size: 0.95rem; font-weight: 800;
+    padding: 0.3rem 1rem; border-radius: 999px;
+  }
+  .score-summary { font-size: 0.9rem; color: var(--text); line-height: 1.7; max-width: 500px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .section-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); flex-shrink: 0; }
+  .type-desc { font-size: 0.88rem; line-height: 1.8; color: var(--text); }
+
+  /* おすすめツール */
+  .recommend-inner { display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap; }
+  .recommend-icon {
+    font-size: 2.2rem; width: 56px; height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.25); border-radius: 14px;
+  }
+  .recommend-body { flex: 1; min-width: 200px; }
+  .recommend-name { font-size: 0.98rem; font-weight: 800; margin-bottom: 0.4rem; }
+  .recommend-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.85rem; }
+  .recommend-reason { font-size: 0.75rem; color: var(--purple-400); margin-bottom: 0.6rem; }
+
+  /* シェア */
+  .share-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .share-btn {
+    flex: 1; min-width: 160px; padding: 0.75rem 1rem; border-radius: 12px; cursor: pointer;
+    font-size: 0.85rem; font-weight: 700; font-family: inherit; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+  .share-x { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: var(--text); }
+  .share-x:hover { background: rgba(255,255,255,0.14); }
+  .share-threads { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3); color: var(--purple-400); }
+  .share-threads:hover { background: rgba(167,139,250,0.18); }
+
+  /* CTA */
+  .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
+
+  /* アクションバー */
+  .action-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+  .act-btn {
+    padding: 0.6rem 1.1rem; border-radius: 10px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+  }
+  .act-btn-reset { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
+  .act-btn-reset:hover { background: rgba(248,113,113,0.14); }
+
+  @media(max-width:640px) {
+    .nav-btns { flex-direction: column; }
+    .nav-btns > * { width: 100%; }
+    .share-row { flex-direction: column; }
+    .recommend-inner { flex-direction: column; align-items: center; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <header>
+    <a href="tools.html" style="font-size:0.8rem;opacity:0.7;text-decoration:none;display:inline-block;margin-bottom:0.5rem;color:inherit;">← ツール一覧へ戻る</a>
+    <h1>🎯 AI業務効率スコア診断</h1>
+    <p>全10問に答えるだけで、あなたのAI活用度が0〜100点でわかります</p>
+    <div class="free-badge">✅ 完全無料 · 登録不要 · API不要</div>
+  </header>
+
+  <!-- 進捗 -->
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill" style="width:10%"></div></div>
+    <div class="progress-text" id="progText">Q1 / 10</div>
+  </div>
+
+  <!-- 設問 -->
+  <div id="quizSection">
+    <div id="quizSteps"></div>
+  </div>
+
+  <!-- 診断中 -->
+  <div class="analyzing" id="analyzingSection">
+    <div class="analyze-ring"></div>
+    <div class="analyze-text">回答内容を集計しています…</div>
+    <div class="analyze-sub">スコアとおすすめツールを診断中です</div>
+  </div>
+
+  <!-- 結果 -->
+  <div class="result-section" id="resultSection">
+
+    <!-- 総合スコア -->
+    <div class="score-card">
+      <div class="score-label">AI業務効率スコア</div>
+      <div class="score-value" id="scoreValue">0</div>
+      <div><span class="score-tier" id="scoreTier"></span></div>
+      <div class="score-summary" id="scoreSummary"></div>
+    </div>
+
+    <!-- タイプ解説 -->
+    <div class="card">
+      <div class="section-label"><div class="section-bar"></div>📌 あなたのタイプについて</div>
+      <p class="type-desc" id="typeDesc"></p>
+    </div>
+
+    <!-- おすすめツール -->
+    <div class="card">
+      <div class="section-label"><div class="section-bar"></div>🛠 あなたにおすすめのツール</div>
+      <div id="recommendInner"></div>
+    </div>
+
+    <!-- シェア -->
+    <div class="card">
+      <div class="section-label"><div class="section-bar"></div>📢 結果をシェアする</div>
+      <div class="share-row">
+        <button class="share-btn share-x" onclick="shareX()">𝕏 でシェアする</button>
+        <button class="share-btn share-threads" onclick="shareThreads()">Threads でシェアする</button>
+      </div>
+    </div>
+
+    <!-- 導線 -->
+    <div class="cta-row">
+      <a href="tools.html" class="btn btn-primary cta-btn">無料AIツールを使う →</a>
+      <a href="register.html" class="btn btn-secondary cta-btn">無料会員登録する →</a>
+      <a href="contact.html" class="btn btn-outline cta-btn">オーダーメイド相談する →</a>
+    </div>
+
+    <div class="action-bar">
+      <button class="act-btn act-btn-reset" onclick="resetAll()">🔄 もう一度診断する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PAGE_URL = 'https://ai-mt0-studio.netlify.app/diagnosis.html';
+
+  // ── Q1〜Q9 質問データ（加点・減点方式） ──
+  const QUESTIONS = [
+    { q: 'AIツールをどのくらいの頻度で使っていますか？', options: [
+      { label: '毎日使っている', score: 18 },
+      { label: '週に数回使っている', score: 10 },
+      { label: '月に数回程度使っている', score: 2 },
+      { label: 'ほとんど使っていない', score: -8 },
+      { label: '一度も使ったことがない', score: -18 },
+    ]},
+    { q: '主にどんな場面でAIを使っていますか？（一番近いものを選択）', options: [
+      { label: '資料作成・分析・メールなど複数の業務で使っている', score: 10 },
+      { label: 'メール文章や簡単な調べ物に使う程度', score: 4 },
+      { label: 'たまに雑談やアイデア出しに使う程度', score: -2 },
+      { label: '何に使えるのか正直よくわかっていない', score: -10 },
+    ]},
+    { q: '議事録・日報などの記録業務はどうしていますか？', options: [
+      { label: 'AIが自動で要約・清書までしてくれる', score: 8 },
+      { label: 'テンプレートを使って手入力している', score: 0 },
+      { label: 'すべて一から手作業で作成している', score: -8 },
+    ]},
+    { q: 'メール対応にかかる時間はどうですか？', options: [
+      { label: 'AIの下書きで大幅に時短できている', score: 8 },
+      { label: 'たまにAIを使うが基本は手入力', score: 0 },
+      { label: 'すべて自分でゼロから書いている', score: -8 },
+    ]},
+    { q: '資料・提案書などの文章作成はどうしていますか？', options: [
+      { label: 'AIに構成〜下書きまで任せている', score: 8 },
+      { label: '一部だけAIを使い仕上げは手作業', score: 0 },
+      { label: 'すべて自分で一から作成している', score: -8 },
+    ]},
+    { q: 'SNS運用・情報発信はどうしていますか？', options: [
+      { label: 'AIで投稿文を自動生成している', score: 6 },
+      { label: 'たまにAIでアイデア出しだけ使う', score: 0 },
+      { label: '運用していない、またはすべて手作業', score: -6 },
+    ]},
+    { q: 'データ集計・分析業務はどうしていますか？', options: [
+      { label: 'AIやツールで自動化できている', score: 6 },
+      { label: 'Excelなどで手作業集計している', score: 0 },
+      { label: '集計や分析はほとんどできていない', score: -6 },
+    ]},
+    { q: '新しいAIツールへの姿勢はどちらに近いですか？', options: [
+      { label: '積極的に試して業務に取り入れている', score: 10 },
+      { label: '必要になったら使う程度', score: 0 },
+      { label: '特に興味がなく使う予定もない', score: -10 },
+    ]},
+    { q: '月あたりの残業・業務過多の状況はどうですか？', options: [
+      { label: 'ほとんど残業していない', score: 6 },
+      { label: '月10〜30時間程度残業している', score: -3 },
+      { label: '月30時間以上残業している', score: -10 },
+    ]},
+  ];
+  const TOTAL_STEPS = QUESTIONS.length + 1; // Q1〜Q9 + Q10（自由入力）
+
+  // ── タイプ定義 ──
+  const TIER_INFO = {
+    beginner: {
+      label: 'AI活用初心者', emoji: '🌱', color: '#fbbf24',
+      desc: 'AIをまだ十分に活用できていない段階です。まずはメール文章や資料の下書きなど、身近な業務を1つ選んでAIに任せてみましょう。小さな成功体験を積むことが、活用度を上げる一番の近道です。',
+    },
+    intermediate: {
+      label: 'AI活用中級者', emoji: '⚡', color: '#60a5fa',
+      desc: '日常的にAIを使い始めていますが、活用範囲や自動化にはまだ伸びしろがあります。使う業務の幅を広げたり、専用ツールへの置き換え・テンプレート化を進めることで、さらなる時短が期待できます。',
+    },
+    advanced: {
+      label: 'AI活用上級者', emoji: '🚀', color: '#34d399',
+      desc: '複数の業務でAIを使いこなし、時短・効率化がすでに定着しています。次のステップとして、専用ツールの導入や業務フローの仕組み化を進めることで、チーム・会社全体の生産性向上にもつなげられます。',
+    },
+  };
+
+  // ── Q10 自由入力とのキーワードマッチング → おすすめツール ──
+  const TOOL_MATCHES = [
+    { keys: ['見積書', '見積', '請求書', '請求'], icon: '🧾', name: 'AI見積書・請求書作成ツール', desc: '見積書・請求書の作成をAIがサポート。品名・単価の入力だけでプロ品質の書類をスピーディに作成できます。', url: 'invoice-tool.html' },
+    { keys: ['議事録', '会議'], icon: '🎙️', name: 'AI議事録ツール', desc: '会議の録音や文字起こしをAIが自動で要約・整形。そのまま共有できる議事録に仕上がります。', url: 'https://note.com/safe_acacia2730/n/nd10e39a5b1a9' },
+    { keys: ['日報', '週報', '業務報告'], icon: '📝', name: 'AI日報生成ツール', desc: '業務内容を入力するだけでAIが日報・週報をビジネス文章に自動整形します。', url: 'report-tool.html' },
+    { keys: ['マニュアル', '引き継ぎ', '新人教育'], icon: '📋', name: 'AI業務マニュアル作成 Pro Lite（無料）', desc: '業種・業務内容を入力するだけで、誰でも使える業務マニュアルを自動作成。引き継ぎ・新人教育に最適です。', url: 'manual-tool.html' },
+    { keys: ['経理', '帳簿', '会計', '仕訳', '確定申告'], icon: '📊', name: '経理・帳簿ツール', desc: '売上・経費を入力するだけでAIが自動分析。利益率・消費税・インボイス管理まで対応します。', url: 'https://note.com/safe_acacia2730/n/n974e7530893c' },
+    { keys: ['sns', 'SNS', 'インスタ', 'ツイッター', 'X投稿', '投稿文'], icon: '✦', name: 'SNS投稿自動生成ツール', desc: 'テーマを入力するだけでX・Instagram・Facebook・LinkedIn向けの投稿文をAIが自動生成します。', url: 'sns-tool.html' },
+    { keys: ['営業'], icon: '✉️', name: 'AI営業文作成 Pro Lite（無料）', desc: '会社名・業種・提案内容を入力するだけで、営業メール・提案文をAIが自動生成。完全無料で使えます。', url: 'sales-mail-tool.html' },
+    { keys: ['メール'], icon: '✉️', name: 'AI営業文作成 Pro Lite（無料）', desc: '状況を入力するだけでビジネスメールの下書きをAIが自動生成。メール対応の時短に役立ちます。', url: 'sales-mail-tool.html' },
+    { keys: ['資料', '文章', '提案書', '企画書'], icon: '✍️', name: '資料・文章作成ツール', desc: '目的を選ぶだけでAIがビジネス文章を自動作成。リライト・要約・翻訳・誤字脱字チェックにも対応します。', url: 'https://note.com/safe_acacia2730/n/nd306683712ee' },
+    { keys: ['顧客', '営業管理', '案件管理'], icon: '🔍', name: 'AI業務改善アドバイザー Pro Lite（無料）', desc: '業種・課題を入力するだけでAIが業務改善の優先順位や具体的な改善方法を提案します。', url: 'advisor-tool.html' },
+  ];
+  const FALLBACK_TOOL = { icon: '🏢', name: 'AI Business OS（無料）', desc: '見積書・顧客管理・営業管理・分析グラフまで全部入りの無料ツール。まずはこの1つで業務全体の効率化を体験してみましょう。', url: 'business-os.html' };
+
+  // ── 状態 ──
+  let currentQ = 0;
+  let answers = new Array(QUESTIONS.length).fill(null);
+  let lastResult = null;
+
+  // ── 設問の描画 ──
+  function buildSteps() {
+    let html = '';
+    QUESTIONS.forEach((q, i) => {
+      html += `
+      <div class="q-step" id="qstep${i}" style="display:${i === 0 ? 'block' : 'none'}">
+        <div class="card">
+          <div class="step-title"><span class="step-badge">Q${i + 1} / ${TOTAL_STEPS}</span>${esc(q.q)}</div>
+          <div class="opt-list">
+            ${q.options.map(o => `<button type="button" class="opt-btn" data-qi="${i}" data-score="${o.score}" onclick="selectOption(this)">${esc(o.label)}</button>`).join('')}
+          </div>
+        </div>
+        <div class="nav-btns">
+          ${i > 0 ? `<button class="btn btn-secondary" onclick="goQ(${i - 1})">← 戻る</button>` : '<div></div>'}
+          <button class="btn btn-primary" id="nextBtn${i}" onclick="goQ(${i + 1})" disabled>次へ →</button>
+        </div>
+      </div>`;
+    });
+    const lastIdx = QUESTIONS.length;
+    html += `
+      <div class="q-step" id="qstep${lastIdx}" style="display:none">
+        <div class="card">
+          <div class="step-title"><span class="step-badge">Q10 / ${TOTAL_STEPS}</span>一番時間がかかっている作業を教えてください（自由入力・任意）</div>
+          <textarea id="freeTextAnswer" placeholder="例：毎月の請求書・見積書の作成に時間がかかっている、SNS投稿の作成に時間を取られている、など"></textarea>
+        </div>
+        <div class="nav-btns">
+          <button class="btn btn-secondary" onclick="goQ(${lastIdx - 1})">← 戻る</button>
+          <button class="btn-diagnose" onclick="runDiagnosis()">🎯 診断結果を見る</button>
+        </div>
+      </div>`;
+    document.getElementById('quizSteps').innerHTML = html;
+  }
+
+  function selectOption(btn) {
+    const qi = +btn.dataset.qi;
+    btn.parentElement.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    answers[qi] = +btn.dataset.score;
+    const nextBtn = document.getElementById('nextBtn' + qi);
+    if (nextBtn) nextBtn.disabled = false;
+  }
+
+  function goQ(n) {
+    if (n < 0 || n > QUESTIONS.length) return;
+    document.getElementById('qstep' + currentQ).style.display = 'none';
+    currentQ = n;
+    document.getElementById('qstep' + currentQ).style.display = 'block';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress() {
+    const pct = ((currentQ + 1) / TOTAL_STEPS) * 100;
+    document.getElementById('progFill').style.width = pct + '%';
+    document.getElementById('progText').textContent = `Q${currentQ + 1} / ${TOTAL_STEPS}`;
+  }
+
+  // ── 診断実行 ──
+  function runDiagnosis() {
+    document.getElementById('quizSection').style.display = 'none';
+    document.getElementById('analyzingSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    setTimeout(() => {
+      const result = buildResult();
+      lastResult = result;
+      renderResult(result);
+      document.getElementById('analyzingSection').style.display = 'none';
+      document.getElementById('resultSection').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 1600);
+  }
+
+  function buildResult() {
+    let sum = 0;
+    answers.forEach(a => { if (a !== null) sum += a; });
+    const score = Math.max(0, Math.min(100, 50 + sum));
+
+    let tierKey;
+    if (score >= 70) tierKey = 'advanced';
+    else if (score >= 40) tierKey = 'intermediate';
+    else tierKey = 'beginner';
+
+    const freeText = (document.getElementById('freeTextAnswer').value || '').trim();
+    const tool = matchTool(freeText);
+
+    return { score, tierKey, tierInfo: TIER_INFO[tierKey], freeText, tool };
+  }
+
+  function matchTool(text) {
+    if (text) {
+      const upper = text.toUpperCase();
+      for (const m of TOOL_MATCHES) {
+        if (m.keys.some(k => upper.includes(k.toUpperCase()))) return m;
+      }
+    }
+    return FALLBACK_TOOL;
+  }
+
+  function renderResult(r) {
+    document.getElementById('scoreValue').textContent = r.score;
+
+    const tierEl = document.getElementById('scoreTier');
+    tierEl.textContent = `${r.tierInfo.emoji} ${r.tierInfo.label}`;
+    tierEl.style.background = r.tierInfo.color + '26';
+    tierEl.style.border = '1px solid ' + r.tierInfo.color + '66';
+    tierEl.style.color = r.tierInfo.color;
+
+    document.getElementById('scoreSummary').textContent =
+      `あなたのAI業務効率スコアは${r.score}点で「${r.tierInfo.label}」タイプです。`;
+
+    document.getElementById('typeDesc').textContent = r.tierInfo.desc;
+
+    const isExternal = r.tool.url.startsWith('http');
+    document.getElementById('recommendInner').innerHTML = `
+      <div class="recommend-inner">
+        <div class="recommend-icon">${r.tool.icon}</div>
+        <div class="recommend-body">
+          <div class="recommend-name">${esc(r.tool.name)}</div>
+          ${r.freeText ? `<div class="recommend-reason">「${esc(r.freeText.slice(0, 40))}${r.freeText.length > 40 ? '…' : ''}」の内容から診断</div>` : ''}
+          <div class="recommend-desc">${esc(r.tool.desc)}</div>
+          <a href="${r.tool.url}" class="btn btn-primary"${isExternal ? ' target="_blank" rel="noopener"' : ''}>詳しく見る →</a>
+        </div>
+      </div>`;
+  }
+
+  // ── シェア ──
+  function buildShareText() {
+    if (!lastResult) return '';
+    return `AI業務効率スコア診断をやってみたら${lastResult.score}点で「${lastResult.tierInfo.label}」でした${lastResult.tierInfo.emoji}\nあなたのAI活用度もチェックしてみませんか？\n#AI業務効率スコア診断 #AIMT0Studio`;
+  }
+
+  function shareX() {
+    const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(buildShareText()) + '&url=' + encodeURIComponent(PAGE_URL);
+    window.open(url, '_blank', 'noopener');
+  }
+
+  function shareThreads() {
+    const text = buildShareText() + '\n' + PAGE_URL;
+    const url = 'https://www.threads.net/intent/post?text=' + encodeURIComponent(text);
+    window.open(url, '_blank', 'noopener');
+  }
+
+  // ── リセット ──
+  function resetAll() {
+    if (!confirm('診断をリセットしますか？')) return;
+    answers = new Array(QUESTIONS.length).fill(null);
+    currentQ = 0;
+    lastResult = null;
+    buildSteps();
+    updateProgress();
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('quizSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  buildSteps();
+  updateProgress();
+</script>
+</body>
+</html>
