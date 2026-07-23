@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "ai-diagnosis-release-2026",
+      "title": "「AI業務効率スコア診断」を無料公開しました",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.23",
+      "summary": "全10問に答えるだけでAI活用度を0〜100点でスコア化し、3段階のタイプとおすすめツールがわかる「AI業務効率スコア診断」を無料公開しました。外部AI APIは不要、結果はX・Threadsでそのままシェアできます。",
+      "url": "blog-ai-diagnosis-release-2026.html"
+    },
+    {
+      "id": "ai-skill-check-2026",
+      "title": "AI活用度を無料診断する方法｜自分の仕事はAIでどれだけ効率化できる?",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.23",
+      "summary": "「AI活用度 診断 無料」「AI 業務効率化 診断」で探している方へ。AIスキルチェック 無料でできる方法と、全10問に答えるだけでAI活用度を0〜100点でスコア化できる「AI業務効率スコア診断」の使い方を解説します。",
+      "url": "blog-ai-skill-check-2026.html"
+    },
+    {
       "id": "site-improvement-2026",
       "title": "会員登録が0件だった原因は「届かない確認メール」でした",
       "category": "update",
