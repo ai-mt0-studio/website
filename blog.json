@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "ai-getting-started-2026",
+      "title": "AIで業務効率化、何から始めればいいか分からない人へ",
+      "category": "tools",
+      "categoryLabel": "ツール紹介",
+      "date": "2026.07.24",
+      "summary": "「業務効率化 AI 何から始める」「AI活用 個人事業主 始め方」で探している方へ。AI導入 何からすればいいか迷ったときの一般的な始め方と、自分に合うツールが1分でわかる「AI業務効率スコア診断」の使い方を解説します。",
+      "url": "blog-ai-getting-started-2026.html"
+    },
+    {
+      "id": "ai-future-thoughts-2026",
+      "title": "個人開発者から見た、これからのAIとの付き合い方",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "date": "2026.07.24",
+      "summary": "25歳、個人でAIツールを作り続けてきた立場から、AIが「特別なもの」から「日常の道具」に変わってきた実感と、Claude Codeでサイト運営をしてきて感じた協働のリアルを綴ります。",
+      "url": "blog-ai-future-thoughts-2026.html"
+    },
+    {
       "id": "ai-diagnosis-release-2026",
       "title": "「AI業務効率スコア診断」を無料公開しました",
       "category": "tools",
