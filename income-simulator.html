@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="月の売上・経費のおおまかな金額と申告方式を選ぶだけで、年間の概算利益と所得税・住民税の目安を自動シミュレーション。青色申告・白色申告どちらにも対応。あなたに合ったおすすめAIツールも診断できます。完全無料・登録不要・API不要で今すぐ試せます。" />
+  <link rel="canonical" href="https://ai-mt0-studio.netlify.app/income-simulator.html" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%234f8ef7'%3E%E2%AC%A1%3C/text%3E%3C/svg%3E" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AI MT0 Studio" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:title" content="簡易収支シミュレーター | AI MT0 Studio" />
+  <meta property="og:description" content="月の売上・経費のおおまかな金額と申告方式を選ぶだけで、年間の概算利益と所得税・住民税の目安を自動シミュレーション。青色申告・白色申告どちらにも対応。" />
+  <meta property="og:url" content="https://ai-mt0-studio.netlify.app/income-simulator.html" />
+  <meta property="og:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="簡易収支シミュレーター | AI MT0 Studio" />
+  <meta name="twitter:description" content="3つの質問に答えるだけで、年間の概算利益・所得税と住民税の目安を自動シミュレーション。おすすめのAIツールもわかる完全無料ツールです。" />
+  <meta name="twitter:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+<title>簡易収支シミュレーター【無料】| AI MT0 Studio</title>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://ai-mt0-studio.netlify.app/" },
+    { "@type": "ListItem", "position": 2, "name": "AIツール", "item": "https://ai-mt0-studio.netlify.app/tools.html" },
+    { "@type": "ListItem", "position": 3, "name": "簡易収支シミュレーター", "item": "https://ai-mt0-studio.netlify.app/income-simulator.html" }
+  ]
+}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "簡易収支シミュレーター",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "3つの質問に答えるだけで、個人事業主向けに年間の概算利益・所得税や住民税の目安を自動シミュレーションし、おすすめのAIツールを診断する無料ツール。",
+  "url": "https://ai-mt0-studio.netlify.app/income-simulator.html",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+  :root {
+    --bg: #030c14;
+    --sky-500: #0ea5e9;
+    --cyan-400: #22d3ee;
+    --cyan-300: #67e8f9;
+    --emerald-400: #34d399;
+    --emerald-300: #6ee7b7;
+    --blue-300: #7dd3fc;
+    --red-400: #f87171;
+    --text: #e6f5f4;
+    --muted: #8fb2b6;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 12% 35%, rgba(14,165,233,0.16) 0%, transparent 70%),
+      radial-gradient(ellipse 55% 45% at 88% 12%, rgba(34,211,238,0.14) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 55% 95%, rgba(52,211,153,0.16) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.12; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 480px; height: 480px; background: var(--sky-500); top: -140px; right: -140px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--emerald-400); bottom: 40px; left: -120px; }
+
+  /* 光の粒子（軽量・静的アニメーション） */
+  .particle {
+    position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle, rgba(103,232,249,0.9), transparent 70%);
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  .p1 { width: 6px; height: 6px; top: 12%; left: 18%; animation-delay: 0s; }
+  .p2 { width: 4px; height: 4px; top: 22%; right: 14%; animation-delay: 1.2s; background: radial-gradient(circle, rgba(110,231,183,0.9), transparent 70%); }
+  .p3 { width: 5px; height: 5px; top: 68%; left: 8%; animation-delay: 2s; }
+  .p4 { width: 4px; height: 4px; top: 78%; right: 10%; animation-delay: 0.6s; background: radial-gradient(circle, rgba(110,231,183,0.9), transparent 70%); }
+  @keyframes twinkle { 0%, 100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.15); } }
+
+  .container { max-width: 780px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(120deg, var(--blue-300) 0%, var(--cyan-300) 55%, var(--emerald-300) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+  .free-badge {
+    display: inline-block; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.4);
+    color: var(--emerald-300); font-size: 0.75rem; font-weight: 700;
+    padding: 0.2rem 0.85rem; border-radius: 999px; margin-top: 0.5rem;
+  }
+
+  /* 進捗 */
+  .progress-wrap { margin-bottom: 1.75rem; }
+  .progress-bar-bg { background: rgba(255,255,255,0.06); border-radius: 999px; height: 6px; margin-bottom: 0.5rem; }
+  .progress-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--sky-500), var(--emerald-400)); transition: width 0.4s; }
+  .progress-text { text-align: center; font-size: 0.78rem; color: var(--muted); font-weight: 700; letter-spacing: 0.04em; }
+
+  /* カード */
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+    position: relative; z-index: 1;
+  }
+  .step-title {
+    font-size: 1rem; font-weight: 800; margin-bottom: 1.25rem;
+    display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.5;
+  }
+  .step-badge {
+    background: linear-gradient(135deg, var(--sky-500), var(--emerald-400));
+    color: #04212a; font-size: 0.72rem; font-weight: 800;
+    padding: 0.2rem 0.65rem; border-radius: 999px; flex-shrink: 0; margin-top: 0.1rem;
+  }
+
+  /* 選択肢 */
+  .opt-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .opt-btn {
+    width: 100%; text-align: left; background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 12px; padding: 0.85rem 1rem; cursor: pointer; font-size: 0.88rem;
+    color: var(--text); font-family: inherit; transition: all 0.2s; line-height: 1.5;
+  }
+  .opt-btn:hover { border-color: rgba(34,211,238,0.4); background: rgba(34,211,238,0.06); }
+  .opt-btn.selected { border-color: rgba(52,211,153,0.65); background: rgba(52,211,153,0.16); color: var(--emerald-300); font-weight: 700; }
+
+  /* 金額の直接入力 */
+  .custom-input-wrap { display: none; align-items: center; gap: 0.6rem; margin-top: 0.85rem; }
+  .custom-input {
+    flex: 1; background: var(--input-bg); border: 1px solid var(--glass-border); border-radius: 10px;
+    padding: 0.7rem 0.85rem; color: var(--text); font-family: inherit; font-size: 0.9rem;
+  }
+  .custom-input:focus { outline: none; border-color: rgba(34,211,238,0.5); }
+  .custom-input-unit { font-size: 0.8rem; color: var(--muted); flex-shrink: 0; }
+
+  /* ボタン */
+  .btn {
+    padding: 0.75rem 1.5rem; border-radius: 12px; cursor: pointer;
+    font-size: 0.9rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+    text-decoration: none; display: inline-block; text-align: center;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--sky-500), var(--emerald-400)); color: #04212a; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(34,211,238,0.35); }
+  .btn-secondary { background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.3); color: var(--cyan-300); }
+  .btn-secondary:hover { background: rgba(34,211,238,0.2); }
+  .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: var(--text); }
+  .btn-outline:hover { background: rgba(255,255,255,0.06); }
+  .btn-diagnose {
+    width: 100%; padding: 1rem; border-radius: 14px; border: none; cursor: pointer;
+    font-size: 1rem; font-weight: 800; font-family: inherit; color: #04212a;
+    background: linear-gradient(135deg, var(--sky-500), var(--emerald-400));
+    position: relative; overflow: hidden; transition: all 0.2s; margin-top: 0.5rem;
+  }
+  .btn-diagnose::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transition: left 0.5s;
+  }
+  .btn-diagnose:hover::after { left: 100%; }
+  .btn-diagnose:disabled { opacity: 0.4; cursor: not-allowed; }
+  .nav-btns { display: flex; gap: 0.75rem; justify-content: space-between; margin-top: 1rem; flex-wrap: wrap; }
+  .nav-btns .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* 計算中アニメーション */
+  .analyzing { display: none; text-align: center; padding: 2.5rem 1rem; }
+  .analyze-ring {
+    width: 72px; height: 72px; margin: 0 auto 1.25rem;
+    border: 4px solid rgba(34,211,238,0.15);
+    border-top-color: var(--emerald-400);
+    border-radius: 50%; animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .analyze-text { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+  /* 結果 */
+  .result-section { display: none; }
+
+  /* 免責バナー（目立たせる） */
+  .disclaimer-banner {
+    background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.38);
+    border-radius: 14px; padding: 0.9rem 1.1rem; font-size: 0.82rem; color: #fecaca;
+    line-height: 1.65; margin-bottom: 1.25rem; display: flex; gap: 0.6rem; align-items: flex-start; font-weight: 700;
+  }
+  .disclaimer-banner .ico { flex-shrink: 0; font-size: 1.05rem; }
+
+  /* ヒーロー（シェアしたくなる見た目） */
+  .hero-card {
+    background: linear-gradient(150deg, rgba(14,165,233,0.16), rgba(52,211,153,0.14));
+    border: 1px solid rgba(34,211,238,0.32); border-radius: 20px; padding: 2rem 1.5rem;
+    text-align: center; margin-bottom: 1.25rem; position: relative; overflow: hidden;
+  }
+  .hero-card::before {
+    content: '💰'; position: absolute; top: -30px; right: -10px; font-size: 8rem; opacity: 0.08; pointer-events: none;
+  }
+  .hero-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 0.75rem; position: relative; }
+  .hero-copy { font-size: 1rem; color: var(--text); position: relative; }
+  .hero-value {
+    font-size: clamp(2.2rem, 8vw, 3.6rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1;
+    background: linear-gradient(120deg, var(--blue-300), var(--cyan-300) 55%, var(--emerald-300) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    position: relative; margin: 0.2rem 0;
+  }
+  .hero-value .unit { font-size: 0.38em; -webkit-text-fill-color: var(--muted); margin-left: 0.2rem; }
+  .hero-value.negative { background: none; -webkit-text-fill-color: var(--red-400); color: var(--red-400); }
+
+  .stat-row { display: flex; align-items: center; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap; position: relative; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 1.4rem; font-weight: 800; color: #fff; line-height: 1; }
+  .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.35rem; }
+  .stat-divider { width: 1px; height: 36px; background: var(--glass-border); }
+
+  .hero-note { margin-top: 1.25rem; font-size: 0.76rem; color: var(--muted); line-height: 1.6; position: relative; }
+
+  .section-label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .section-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--sky-500), var(--emerald-400)); flex-shrink: 0; }
+
+  /* 税額の内訳 */
+  .breakdown-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .breakdown-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
+    padding: 0.65rem 0.85rem; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+    border-radius: 10px; font-size: 0.86rem;
+  }
+  .breakdown-row .label { color: var(--muted); }
+  .breakdown-row .value { font-weight: 800; color: #fff; flex-shrink: 0; }
+  .breakdown-row.total { background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.3); }
+  .breakdown-row.total .value { color: var(--emerald-300); }
+  .breakdown-note { font-size: 0.74rem; color: var(--muted); line-height: 1.75; margin-top: 0.85rem; }
+
+  /* おすすめツール */
+  .recommend-inner { display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap; }
+  .recommend-icon {
+    font-size: 2.2rem; width: 56px; height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.25); border-radius: 14px;
+  }
+  .recommend-body { flex: 1; min-width: 200px; }
+  .recommend-name { font-size: 0.98rem; font-weight: 800; margin-bottom: 0.4rem; }
+  .recommend-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.85rem; }
+  .recommend-reason { font-size: 0.75rem; color: var(--emerald-300); margin-bottom: 0.6rem; }
+
+  /* シェア */
+  .share-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .share-btn {
+    flex: 1; min-width: 160px; padding: 0.75rem 1rem; border-radius: 12px; cursor: pointer;
+    font-size: 0.85rem; font-weight: 700; font-family: inherit; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+  .share-x { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: var(--text); }
+  .share-x:hover { background: rgba(255,255,255,0.14); }
+  .share-threads { background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.3); color: var(--cyan-300); }
+  .share-threads:hover { background: rgba(34,211,238,0.18); }
+
+  /* CTA */
+  .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
+
+  /* アクションバー */
+  .action-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+  .act-btn {
+    padding: 0.6rem 1.1rem; border-radius: 10px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+  }
+  .act-btn-reset { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
+  .act-btn-reset:hover { background: rgba(248,113,113,0.14); }
+
+  @media(max-width:640px) {
+    .nav-btns { flex-direction: column; }
+    .nav-btns > * { width: 100%; }
+    .share-row { flex-direction: column; }
+    .recommend-inner { flex-direction: column; align-items: center; text-align: center; }
+    .stat-row { gap: 1.25rem; }
+    .breakdown-row { flex-direction: column; align-items: flex-start; gap: 0.15rem; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<span class="particle p1"></span>
+<span class="particle p2"></span>
+<span class="particle p3"></span>
+<span class="particle p4"></span>
+
+<div class="container">
+  <header>
+    <a href="tools.html" style="font-size:0.8rem;opacity:0.7;text-decoration:none;display:inline-block;margin-bottom:0.5rem;color:inherit;">← ツール一覧へ戻る</a>
+    <h1>💰 簡易収支シミュレーター</h1>
+    <p>月の売上・経費のおおまかな金額を選ぶだけで、年間の概算利益と税額の目安がわかります</p>
+    <div class="free-badge">✅ 完全無料 · 登録不要 · API不要</div>
+  </header>
+
+  <!-- 進捗 -->
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill" style="width:33.3%"></div></div>
+    <div class="progress-text" id="progText">Q1 / 3</div>
+  </div>
+
+  <!-- 設問 -->
+  <div id="quizSection">
+    <div id="quizSteps"></div>
+  </div>
+
+  <!-- 計算中 -->
+  <div class="analyzing" id="analyzingSection">
+    <div class="analyze-ring"></div>
+    <div class="analyze-text">回答内容から概算利益・税額を計算しています…</div>
+  </div>
+
+  <!-- 結果 -->
+  <div class="result-section" id="resultSection">
+
+    <!-- 免責 -->
+    <div class="disclaimer-banner">
+      <span class="ico">⚠️</span>
+      <span>これはあくまで簡易的な概算です。正確な金額は税理士にご確認ください。</span>
+    </div>
+
+    <!-- ヒーロー -->
+    <div class="hero-card">
+      <div class="hero-label">💰 簡易収支シミュレーション結果</div>
+      <div class="hero-copy">あなたの年間の概算利益は</div>
+      <div class="hero-value"><span id="heroProfit">0</span><span class="unit">円</span></div>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-value" id="statTax">¥0</div>
+          <div class="stat-label">税額の目安（所得税+住民税）</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-value" id="statTakeHome">¥0</div>
+          <div class="stat-label">税引後の手取り目安</div>
+        </div>
+      </div>
+      <div class="hero-note" id="heroNote"></div>
+    </div>
+
+    <!-- 税額の内訳 -->
+    <div class="card">
+      <div class="section-label"><div class="section-bar"></div>📋 税額の内訳（概算）</div>
+      <div class="breakdown-list" id="breakdownList"></div>
+      <div class="breakdown-note">基礎控除・青色申告特別控除など、ごく簡易的な控除のみで計算した参考値です。社会保険料控除や各種控除は考慮していません。実際の税額とは異なりますので、正確な金額は税理士にご確認ください。</div>
+    </div>
+
+    <!-- おすすめツール -->
+    <div class="card">
+      <div class="section-label"><div class="section-bar"></div>🛠 あなたにおすすめのツール</div>
+      <div id="recommendInner"></div>
+    </div>
+
+    <!-- シェア -->
+    <div class="card">
+      <div class="section-label"><div class="section-bar"></div>📢 結果をシェアする</div>
+      <div class="share-row">
+        <button class="share-btn share-x" onclick="shareX()">𝕏 でシェアする</button>
+        <button class="share-btn share-threads" onclick="shareThreads()">Threads でシェアする</button>
+      </div>
+    </div>
+
+    <!-- 導線 -->
+    <div class="cta-row">
+      <a href="tools.html" class="btn btn-primary cta-btn">無料ツールを使う →</a>
+      <a href="register.html" class="btn btn-secondary cta-btn">無料会員登録する →</a>
+      <a href="contact.html" class="btn btn-outline cta-btn">オーダーメイド相談する →</a>
+    </div>
+
+    <div class="action-bar">
+      <button class="act-btn act-btn-reset" onclick="resetAll()">🔄 もう一度シミュレーションする</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PAGE_URL = 'https://ai-mt0-studio.netlify.app/income-simulator.html';
+
+  // ── 選択肢 ──
+  const REVENUE_OPTIONS = [
+    { label: '〜20万円 / 月', value: 150000 },
+    { label: '20万円〜40万円 / 月', value: 300000 },
+    { label: '40万円〜60万円 / 月', value: 500000 },
+    { label: '60万円〜100万円 / 月', value: 800000 },
+    { label: '100万円〜200万円 / 月', value: 1500000 },
+    { label: '200万円以上 / 月', value: 2500000 },
+    { label: '金額を直接入力する', value: 'custom' },
+  ];
+  const EXPENSE_OPTIONS = [
+    { label: '〜5万円 / 月', value: 30000 },
+    { label: '5万円〜10万円 / 月', value: 75000 },
+    { label: '10万円〜20万円 / 月', value: 150000 },
+    { label: '20万円〜40万円 / 月', value: 300000 },
+    { label: '40万円以上 / 月', value: 500000 },
+    { label: '金額を直接入力する', value: 'custom' },
+  ];
+  const FILING_OPTIONS = [
+    { label: '青色申告（65万円の特別控除あり）', value: 'blue' },
+    { label: '白色申告', value: 'white' },
+    { label: 'まだ決めていない・わからない', value: 'unknown' },
+  ];
+
+  // ── Q1〜Q3 質問データ ──
+  const QUESTIONS = [
+    { key: 'revenue', q: '毎月の売上目安を教えてください', options: REVENUE_OPTIONS, custom: { unit: '円 / 月', placeholder: '例: 450000' } },
+    { key: 'expense', q: '毎月の経費目安を教えてください', options: EXPENSE_OPTIONS, custom: { unit: '円 / 月', placeholder: '例: 80000' } },
+    { key: 'filing', q: '確定申告の種類を教えてください', options: FILING_OPTIONS },
+  ];
+  const TOTAL_STEPS = QUESTIONS.length;
+
+  // ── 計算用マスタ ──
+  const FILING_LABEL = { blue: '青色申告', white: '白色申告', unknown: '未定（白色申告として概算計算）' };
+  const INCOME_TAX_BASIC_DEDUCTION = 480000;
+  const RESIDENCE_TAX_BASIC_DEDUCTION = 430000;
+  const BLUE_DEDUCTION = 650000;
+  const RESIDENCE_TAX_RATE = 0.10;
+  const RESIDENCE_TAX_PER_CAPITA = 5000;
+  const RECONSTRUCTION_SURTAX_RATE = 1.021;
+  const INCOME_TAX_BRACKETS = [
+    { max: 1950000, rate: 0.05, deduct: 0 },
+    { max: 3300000, rate: 0.10, deduct: 97500 },
+    { max: 6950000, rate: 0.20, deduct: 427500 },
+    { max: 9000000, rate: 0.23, deduct: 636000 },
+    { max: 18000000, rate: 0.33, deduct: 1536000 },
+    { max: 40000000, rate: 0.40, deduct: 2796000 },
+    { max: Infinity, rate: 0.45, deduct: 4796000 },
+  ];
+
+  // ── おすすめツール ──
+  const TOOLS = {
+    businessOS: { icon: '🏢', name: 'AI Business OS（無料）', desc: '見積書・顧客管理・営業管理・分析グラフまで全部入り。売上や経費の管理、青色申告の帳簿づけの土台づくりに役立つ無料ツールです。', url: 'business-os.html' },
+    invoice:    { icon: '🧾', name: 'AI見積書・請求書作成ツール', desc: '品名・単価を入力するだけでプロ品質の見積書・請求書をスピーディに作成。日々の経理・売上管理の時短に役立ちます。', url: 'invoice-tool.html' },
+    advisor:    { icon: '🔍', name: 'AI業務改善アドバイザー Pro Lite（無料）', desc: '業種・課題を入力するだけでAIが業務改善の優先順位や今すぐできることを提案。利益体質づくりの第一歩に。', url: 'advisor-tool.html' },
+  };
+
+  function determineTool(annualProfit, filingKey) {
+    if (annualProfit <= 0) return TOOLS.advisor;
+    if (filingKey === 'blue') return TOOLS.businessOS;
+    return TOOLS.invoice;
+  }
+
+  function reasonLabel(annualProfit, filingKey) {
+    if (annualProfit <= 0) return '利益がまだ十分に出ていない回答';
+    if (filingKey === 'blue') return '青色申告で帳簿づけが必要になる回答';
+    return '売上・経費の管理を効率化したい回答';
+  }
+
+  // ── 状態 ──
+  let currentQ = 0;
+  let answers = new Array(QUESTIONS.length).fill(null);
+  let lastResult = null;
+
+  // ── 設問の描画 ──
+  function buildSteps() {
+    let html = '';
+    QUESTIONS.forEach((q, i) => {
+      const isLast = i === QUESTIONS.length - 1;
+      html += `
+      <div class="q-step" id="qstep${i}" style="display:${i === 0 ? 'block' : 'none'}">
+        <div class="card">
+          <div class="step-title"><span class="step-badge">Q${i + 1} / ${TOTAL_STEPS}</span>${esc(q.q)}</div>
+          <div class="opt-list">
+            ${q.options.map(o => `<button type="button" class="opt-btn" data-qi="${i}" data-value="${o.value}" onclick="selectOption(this)">${esc(o.label)}</button>`).join('')}
+          </div>
+          ${q.custom ? `
+          <div class="custom-input-wrap" id="customWrap${i}">
+            <input type="number" min="0" step="1000" inputmode="numeric" class="custom-input" id="customInput${i}" placeholder="${esc(q.custom.placeholder)}" oninput="onCustomInput(${i}, this)" />
+            <span class="custom-input-unit">${esc(q.custom.unit)}</span>
+          </div>` : ''}
+        </div>
+        <div class="nav-btns">
+          ${i > 0 ? `<button class="btn btn-secondary" onclick="goQ(${i - 1})">← 戻る</button>` : '<div></div>'}
+          ${isLast
+            ? `<button class="btn-diagnose" id="nextBtn${i}" onclick="runSimulation()" disabled style="flex:1">💰 シミュレーション結果を見る</button>`
+            : `<button class="btn btn-primary" id="nextBtn${i}" onclick="goQ(${i + 1})" disabled>次へ →</button>`}
+        </div>
+      </div>`;
+    });
+    document.getElementById('quizSteps').innerHTML = html;
+  }
+
+  function selectOption(btn) {
+    const qi = +btn.dataset.qi;
+    const raw = btn.dataset.value;
+    btn.parentElement.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    const customWrap = document.getElementById('customWrap' + qi);
+    const nextBtn = document.getElementById('nextBtn' + qi);
+
+    if (raw === 'custom') {
+      answers[qi] = null;
+      if (customWrap) {
+        customWrap.style.display = 'flex';
+        const input = document.getElementById('customInput' + qi);
+        if (input) { input.focus(); answers[qi] = (input.value && +input.value > 0) ? Math.round(+input.value) : null; }
+      }
+      if (nextBtn) nextBtn.disabled = !(answers[qi] > 0);
+      return;
+    }
+
+    if (customWrap) customWrap.style.display = 'none';
+    answers[qi] = isNaN(raw) ? raw : Number(raw);
+    if (nextBtn) nextBtn.disabled = false;
+  }
+
+  function onCustomInput(qi, input) {
+    const v = Math.round(+input.value);
+    answers[qi] = (v > 0) ? v : null;
+    const nextBtn = document.getElementById('nextBtn' + qi);
+    if (nextBtn) nextBtn.disabled = !(v > 0);
+  }
+
+  function goQ(n) {
+    if (n < 0 || n >= QUESTIONS.length) return;
+    document.getElementById('qstep' + currentQ).style.display = 'none';
+    currentQ = n;
+    document.getElementById('qstep' + currentQ).style.display = 'block';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress() {
+    const pct = ((currentQ + 1) / TOTAL_STEPS) * 100;
+    document.getElementById('progFill').style.width = pct + '%';
+    document.getElementById('progText').textContent = `Q${currentQ + 1} / ${TOTAL_STEPS}`;
+  }
+
+  // ── 計算実行 ──
+  function runSimulation() {
+    document.getElementById('quizSection').style.display = 'none';
+    document.getElementById('analyzingSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    setTimeout(() => {
+      const result = buildResult();
+      lastResult = result;
+      renderResult(result);
+      document.getElementById('analyzingSection').style.display = 'none';
+      document.getElementById('resultSection').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 500);
+  }
+
+  function calcIncomeTaxBase(taxable) {
+    for (const b of INCOME_TAX_BRACKETS) {
+      if (taxable <= b.max) return Math.max(0, taxable * b.rate - b.deduct);
+    }
+    return 0;
+  }
+
+  function buildResult() {
+    const [revenueMonthly, expenseMonthly, filingKey] = answers;
+
+    const annualRevenue = revenueMonthly * 12;
+    const annualExpense = expenseMonthly * 12;
+    const annualProfit = annualRevenue - annualExpense;
+
+    const blueDeduction = filingKey === 'blue' ? BLUE_DEDUCTION : 0;
+    const taxableIncomeTax = Math.max(0, annualProfit - blueDeduction - INCOME_TAX_BASIC_DEDUCTION);
+    const taxableResidenceTax = Math.max(0, annualProfit - blueDeduction - RESIDENCE_TAX_BASIC_DEDUCTION);
+
+    const incomeTaxBase = calcIncomeTaxBase(taxableIncomeTax);
+    const incomeTax = Math.floor(incomeTaxBase * RECONSTRUCTION_SURTAX_RATE);
+    const residenceTax = taxableResidenceTax > 0 ? Math.floor(taxableResidenceTax * RESIDENCE_TAX_RATE) + RESIDENCE_TAX_PER_CAPITA : 0;
+    const totalTax = incomeTax + residenceTax;
+    const takeHome = annualProfit - totalTax;
+
+    const tool = determineTool(annualProfit, filingKey);
+    const reason = reasonLabel(annualProfit, filingKey);
+
+    return { revenueMonthly, expenseMonthly, filingKey, annualRevenue, annualExpense, annualProfit, blueDeduction, incomeTax, residenceTax, totalTax, takeHome, tool, reason };
+  }
+
+  function yen(n) {
+    return '¥' + Math.round(n).toLocaleString();
+  }
+
+  function renderResult(r) {
+    const heroEl = document.getElementById('heroProfit');
+    heroEl.textContent = r.annualProfit.toLocaleString();
+    heroEl.classList.toggle('negative', r.annualProfit < 0);
+
+    document.getElementById('statTax').textContent = yen(r.totalTax);
+    document.getElementById('statTakeHome').textContent = yen(r.takeHome);
+
+    if (r.annualProfit <= 0) {
+      document.getElementById('heroNote').textContent =
+        `${FILING_LABEL[r.filingKey]}・年間売上${yen(r.annualRevenue)}、年間経費${yen(r.annualExpense)}で計算した参考値です。利益が出ていないため税額は0円として概算しています。`;
+    } else {
+      document.getElementById('heroNote').textContent =
+        `${FILING_LABEL[r.filingKey]}・年間売上${yen(r.annualRevenue)}、年間経費${yen(r.annualExpense)}で計算した参考値です。`;
+    }
+
+    document.getElementById('breakdownList').innerHTML = `
+      <div class="breakdown-row"><span class="label">年間売上（概算）</span><span class="value">${yen(r.annualRevenue)}</span></div>
+      <div class="breakdown-row"><span class="label">年間経費（概算）</span><span class="value">${yen(r.annualExpense)}</span></div>
+      <div class="breakdown-row"><span class="label">年間利益（概算）</span><span class="value">${yen(r.annualProfit)}</span></div>
+      <div class="breakdown-row"><span class="label">所得税（概算・復興特別所得税を含む）</span><span class="value">${yen(r.incomeTax)}</span></div>
+      <div class="breakdown-row"><span class="label">住民税（概算）</span><span class="value">${yen(r.residenceTax)}</span></div>
+      <div class="breakdown-row total"><span class="label">税額目安 合計</span><span class="value">${yen(r.totalTax)}</span></div>
+    `;
+
+    document.getElementById('recommendInner').innerHTML = `
+      <div class="recommend-inner">
+        <div class="recommend-icon">${r.tool.icon}</div>
+        <div class="recommend-body">
+          <div class="recommend-name">${esc(r.tool.name)}</div>
+          <div class="recommend-reason">「${esc(r.reason)}」から診断</div>
+          <div class="recommend-desc">${esc(r.tool.desc)}</div>
+          <a href="${r.tool.url}" class="btn btn-primary">詳しく見る →</a>
+        </div>
+      </div>`;
+  }
+
+  // ── シェア ──
+  function buildShareText() {
+    if (!lastResult) return '';
+    return `簡易収支シミュレーターをやってみたら、年間の概算利益は${yen(lastResult.annualProfit)}、税額の目安は${yen(lastResult.totalTax)}という計算に💰\n（あくまで簡易的な概算です）\nあなたも簡単な質問に答えるだけで診断できます\n#簡易収支シミュレーター #AIMT0Studio`;
+  }
+
+  function shareX() {
+    const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(buildShareText()) + '&url=' + encodeURIComponent(PAGE_URL);
+    window.open(url, '_blank', 'noopener');
+  }
+
+  function shareThreads() {
+    const text = buildShareText() + '\n' + PAGE_URL;
+    const url = 'https://www.threads.net/intent/post?text=' + encodeURIComponent(text);
+    window.open(url, '_blank', 'noopener');
+  }
+
+  // ── リセット ──
+  function resetAll() {
+    if (!confirm('シミュレーションをリセットしますか？')) return;
+    answers = new Array(QUESTIONS.length).fill(null);
+    currentQ = 0;
+    lastResult = null;
+    buildSteps();
+    updateProgress();
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('quizSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  buildSteps();
+  updateProgress();
+</script>
+</body>
+</html>
