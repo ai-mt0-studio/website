@@ -123,6 +123,20 @@
 
   <!-- ===== ブログ記事 ===== -->
   <url>
+    <loc>https://ai-mt0-studio.netlify.app/blog-ai-sales-prep-2026.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://ai-mt0-studio.netlify.app/blog-ai-tool-selection-guide-2026.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
     <loc>https://ai-mt0-studio.netlify.app/blog-chatgpt-limitation-2026.html</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
