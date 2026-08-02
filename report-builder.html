@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="レポートの種類・タイトル・数値項目・コメントを入力するだけで、グラフ付きの月次・週次業務報告書を自動整形。Chart.jsによる棒グラフ・円グラフの自動生成と印刷・PDF保存に対応した、登録不要・API不要の完全無料の資料作成ツールです。" />
+  <link rel="canonical" href="https://ai-mt0-studio.netlify.app/report-builder.html" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%234f8ef7'%3E%E2%AC%A1%3C/text%3E%3C/svg%3E" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AI MT0 Studio" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:title" content="資料作成ツール（グラフ付き月次・週次レポート）| AI MT0 Studio" />
+  <meta property="og:description" content="レポートの種類・タイトル・数値項目・コメントを入力するだけで、グラフ付きの月次・週次業務報告書を自動整形。印刷・PDF保存にも対応した完全無料ツールです。" />
+  <meta property="og:url" content="https://ai-mt0-studio.netlify.app/report-builder.html" />
+  <meta property="og:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="資料作成ツール（グラフ付き月次・週次レポート）| AI MT0 Studio" />
+  <meta name="twitter:description" content="数値項目とコメントを入力するだけで、グラフ付きの月次・週次業務報告書を自動整形。印刷・PDF保存にも対応した完全無料ツールです。" />
+  <meta name="twitter:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+<title>資料作成ツール（グラフ付き月次・週次レポート）【無料】| AI MT0 Studio</title>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://ai-mt0-studio.netlify.app/" },
+    { "@type": "ListItem", "position": 2, "name": "AIツール", "item": "https://ai-mt0-studio.netlify.app/tools.html" },
+    { "@type": "ListItem", "position": 3, "name": "資料作成ツール（グラフ付き月次・週次レポート）", "item": "https://ai-mt0-studio.netlify.app/report-builder.html" }
+  ]
+}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "資料作成ツール（グラフ付き月次・週次レポート）",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "レポートの種類・タイトル・数値項目・コメントを入力するだけで、グラフ付きの月次・週次業務報告書を自動整形し、印刷・PDF保存もできる無料ツール。",
+  "url": "https://ai-mt0-studio.netlify.app/report-builder.html",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+    /* dataviz categorical palette (validated, light-mode — chart sits on the white preview sheet) */
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --series-4: #eda100;
+    --series-5: #e87ba4;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.18) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 50px; left: -120px; }
+
+  .container { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+  .free-badge {
+    display: inline-block; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.4);
+    color: var(--green-400); font-size: 0.75rem; font-weight: 700;
+    padding: 0.2rem 0.85rem; border-radius: 999px; margin-top: 0.6rem;
+  }
+
+  /* タイプ切り替え */
+  .type-switch { display: flex; gap: 0.5rem; margin-bottom: 0; }
+  .type-btn {
+    flex: 1; padding: 0.65rem 1rem; border-radius: 12px; cursor: pointer; font-size: 0.92rem; font-weight: 700;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .type-btn.active { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border-color: transparent; color: #fff; }
+
+  /* カード */
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .label-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); flex-shrink: 0; }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group label { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+  input, select, textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.65rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.45); }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+  /* 数値項目の行 */
+  .item-row { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.6rem; }
+  .item-row input.item-name { flex: 1.4; }
+  .item-row input.item-value { flex: 0.8; text-align: right; }
+  .item-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+  .btn-remove {
+    background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: var(--red-400);
+    width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s;
+  }
+  .btn-remove:hover { background: rgba(239,68,68,0.2); }
+
+  .btn-add {
+    width: 100%; margin-top: 0.3rem;
+    background: rgba(59,130,246,0.07); border: 1px dashed rgba(59,130,246,0.35); color: var(--blue-300);
+    padding: 0.55rem 1rem; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-family: inherit;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-add:hover { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.55); }
+  .btn-add:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* グラフ種類 */
+  .chart-type-row { display: flex; gap: 0.5rem; margin-top: 1rem; }
+  .chart-type-btn {
+    flex: 1; padding: 0.55rem 1rem; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .chart-type-btn.active { background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.5); color: var(--purple-400); }
+
+  /* コメントブロック */
+  .comment-block { border: 1px solid var(--glass-border); border-radius: 12px; padding: 0.9rem; margin-bottom: 0.75rem; background: rgba(255,255,255,0.02); }
+  .comment-block-head { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.55rem; }
+  .comment-block-head input { flex: 1; font-weight: 700; }
+
+  /* ボタン */
+  .btn {
+    padding: 0.7rem 1.3rem; border-radius: 10px; cursor: pointer;
+    font-size: 0.88rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+  .btn-secondary { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
+  .btn-secondary:hover { background: rgba(96,165,250,0.2); }
+  .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: var(--text); }
+  .btn-outline:hover { background: rgba(255,255,255,0.06); }
+  .btn-danger { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
+  .btn-danger:hover { background: rgba(248,113,113,0.16); }
+  .btn-sm { padding: 0.5rem 0.9rem; font-size: 0.8rem; border-radius: 8px; }
+
+  .action-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+
+  /* プレビュー */
+  .preview-wrap {
+    background: #fff; color: #1a1a2e; border-radius: 14px; padding: 2rem 2.25rem;
+    font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; margin-bottom: 1.25rem;
+  }
+  .preview-badge {
+    display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.75rem;
+    border-radius: 999px; background: #ede9fe; color: #7c3aed; margin-bottom: 0.6rem;
+  }
+  .preview-period { float: right; font-size: 0.8rem; color: #666; margin-top: 0.3rem; }
+  .preview-title { font-size: 1.7rem; font-weight: 900; color: #1a1a2e; margin-bottom: 0.2rem; clear: both; }
+  .preview-generated { font-size: 0.74rem; color: #999; margin-bottom: 1.5rem; }
+
+  .preview-section-title {
+    font-size: 0.9rem; font-weight: 800; color: #1a1a2e; margin: 1.5rem 0 0.85rem;
+    padding-bottom: 0.4rem; border-bottom: 2px solid #ede9fe;
+  }
+
+  .chart-area { position: relative; height: 300px; margin-bottom: 0.5rem; }
+  .chart-empty { text-align: center; color: #999; font-size: 0.85rem; padding: 3rem 1rem; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+  .stat-card { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; padding: 0.75rem 0.9rem; border-left: 4px solid var(--stat-color, #7c3aed); }
+  .stat-card .stat-name { font-size: 0.72rem; color: #666; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.3rem; }
+  .stat-card .stat-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--stat-color, #7c3aed); flex-shrink: 0; }
+  .stat-card .stat-num { font-size: 1.2rem; font-weight: 800; color: #1a1a2e; }
+
+  .comment-preview { margin-bottom: 1.1rem; }
+  .comment-preview .c-label { font-size: 0.85rem; font-weight: 800; color: #7c3aed; margin-bottom: 0.35rem; }
+  .comment-preview .c-body { font-size: 0.85rem; color: #333; line-height: 1.8; white-space: pre-wrap; background: #f8fafc; border-radius: 8px; padding: 0.75rem 0.9rem; border: 1px solid #eef0f4; }
+  .comment-preview .c-body.empty { color: #aaa; }
+
+  .preview-empty-title { color: #bbb; }
+
+  /* CTA */
+  .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
+
+  @media(max-width:640px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .item-row input.item-name { flex: 1; }
+    .item-row input.item-value { flex: 1; }
+    .preview-wrap { padding: 1.5rem 1.25rem; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .orb, header, .card, .action-bar, .cta-row, .label { display: none !important; }
+    .preview-wrap { box-shadow: none; border-radius: 0; padding: 0; margin: 0; }
+    .chart-area { height: 260px; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <header>
+    <a href="tools.html" style="font-size:0.8rem;opacity:0.7;text-decoration:none;display:inline-block;margin-bottom:0.5rem;color:inherit;">← ツール一覧へ戻る</a>
+    <h1>📊 資料作成ツール（グラフ付き月次・週次レポート）</h1>
+    <p>数値項目とコメントを入力するだけで、グラフ付きの業務報告書を自動整形</p>
+    <div class="free-badge">✅ 完全無料 · 登録不要 · 外部AI API不要</div>
+  </header>
+
+  <!-- レポート種別 -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>レポートの種類</div>
+    <div class="type-switch">
+      <button type="button" class="type-btn active" id="btnMonthly" onclick="setReportType('monthly')">🗓 月次レポート</button>
+      <button type="button" class="type-btn" id="btnWeekly" onclick="setReportType('weekly')">📅 週次レポート</button>
+    </div>
+  </div>
+
+  <!-- タイトル・期間 -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>タイトル・対象期間</div>
+    <div class="form-grid">
+      <div class="form-group" style="grid-column: 1 / -1;">
+        <label>タイトル</label>
+        <input type="text" id="reportTitle" placeholder="例：7月度 営業報告" oninput="render()" />
+      </div>
+      <div class="form-group">
+        <label>対象期間（任意）</label>
+        <input type="text" id="reportPeriod" placeholder="例：2026年7月1日〜7月31日" oninput="render()" />
+      </div>
+      <div class="form-group">
+        <label>作成者名（任意）</label>
+        <input type="text" id="reportAuthor" placeholder="例：営業部 山田" oninput="render()" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 数値項目 -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>主要な数値項目</div>
+    <div id="itemList"></div>
+    <button class="btn-add" id="btnAddItem" onclick="addItem()">＋ 項目を追加</button>
+
+    <div class="chart-type-row">
+      <button type="button" class="chart-type-btn active" id="btnBar" onclick="setChartType('bar')">📊 棒グラフ</button>
+      <button type="button" class="chart-type-btn" id="btnPie" onclick="setChartType('pie')">🥧 円グラフ</button>
+    </div>
+  </div>
+
+  <!-- コメント -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>コメント・所感</div>
+    <div id="commentList"></div>
+    <button class="btn-add" onclick="addComment()">＋ コメント欄を追加</button>
+  </div>
+
+  <!-- アクション -->
+  <div class="action-bar">
+    <button class="btn btn-primary" onclick="window.print()">🖨 印刷 / PDF保存</button>
+    <button class="btn btn-danger btn-sm" onclick="resetAll()">🔄 リセット</button>
+  </div>
+
+  <!-- プレビュー -->
+  <div class="label"><div class="label-bar"></div>プレビュー</div>
+  <div class="preview-wrap" id="previewArea"></div>
+
+  <!-- 導線 -->
+  <div class="cta-row">
+    <a href="tools.html" class="btn btn-primary cta-btn">無料ツールを使う →</a>
+    <a href="register.html" class="btn btn-secondary cta-btn">無料会員登録する →</a>
+    <a href="contact.html" class="btn btn-outline cta-btn">オーダーメイド相談する →</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+<script>
+  const PALETTE = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4'];
+  const MAX_ITEMS = PALETTE.length;
+
+  let reportType = 'monthly';
+  let chartType = 'bar';
+  let items = [];
+  let comments = [];
+  let chartInstance = null;
+
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ── レポート種別 ──
+  function setReportType(t) {
+    reportType = t;
+    document.getElementById('btnMonthly').classList.toggle('active', t === 'monthly');
+    document.getElementById('btnWeekly').classList.toggle('active', t === 'weekly');
+    render();
+  }
+
+  // ── グラフ種類 ──
+  function setChartType(t) {
+    chartType = t;
+    document.getElementById('btnBar').classList.toggle('active', t === 'bar');
+    document.getElementById('btnPie').classList.toggle('active', t === 'pie');
+    render();
+  }
+
+  // ── 数値項目 ──
+  function addItem(name, value) {
+    if (items.length >= MAX_ITEMS) return;
+    items.push({ name: name || '', value: value === undefined ? '' : value });
+    renderItemRows();
+    render();
+  }
+
+  function removeItem(idx) {
+    if (items.length === 1) {
+      items[0] = { name: '', value: '' };
+    } else {
+      items.splice(idx, 1);
+    }
+    renderItemRows();
+    render();
+  }
+
+  function renderItemRows() {
+    const list = document.getElementById('itemList');
+    list.innerHTML = items.map((it, i) => `
+      <div class="item-row">
+        <span class="item-swatch" style="background:${PALETTE[i]}"></span>
+        <input type="text" class="item-name" placeholder="例：売上（万円）" value="${esc(it.name)}"
+          oninput="items[${i}].name=this.value;render()" />
+        <input type="number" class="item-value" placeholder="0" value="${esc(it.value)}"
+          oninput="items[${i}].value=this.value;render()" />
+        <button class="btn-remove" onclick="removeItem(${i})" title="削除">×</button>
+      </div>
+    `).join('');
+    document.getElementById('btnAddItem').disabled = items.length >= MAX_ITEMS;
+  }
+
+  // ── コメント ──
+  function addComment(label, body) {
+    comments.push({ label: label !== undefined ? label : '', body: body || '' });
+    renderCommentBlocks();
+    render();
+  }
+
+  function removeComment(idx) {
+    if (comments.length === 1) {
+      comments[0] = { label: comments[0].label, body: '' };
+    } else {
+      comments.splice(idx, 1);
+    }
+    renderCommentBlocks();
+    render();
+  }
+
+  function renderCommentBlocks() {
+    const list = document.getElementById('commentList');
+    list.innerHTML = comments.map((c, i) => `
+      <div class="comment-block">
+        <div class="comment-block-head">
+          <input type="text" placeholder="見出し（例：総括・所感）" value="${esc(c.label)}"
+            oninput="comments[${i}].label=this.value;render()" />
+          <button class="btn-remove" onclick="removeComment(${i})" title="削除">×</button>
+        </div>
+        <textarea placeholder="コメント・所感を入力してください" oninput="comments[${i}].body=this.value;render()">${esc(c.body)}</textarea>
+      </div>
+    `).join('');
+  }
+
+  // ── プレビュー描画 ──
+  function fmtNum(v) {
+    const n = Number(v);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function render() {
+    const title = document.getElementById('reportTitle').value.trim();
+    const period = document.getElementById('reportPeriod').value.trim();
+    const author = document.getElementById('reportAuthor').value.trim();
+    const badgeText = reportType === 'monthly' ? '月次レポート' : '週次レポート';
+
+    const validItems = items
+      .map((it, i) => ({ name: it.name.trim(), value: fmtNum(it.value), color: PALETTE[i] }))
+      .filter(it => it.name);
+
+    const today = new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const statCardsHtml = validItems.length ? `
+      <div class="stat-grid">
+        ${validItems.map(it => `
+          <div class="stat-card" style="--stat-color:${it.color}">
+            <div class="stat-name"><span class="stat-dot"></span>${esc(it.name)}</div>
+            <div class="stat-num">${it.value.toLocaleString('ja-JP')}</div>
+          </div>
+        `).join('')}
+      </div>` : '';
+
+    const commentsHtml = comments.map(c => {
+      const label = c.label.trim() || 'コメント';
+      const body = c.body.trim();
+      return `
+        <div class="comment-preview">
+          <div class="c-label">${esc(label)}</div>
+          <div class="c-body ${body ? '' : 'empty'}">${body ? esc(body).replace(/\n/g, '<br>') : '（未入力）'}</div>
+        </div>`;
+    }).join('');
+
+    document.getElementById('previewArea').innerHTML = `
+      <div class="preview-period">${esc(period)}</div>
+      <span class="preview-badge">${badgeText}</span>
+      <div class="preview-title ${title ? '' : 'preview-empty-title'}">${title ? esc(title) : 'タイトル未入力'}</div>
+      <div class="preview-generated">作成日：${today}${author ? ' ／ 作成者：' + esc(author) : ''}</div>
+
+      <div class="preview-section-title">📊 数値サマリー</div>
+      <div class="chart-area">
+        ${validItems.length ? '<canvas id="reportChart"></canvas>' : '<div class="chart-empty">数値項目に「項目名」と「数値」を入力するとグラフが表示されます</div>'}
+      </div>
+      ${statCardsHtml}
+
+      <div class="preview-section-title">📝 コメント・所感</div>
+      ${commentsHtml || '<div class="c-body empty">コメント欄が入力されていません</div>'}
+    `;
+
+    drawChart(validItems);
+  }
+
+  function drawChart(validItems) {
+    if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+    if (!validItems.length) return;
+
+    const canvas = document.getElementById('reportChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const labels = validItems.map(it => it.name);
+    const values = validItems.map(it => it.value);
+    const colors = validItems.map(it => it.color);
+
+    if (chartType === 'bar') {
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets: [{ data: values, backgroundColor: colors, borderRadius: 4, maxBarThickness: 64 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1a1a2e' } },
+          scales: {
+            x: { ticks: { color: '#52514e' }, grid: { display: false } },
+            y: { beginAtZero: true, ticks: { color: '#52514e' }, grid: { color: '#eef0f4' } }
+          }
+        }
+      });
+    } else {
+      chartInstance = new Chart(ctx, {
+        type: 'pie',
+        data: { labels, datasets: [{ data: values, backgroundColor: colors, borderColor: '#fff', borderWidth: 2 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { color: '#333', boxWidth: 12, padding: 14 } }, tooltip: { backgroundColor: '#1a1a2e' } }
+        }
+      });
+    }
+  }
+
+  // ── リセット ──
+  function resetAll() {
+    if (!confirm('入力内容をリセットしますか？')) return;
+    document.getElementById('reportTitle').value = '';
+    document.getElementById('reportPeriod').value = '';
+    document.getElementById('reportAuthor').value = '';
+    setReportType('monthly');
+    setChartType('bar');
+    items = [];
+    comments = [];
+    initDefaults();
+  }
+
+  // ── 初期化 ──
+  function initDefaults() {
+    addItem('', '');
+    addItem('', '');
+    addItem('', '');
+    addComment('総括・所感', '');
+    addComment('来月に向けて', '');
+    render();
+  }
+
+  initDefaults();
+</script>
+</body>
+</html>
