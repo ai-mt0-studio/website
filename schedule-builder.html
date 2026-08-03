@@ -12,21 +12,21 @@
   </script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="タイトル・日付・時間・カテゴリを入力するだけで、シフト表形式とスケジュール帳形式をワンクリックで切り替えられるスケジュール表作成ツール。毎週◯曜日の繰り返し予定にも対応し、仕事時間の週間・月間合計を自動計算。印刷・PDF保存にも対応した、登録不要・API不要の完全無料ツールです。" />
+<meta name="description" content="タイトル・日付・時間・カテゴリを入力するだけで、シフト表形式・スケジュール帳形式・月間カレンダー形式をワンクリックで切り替えられるスケジュール表作成ツール。毎週◯曜日の繰り返し予定にも対応し、仕事時間の週間・月間合計を自動計算。印刷・PDF保存、ブラウザへの自動保存にも対応した、登録不要・API不要の完全無料ツールです。" />
   <link rel="canonical" href="https://ai-mt0-studio.netlify.app/schedule-builder.html" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%234f8ef7'%3E%E2%AC%A1%3C/text%3E%3C/svg%3E" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="AI MT0 Studio" />
   <meta property="og:locale" content="ja_JP" />
   <meta property="og:title" content="スケジュール表作成ツール（シフト表・スケジュール帳）| AI MT0 Studio" />
-  <meta property="og:description" content="予定を入力するだけでシフト表形式・スケジュール帳形式に切り替え可能。繰り返し予定・仕事時間の自動集計・印刷対応の完全無料ツールです。" />
+  <meta property="og:description" content="予定を入力するだけでシフト表・スケジュール帳・月間カレンダーの3形式に切り替え可能。繰り返し予定・仕事時間の自動集計・印刷対応の完全無料ツールです。" />
   <meta property="og:url" content="https://ai-mt0-studio.netlify.app/schedule-builder.html" />
   <meta property="og:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="スケジュール表作成ツール（シフト表・スケジュール帳）| AI MT0 Studio" />
-  <meta name="twitter:description" content="予定を入力するだけでシフト表形式・スケジュール帳形式に切り替え可能。繰り返し予定・仕事時間の自動集計・印刷対応の完全無料ツールです。" />
+  <meta name="twitter:description" content="予定を入力するだけでシフト表・スケジュール帳・月間カレンダーの3形式に切り替え可能。繰り返し予定・仕事時間の自動集計・印刷対応の完全無料ツールです。" />
   <meta name="twitter:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
 <title>スケジュール表作成ツール（シフト表・スケジュール帳）【無料】| AI MT0 Studio</title>
   <script type="application/ld+json">
@@ -47,7 +47,7 @@
   "name": "スケジュール表作成ツール（シフト表・スケジュール帳）",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "description": "予定のタイトル・日付・時間・カテゴリを入力するだけで、シフト表形式とスケジュール帳形式を切り替えて表示できるスケジュール管理ツール。繰り返し予定の登録、仕事時間の週間・月間合計の自動集計、印刷・PDF保存に対応した無料ツール。",
+  "description": "予定のタイトル・日付・時間・カテゴリを入力するだけで、シフト表形式・スケジュール帳形式・月間カレンダー形式を切り替えて表示できるスケジュール管理ツール。繰り返し予定の登録、仕事時間の週間・月間合計の自動集計、印刷・PDF保存に対応した無料ツール。",
   "url": "https://ai-mt0-studio.netlify.app/schedule-builder.html",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
 }
@@ -264,6 +264,32 @@
   .list-event-cat { font-size: 0.66rem; color: #888; margin-left: 0.3rem; }
   .list-empty { text-align: center; color: #aaa; font-size: 0.85rem; padding: 3rem 1rem; }
 
+  /* 月間カレンダー表示 */
+  .month-calendar { min-width: 640px; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+  .month-grid-header { display: grid; grid-template-columns: repeat(7, 1fr); background: #f8fafc; }
+  .month-grid-header div {
+    text-align: center; font-size: 0.76rem; font-weight: 700; color: #555; padding: 0.5rem 0.2rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .month-grid-body { display: grid; grid-template-columns: repeat(7, 1fr); }
+  .month-cell {
+    min-height: 96px; padding: 0.3rem 0.3rem 0.4rem; border-left: 1px solid #eef0f4; border-bottom: 1px solid #eef0f4;
+  }
+  .month-cell:nth-child(7n+1) { border-left: none; }
+  .month-cell.other-month { background: #fafbfc; }
+  .month-cell.is-today { background: #f5f3ff; }
+  .month-cell .cell-date { font-size: 0.76rem; font-weight: 700; color: #333; margin-bottom: 0.3rem; }
+  .month-cell.other-month .cell-date { color: #c3c7d0; }
+  .month-cell.is-today .cell-date {
+    color: #fff; background: #7c3aed; display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; border-radius: 50%;
+  }
+  .month-event-chip {
+    font-size: 0.62rem; padding: 1px 5px; border-radius: 4px; color: #fff; margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .month-more { font-size: 0.6rem; color: #999; margin-top: 1px; }
+
   .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
   .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
 
@@ -277,7 +303,7 @@
     body { background: #fff; padding: 0; }
     .orb, header, .card, .action-bar, .view-tabs, .cta-row { display: none !important; }
     .preview-wrap { box-shadow: none; border-radius: 0; padding: 0; margin: 0; }
-    .shift-grid { min-width: 0; }
+    .shift-grid, .month-calendar { min-width: 0; }
     .grid-scroll { overflow: visible; }
     .week-nav button { display: none; }
   }
@@ -291,7 +317,7 @@
   <header>
     <a href="tools.html" style="font-size:0.8rem;opacity:0.7;text-decoration:none;display:inline-block;margin-bottom:0.5rem;color:inherit;">← ツール一覧へ戻る</a>
     <h1>📅 スケジュール表作成ツール</h1>
-    <p>予定を入力するだけで、シフト表形式・スケジュール帳形式を切り替えて表示できます</p>
+    <p>予定を入力するだけで、シフト表・スケジュール帳・月間カレンダーの3形式を切り替えて表示できます</p>
     <div class="free-badge">✅ 完全無料 · 登録不要 · 外部AI API不要</div>
     <div class="free-badge" style="background:rgba(96,165,250,0.12);border-color:rgba(96,165,250,0.35);color:var(--blue-300);margin-left:0.4rem;">💾 このブラウザに自動保存されます</div>
   </header>
@@ -378,6 +404,7 @@
   <div class="view-tabs">
     <button type="button" class="view-tab active" id="tabShift" onclick="setView('shift')">🗓 シフト表形式</button>
     <button type="button" class="view-tab" id="tabList" onclick="setView('list')">📋 スケジュール帳形式</button>
+    <button type="button" class="view-tab" id="tabCalendar" onclick="setView('calendar')">📆 月間カレンダー</button>
   </div>
 
   <!-- アクション -->
@@ -419,6 +446,29 @@
     </div>
   </div>
 
+  <!-- 月間カレンダービュー -->
+  <div id="calendarView" style="display:none;">
+    <div class="preview-wrap">
+      <span class="preview-badge">月間カレンダー形式</span>
+      <div class="preview-title">スケジュール表</div>
+      <div class="week-nav">
+        <button class="btn btn-outline btn-sm" onclick="shiftMonth(-1)">← 前月</button>
+        <div class="week-label" id="monthRangeLabel"></div>
+        <button class="btn btn-outline btn-sm" onclick="jumpThisMonth()">今月</button>
+        <button class="btn btn-outline btn-sm" onclick="shiftMonth(1)">次月 →</button>
+      </div>
+      <div class="grid-scroll">
+        <div class="month-calendar" id="monthCalendarArea"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--cat-work)"></span>仕事</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--cat-private)"></span>プライベート</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--cat-important)"></span>重要</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--cat-other)"></span>その他</div>
+      </div>
+    </div>
+  </div>
+
   <!-- 導線 -->
   <div class="cta-row">
     <a href="tools.html" class="btn btn-primary cta-btn">無料ツールを使う →</a>
@@ -446,6 +496,7 @@
   let selectedWeekdays = new Set();
   let activeView = 'shift';
   let currentWeekStart = getMonday(new Date());
+  let currentMonthStart = getMonthStart(new Date());
 
   // ── ブラウザへの自動保存 ──
   function saveToStorage() {
@@ -475,6 +526,7 @@
   function parseDateStr(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
   function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
   function getMonday(d) { const day = d.getDay(); const diff = (day + 6) % 7; return addDays(new Date(d.getFullYear(), d.getMonth(), d.getDate()), -diff); }
+  function getMonthStart(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }
   function timeToMin(t) { const [h, m] = t.split(':').map(Number); return h * 60 + m; }
   function isSameDate(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
   function hexToRgba(hex, alpha) {
@@ -680,8 +732,10 @@
     activeView = v;
     document.getElementById('tabShift').classList.toggle('active', v === 'shift');
     document.getElementById('tabList').classList.toggle('active', v === 'list');
+    document.getElementById('tabCalendar').classList.toggle('active', v === 'calendar');
     document.getElementById('shiftView').style.display = v === 'shift' ? 'block' : 'none';
     document.getElementById('listView').style.display = v === 'list' ? 'block' : 'none';
+    document.getElementById('calendarView').style.display = v === 'calendar' ? 'block' : 'none';
     renderAll();
   }
 
@@ -828,11 +882,55 @@
     }).join('');
   }
 
+  // ── 月ナビ ──
+  function shiftMonth(n) { currentMonthStart = new Date(currentMonthStart.getFullYear(), currentMonthStart.getMonth() + n, 1); renderMonthCalendar(); }
+  function jumpThisMonth() { currentMonthStart = getMonthStart(new Date()); renderMonthCalendar(); }
+
+  // ── 月間カレンダー描画 ──
+  const MAX_CHIPS_PER_CELL = 3;
+
+  function renderMonthCalendar() {
+    document.getElementById('monthRangeLabel').textContent = `${currentMonthStart.getFullYear()}年${currentMonthStart.getMonth() + 1}月`;
+
+    const lastOfMonth = new Date(currentMonthStart.getFullYear(), currentMonthStart.getMonth() + 1, 0);
+    const gridStart = getMonday(currentMonthStart);
+    const gridEnd = addDays(getMonday(lastOfMonth), 6);
+    const totalDays = Math.round((gridEnd - gridStart) / 86400000) + 1;
+    const days = [...Array(totalDays)].map((_, i) => addDays(gridStart, i));
+
+    const occ = expandOccurrences(gridStart, gridEnd);
+    const today = new Date();
+
+    const headerHtml = `<div class="month-grid-header">${WD_LABELS.map(w => `<div>${w}</div>`).join('')}</div>`;
+
+    const cellsHtml = days.map(d => {
+      const dayOcc = occ.filter(o => isSameDate(o.date, d)).sort((a, b) => timeToMin(a.start) - timeToMin(b.start));
+      const isOtherMonth = d.getMonth() !== currentMonthStart.getMonth();
+      const isToday = isSameDate(d, today);
+      const visible = dayOcc.slice(0, MAX_CHIPS_PER_CELL);
+      const overflow = dayOcc.length - visible.length;
+
+      const chipsHtml = visible.map(o => {
+        const cat = CATEGORIES[o.category];
+        return `<div class="month-event-chip" style="background:${hexToRgba(cat.color, 0.88)}" title="${esc(o.title)} ${o.start}〜${o.end}">${o.start} ${esc(o.title)}</div>`;
+      }).join('');
+      const moreHtml = overflow > 0 ? `<div class="month-more">+${overflow}件</div>` : '';
+
+      return `<div class="month-cell ${isOtherMonth ? 'other-month' : ''} ${isToday ? 'is-today' : ''}">
+        <div class="cell-date">${d.getDate()}</div>
+        ${chipsHtml}${moreHtml}
+      </div>`;
+    }).join('');
+
+    document.getElementById('monthCalendarArea').innerHTML = headerHtml + `<div class="month-grid-body">${cellsHtml}</div>`;
+  }
+
   function renderAll() {
     renderEventList();
     renderAggregation();
     if (activeView === 'shift') renderShiftGrid();
-    else renderScheduleList();
+    else if (activeView === 'list') renderScheduleList();
+    else renderMonthCalendar();
   }
 
   // ── リセット ──
