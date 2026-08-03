@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="タイトル・日付・時間・カテゴリを入力するだけで、シフト表形式とスケジュール帳形式をワンクリックで切り替えられるスケジュール表作成ツール。毎週◯曜日の繰り返し予定にも対応し、仕事時間の週間・月間合計を自動計算。印刷・PDF保存にも対応した、登録不要・API不要の完全無料ツールです。" />
+  <link rel="canonical" href="https://ai-mt0-studio.netlify.app/schedule-builder.html" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%234f8ef7'%3E%E2%AC%A1%3C/text%3E%3C/svg%3E" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AI MT0 Studio" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:title" content="スケジュール表作成ツール（シフト表・スケジュール帳）| AI MT0 Studio" />
+  <meta property="og:description" content="予定を入力するだけでシフト表形式・スケジュール帳形式に切り替え可能。繰り返し予定・仕事時間の自動集計・印刷対応の完全無料ツールです。" />
+  <meta property="og:url" content="https://ai-mt0-studio.netlify.app/schedule-builder.html" />
+  <meta property="og:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="スケジュール表作成ツール（シフト表・スケジュール帳）| AI MT0 Studio" />
+  <meta name="twitter:description" content="予定を入力するだけでシフト表形式・スケジュール帳形式に切り替え可能。繰り返し予定・仕事時間の自動集計・印刷対応の完全無料ツールです。" />
+  <meta name="twitter:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+<title>スケジュール表作成ツール（シフト表・スケジュール帳）【無料】| AI MT0 Studio</title>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://ai-mt0-studio.netlify.app/" },
+    { "@type": "ListItem", "position": 2, "name": "AIツール", "item": "https://ai-mt0-studio.netlify.app/tools.html" },
+    { "@type": "ListItem", "position": 3, "name": "スケジュール表作成ツール", "item": "https://ai-mt0-studio.netlify.app/schedule-builder.html" }
+  ]
+}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "スケジュール表作成ツール（シフト表・スケジュール帳）",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "予定のタイトル・日付・時間・カテゴリを入力するだけで、シフト表形式とスケジュール帳形式を切り替えて表示できるスケジュール管理ツール。繰り返し予定の登録、仕事時間の週間・月間合計の自動集計、印刷・PDF保存に対応した無料ツール。",
+  "url": "https://ai-mt0-studio.netlify.app/schedule-builder.html",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+    /* カテゴリカラー（validated palette） */
+    --cat-work: #2a78d6;
+    --cat-private: #1baf7a;
+    --cat-important: #eb6834;
+    --cat-other: #9c7bd6;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.18) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 50px; left: -120px; }
+
+  .container { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+  .free-badge {
+    display: inline-block; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.4);
+    color: var(--green-400); font-size: 0.75rem; font-weight: 700;
+    padding: 0.2rem 0.85rem; border-radius: 999px; margin-top: 0.6rem;
+  }
+
+  /* カード */
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .label-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); flex-shrink: 0; }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group label { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+  input, select, textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.65rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  input::placeholder { color: rgba(148,163,184,0.45); }
+  select option { background: #12122a; color: var(--text); }
+
+  /* 繰り返し設定 */
+  .recurring-toggle { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.9rem; font-size: 0.85rem; color: var(--text); cursor: pointer; user-select: none; }
+  .recurring-toggle input { width: 17px; height: 17px; accent-color: var(--purple-700); cursor: pointer; }
+  .recurring-panel { margin-top: 0.85rem; padding: 0.9rem; border: 1px solid var(--glass-border); border-radius: 12px; background: rgba(255,255,255,0.02); display: none; }
+  .weekday-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+  .wd-pill {
+    width: 40px; height: 40px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 700;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .wd-pill.active { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border-color: transparent; color: #fff; }
+
+  .btn-add {
+    width: 100%; margin-top: 1rem;
+    background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border: none; color: #fff;
+    padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 700; font-family: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+
+  /* 登録済み予定一覧 */
+  .event-item {
+    display: flex; align-items: center; gap: 0.7rem; padding: 0.65rem 0.8rem;
+    border: 1px solid var(--glass-border); border-radius: 10px; margin-bottom: 0.5rem; background: rgba(255,255,255,0.02);
+  }
+  .event-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .event-item-body { flex: 1; min-width: 0; }
+  .event-item-title { font-size: 0.86rem; font-weight: 700; color: var(--text); }
+  .event-item-meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.15rem; }
+  .event-item-tag {
+    font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.5rem; border-radius: 999px;
+    background: rgba(124,58,237,0.15); color: var(--purple-400); flex-shrink: 0;
+  }
+  .btn-remove {
+    background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: var(--red-400);
+    width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 0.95rem;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s;
+  }
+  .btn-remove:hover { background: rgba(239,68,68,0.2); }
+  .empty-note { font-size: 0.82rem; color: var(--muted); text-align: center; padding: 0.75rem; }
+
+  /* タイプ切り替えタブ */
+  .view-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
+  .view-tab {
+    flex: 1; padding: 0.7rem 1rem; border-radius: 12px; cursor: pointer; font-size: 0.92rem; font-weight: 700;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .view-tab.active { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border-color: transparent; color: #fff; }
+
+  /* ボタン共通 */
+  .btn {
+    padding: 0.7rem 1.3rem; border-radius: 10px; cursor: pointer;
+    font-size: 0.88rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+  .btn-secondary { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
+  .btn-secondary:hover { background: rgba(96,165,250,0.2); }
+  .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: var(--text); }
+  .btn-outline:hover { background: rgba(255,255,255,0.06); }
+  .btn-danger { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
+  .btn-danger:hover { background: rgba(248,113,113,0.16); }
+  .btn-sm { padding: 0.5rem 0.9rem; font-size: 0.8rem; border-radius: 8px; }
+
+  .action-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+
+  /* 集計 */
+  .agg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+  .agg-col-title { font-size: 0.8rem; font-weight: 700; color: var(--purple-400); margin-bottom: 0.6rem; }
+  .agg-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.7rem; border-radius: 8px; background: rgba(255,255,255,0.02); margin-bottom: 0.4rem; font-size: 0.83rem; }
+  .agg-row .agg-hours { font-weight: 800; color: var(--blue-300); }
+
+  /* プレビュー（白背景） */
+  .preview-wrap {
+    background: #fff; color: #1a1a2e; border-radius: 14px; padding: 1.75rem 1.75rem 2rem;
+    font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; margin-bottom: 1.25rem;
+  }
+  .preview-badge {
+    display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.75rem;
+    border-radius: 999px; background: #ede9fe; color: #7c3aed; margin-bottom: 0.6rem;
+  }
+  .preview-title { font-size: 1.5rem; font-weight: 900; color: #1a1a2e; margin-bottom: 0.9rem; }
+
+  /* 週ナビ */
+  .week-nav { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.1rem; flex-wrap: wrap; }
+  .week-nav .week-label { font-size: 0.92rem; font-weight: 700; color: #333; min-width: 190px; text-align: center; }
+
+  /* シフト表グリッド */
+  .grid-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0.25rem; }
+  .shift-grid { min-width: 640px; }
+  .grid-cols { display: grid; grid-template-columns: 52px repeat(7, 1fr); }
+  .grid-corner { border-bottom: 1px solid #e5e7eb; }
+  .daycol-header {
+    text-align: center; font-size: 0.78rem; font-weight: 700; color: #444; padding: 0.4rem 0.2rem;
+    border-bottom: 1px solid #e5e7eb; border-left: 1px solid #eef0f4; line-height: 1.4;
+  }
+  .daycol-header.is-today { background: #ede9fe; color: #7c3aed; border-radius: 8px 8px 0 0; }
+  .grid-body-row { position: relative; }
+  .hour-axis { position: relative; }
+  .hour-label { position: absolute; left: 0; right: 6px; text-align: right; font-size: 0.66rem; color: #999; transform: translateY(-50%); }
+  .day-col { position: relative; border-left: 1px solid #eef0f4; }
+  .slot-free { position: absolute; left: 1px; right: 1px; background: rgba(148,163,184,0.10); border-radius: 3px; }
+  .slot-free .free-label { position: absolute; top: 3px; left: 4px; font-size: 0.62rem; color: #9aa3b2; }
+  .event-block {
+    position: absolute; left: 1px; right: 1px; border-radius: 6px; padding: 2px 5px; overflow: hidden;
+    color: #fff; font-size: 0.68rem; line-height: 1.3; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .event-block .eb-title { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .event-block .eb-time { font-size: 0.6rem; opacity: 0.9; white-space: nowrap; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid #eef0f4; }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.76rem; color: #555; }
+  .legend-dot { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+
+  /* スケジュール帳（リスト表示） */
+  .list-date-group { margin-bottom: 1.1rem; }
+  .list-date-head {
+    font-size: 0.85rem; font-weight: 800; color: #1a1a2e; padding-bottom: 0.35rem; margin-bottom: 0.5rem;
+    border-bottom: 2px solid #ede9fe; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .list-date-head.is-today { color: #7c3aed; }
+  .list-date-head .today-chip { font-size: 0.62rem; background: #ede9fe; color: #7c3aed; padding: 0.1rem 0.5rem; border-radius: 999px; font-weight: 700; }
+  .list-event-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.2rem; }
+  .list-event-time { font-size: 0.78rem; font-weight: 700; color: #444; min-width: 100px; }
+  .list-event-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .list-event-title { font-size: 0.85rem; color: #222; font-weight: 600; }
+  .list-event-cat { font-size: 0.66rem; color: #888; margin-left: 0.3rem; }
+  .list-empty { text-align: center; color: #aaa; font-size: 0.85rem; padding: 3rem 1rem; }
+
+  .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
+
+  @media(max-width:640px) {
+    .form-grid { grid-template-columns: 1fr 1fr; }
+    .preview-wrap { padding: 1.25rem 1rem 1.5rem; }
+    .list-event-time { min-width: 80px; font-size: 0.72rem; }
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .orb, header, .card, .action-bar, .view-tabs, .cta-row { display: none !important; }
+    .preview-wrap { box-shadow: none; border-radius: 0; padding: 0; margin: 0; }
+    .shift-grid { min-width: 0; }
+    .grid-scroll { overflow: visible; }
+    .week-nav button { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <header>
+    <a href="tools.html" style="font-size:0.8rem;opacity:0.7;text-decoration:none;display:inline-block;margin-bottom:0.5rem;color:inherit;">← ツール一覧へ戻る</a>
+    <h1>📅 スケジュール表作成ツール</h1>
+    <p>予定を入力するだけで、シフト表形式・スケジュール帳形式を切り替えて表示できます</p>
+    <div class="free-badge">✅ 完全無料 · 登録不要 · 外部AI API不要</div>
+  </header>
+
+  <!-- 予定を追加 -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>予定を追加</div>
+    <div class="form-grid">
+      <div class="form-group" style="grid-column: 1 / -1;">
+        <label>タイトル</label>
+        <input type="text" id="evTitle" placeholder="例：早番シフト、歯医者、プロジェクト会議" />
+      </div>
+      <div class="form-group">
+        <label>日付</label>
+        <input type="date" id="evDate" />
+      </div>
+      <div class="form-group">
+        <label>開始時刻</label>
+        <input type="time" id="evStart" value="09:00" />
+      </div>
+      <div class="form-group">
+        <label>終了時刻</label>
+        <input type="time" id="evEnd" value="17:00" />
+      </div>
+      <div class="form-group">
+        <label>カテゴリ</label>
+        <select id="evCategory">
+          <option value="work">仕事</option>
+          <option value="private">プライベート</option>
+          <option value="important">重要</option>
+          <option value="other">その他</option>
+        </select>
+      </div>
+    </div>
+
+    <label class="recurring-toggle">
+      <input type="checkbox" id="evRecurring" onchange="toggleRecurring()" />
+      繰り返し予定にする（毎週◯曜日）
+    </label>
+    <div class="recurring-panel" id="recurringPanel">
+      <div class="form-group" style="margin-bottom:0.85rem;">
+        <label>繰り返す曜日（複数選択可）</label>
+        <div class="weekday-pills" id="weekdayPills">
+          <button type="button" class="wd-pill" data-day="0" onclick="toggleWeekday(0)">月</button>
+          <button type="button" class="wd-pill" data-day="1" onclick="toggleWeekday(1)">火</button>
+          <button type="button" class="wd-pill" data-day="2" onclick="toggleWeekday(2)">水</button>
+          <button type="button" class="wd-pill" data-day="3" onclick="toggleWeekday(3)">木</button>
+          <button type="button" class="wd-pill" data-day="4" onclick="toggleWeekday(4)">金</button>
+          <button type="button" class="wd-pill" data-day="5" onclick="toggleWeekday(5)">土</button>
+          <button type="button" class="wd-pill" data-day="6" onclick="toggleWeekday(6)">日</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>繰り返し終了日</label>
+        <input type="date" id="evRepeatUntil" />
+      </div>
+    </div>
+
+    <button class="btn-add" onclick="addEvent()">＋ 予定を追加</button>
+  </div>
+
+  <!-- 登録済みの予定一覧 -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>登録済みの予定（<span id="eventCount">0</span>件）</div>
+    <div id="eventListArea"></div>
+  </div>
+
+  <!-- 集計 -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>「仕事」の合計時間（自動集計）</div>
+    <div class="agg-grid">
+      <div>
+        <div class="agg-col-title">📆 週間合計</div>
+        <div id="aggWeekly"></div>
+      </div>
+      <div>
+        <div class="agg-col-title">🗓 月間合計</div>
+        <div id="aggMonthly"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 表示切り替えタブ -->
+  <div class="view-tabs">
+    <button type="button" class="view-tab active" id="tabShift" onclick="setView('shift')">🗓 シフト表形式</button>
+    <button type="button" class="view-tab" id="tabList" onclick="setView('list')">📋 スケジュール帳形式</button>
+  </div>
+
+  <!-- アクション -->
+  <div class="action-bar">
+    <button class="btn btn-primary" onclick="window.print()">🖨 印刷 / PDF保存</button>
+    <button class="btn btn-danger btn-sm" onclick="resetAll()">🔄 全予定をリセット</button>
+  </div>
+
+  <!-- シフト表ビュー -->
+  <div id="shiftView">
+    <div class="preview-wrap">
+      <span class="preview-badge">シフト表形式</span>
+      <div class="preview-title">スケジュール表</div>
+      <div class="week-nav">
+        <button class="btn btn-outline btn-sm" onclick="shiftWeek(-1)">← 前週</button>
+        <div class="week-label" id="weekRangeLabel"></div>
+        <button class="btn btn-outline btn-sm" onclick="jumpToday()">今週</button>
+        <button class="btn btn-outline btn-sm" onclick="shiftWeek(1)">次週 →</button>
+      </div>
+      <div class="grid-scroll">
+        <div class="shift-grid" id="shiftGridArea"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--cat-work)"></span>仕事</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--cat-private)"></span>プライベート</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--cat-important)"></span>重要</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--cat-other)"></span>その他</div>
+        <div class="legend-item"><span class="legend-dot" style="background:rgba(148,163,184,0.35)"></span>空き時間</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- スケジュール帳ビュー -->
+  <div id="listView" style="display:none;">
+    <div class="preview-wrap">
+      <span class="preview-badge">スケジュール帳形式</span>
+      <div class="preview-title">スケジュール表</div>
+      <div id="scheduleListArea"></div>
+    </div>
+  </div>
+
+  <!-- 導線 -->
+  <div class="cta-row">
+    <a href="tools.html" class="btn btn-primary cta-btn">無料ツールを使う →</a>
+    <a href="register.html" class="btn btn-secondary cta-btn">無料会員登録する →</a>
+    <a href="contact.html" class="btn btn-outline cta-btn">オーダーメイド相談する →</a>
+  </div>
+</div>
+
+<script>
+  const CATEGORIES = {
+    work:      { label: '仕事',         color: '#2a78d6' },
+    private:   { label: 'プライベート', color: '#1baf7a' },
+    important: { label: '重要',         color: '#eb6834' },
+    other:     { label: 'その他',       color: '#9c7bd6' }
+  };
+  const WD_LABELS = ['月','火','水','木','金','土','日'];
+  const ROW_H = 26; // px per hour
+  const PX_PER_MIN = ROW_H / 60;
+  const TOTAL_H = 24 * ROW_H;
+
+  let events = [];
+  let nextId = 1;
+  let selectedWeekdays = new Set();
+  let activeView = 'shift';
+  let currentWeekStart = getMonday(new Date());
+
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function ymd(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  function parseDateStr(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
+  function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+  function getMonday(d) { const day = d.getDay(); const diff = (day + 6) % 7; return addDays(new Date(d.getFullYear(), d.getMonth(), d.getDate()), -diff); }
+  function timeToMin(t) { const [h, m] = t.split(':').map(Number); return h * 60 + m; }
+  function isSameDate(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function hexToRgba(hex, alpha) {
+    const v = hex.replace('#', '');
+    const r = parseInt(v.substring(0, 2), 16), g = parseInt(v.substring(2, 4), 16), b = parseInt(v.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  // ── 繰り返し設定 UI ──
+  function toggleRecurring() {
+    const on = document.getElementById('evRecurring').checked;
+    document.getElementById('recurringPanel').style.display = on ? 'block' : 'none';
+    if (on) {
+      const dateVal = document.getElementById('evDate').value;
+      if (dateVal && selectedWeekdays.size === 0) {
+        const idx = (parseDateStr(dateVal).getDay() + 6) % 7;
+        selectedWeekdays.add(idx);
+        document.querySelector(`.wd-pill[data-day="${idx}"]`).classList.add('active');
+      }
+      const untilEl = document.getElementById('evRepeatUntil');
+      if (!untilEl.value && dateVal) {
+        untilEl.value = ymd(addDays(parseDateStr(dateVal), 56));
+      }
+    }
+  }
+  function toggleWeekday(i) {
+    const btn = document.querySelector(`.wd-pill[data-day="${i}"]`);
+    if (selectedWeekdays.has(i)) { selectedWeekdays.delete(i); btn.classList.remove('active'); }
+    else { selectedWeekdays.add(i); btn.classList.add('active'); }
+  }
+
+  // ── 予定の追加・削除 ──
+  function addEvent() {
+    const title = document.getElementById('evTitle').value.trim();
+    const date = document.getElementById('evDate').value;
+    const start = document.getElementById('evStart').value;
+    const end = document.getElementById('evEnd').value;
+    const category = document.getElementById('evCategory').value;
+    const recurring = document.getElementById('evRecurring').checked;
+
+    if (!title) { alert('タイトルを入力してください'); return; }
+    if (!date) { alert('日付を入力してください'); return; }
+    if (!start || !end) { alert('開始・終了時刻を入力してください'); return; }
+    if (timeToMin(end) <= timeToMin(start)) { alert('終了時刻は開始時刻より後の時刻にしてください'); return; }
+
+    if (recurring) {
+      if (selectedWeekdays.size === 0) { alert('繰り返す曜日を1つ以上選択してください'); return; }
+      const repeatUntil = document.getElementById('evRepeatUntil').value;
+      if (!repeatUntil) { alert('繰り返し終了日を入力してください'); return; }
+      if (repeatUntil < date) { alert('繰り返し終了日は開始日以降にしてください'); return; }
+      events.push({ id: nextId++, type: 'recurring', title, category, anchorDate: date, start, end, weekdays: [...selectedWeekdays], repeatUntil });
+    } else {
+      events.push({ id: nextId++, type: 'single', title, category, date, start, end });
+    }
+
+    document.getElementById('evTitle').value = '';
+    document.getElementById('evRecurring').checked = false;
+    document.getElementById('recurringPanel').style.display = 'none';
+    selectedWeekdays.clear();
+    document.querySelectorAll('.wd-pill').forEach(b => b.classList.remove('active'));
+    document.getElementById('evRepeatUntil').value = '';
+
+    renderAll();
+  }
+
+  function deleteEvent(id) {
+    events = events.filter(e => e.id !== id);
+    renderAll();
+  }
+
+  // ── 予定の展開（繰り返し予定を実際の日付に展開） ──
+  function expandOccurrences(rangeStart, rangeEnd) {
+    const out = [];
+    events.forEach(ev => {
+      if (ev.type === 'single') {
+        const d = parseDateStr(ev.date);
+        if (d >= rangeStart && d <= rangeEnd) {
+          out.push({ sourceId: ev.id, title: ev.title, category: ev.category, date: d, start: ev.start, end: ev.end, recurring: false });
+        }
+      } else {
+        const anchor = parseDateStr(ev.anchorDate);
+        const until = parseDateStr(ev.repeatUntil);
+        const start = anchor > rangeStart ? anchor : rangeStart;
+        const stop = until < rangeEnd ? until : rangeEnd;
+        if (start > stop) return;
+        let d = new Date(start);
+        let guard = 0;
+        while (d <= stop && guard < 800) {
+          guard++;
+          const idx = (d.getDay() + 6) % 7;
+          if (ev.weekdays.includes(idx)) {
+            out.push({ sourceId: ev.id, title: ev.title, category: ev.category, date: new Date(d), start: ev.start, end: ev.end, recurring: true });
+          }
+          d = addDays(d, 1);
+        }
+      }
+    });
+    out.sort((a, b) => a.date - b.date || timeToMin(a.start) - timeToMin(b.start));
+    return out;
+  }
+
+  function getDataRange() {
+    let min = null, max = null;
+    events.forEach(ev => {
+      if (ev.type === 'single') {
+        const d = parseDateStr(ev.date);
+        if (!min || d < min) min = d;
+        if (!max || d > max) max = d;
+      } else {
+        const a = parseDateStr(ev.anchorDate);
+        const u = parseDateStr(ev.repeatUntil);
+        if (!min || a < min) min = a;
+        if (!max || u > max) max = u;
+      }
+    });
+    return min && max ? { min, max } : null;
+  }
+
+  // ── 登録済み予定一覧 ──
+  function renderEventList() {
+    const area = document.getElementById('eventListArea');
+    document.getElementById('eventCount').textContent = events.length;
+    if (events.length === 0) {
+      area.innerHTML = '<div class="empty-note">まだ予定が登録されていません</div>';
+      return;
+    }
+    const sorted = [...events].sort((a, b) => {
+      const da = a.type === 'single' ? a.date : a.anchorDate;
+      const db = b.type === 'single' ? b.date : b.anchorDate;
+      return da.localeCompare(db);
+    });
+    area.innerHTML = sorted.map(ev => {
+      const cat = CATEGORIES[ev.category];
+      let meta;
+      if (ev.type === 'single') {
+        const d = parseDateStr(ev.date);
+        meta = `${d.getMonth() + 1}/${d.getDate()}(${WD_LABELS[(d.getDay() + 6) % 7]}) ${ev.start}〜${ev.end}`;
+      } else {
+        const wdText = ev.weekdays.slice().sort((a, b) => a - b).map(i => WD_LABELS[i]).join('・');
+        const u = parseDateStr(ev.repeatUntil);
+        meta = `毎週${wdText}曜 ${ev.start}〜${ev.end}（〜${u.getFullYear()}/${u.getMonth() + 1}/${u.getDate()}まで）`;
+      }
+      return `
+        <div class="event-item">
+          <span class="event-dot" style="background:${cat.color}"></span>
+          <div class="event-item-body">
+            <div class="event-item-title">${esc(ev.title)}</div>
+            <div class="event-item-meta">${meta}</div>
+          </div>
+          <span class="event-item-tag">${cat.label}${ev.type === 'recurring' ? ' ・繰り返し' : ''}</span>
+          <button class="btn-remove" onclick="deleteEvent(${ev.id})" title="削除">×</button>
+        </div>`;
+    }).join('');
+  }
+
+  // ── 集計（仕事カテゴリの週間・月間合計） ──
+  function renderAggregation() {
+    const range = getDataRange();
+    const weeklyEl = document.getElementById('aggWeekly');
+    const monthlyEl = document.getElementById('aggMonthly');
+    if (!range) {
+      weeklyEl.innerHTML = '<div class="empty-note">仕事の予定がまだありません</div>';
+      monthlyEl.innerHTML = '<div class="empty-note">仕事の予定がまだありません</div>';
+      return;
+    }
+    const occ = expandOccurrences(range.min, range.max).filter(o => o.category === 'work');
+    if (occ.length === 0) {
+      weeklyEl.innerHTML = '<div class="empty-note">仕事の予定がまだありません</div>';
+      monthlyEl.innerHTML = '<div class="empty-note">仕事の予定がまだありません</div>';
+      return;
+    }
+
+    const weekly = new Map();
+    const monthly = new Map();
+    occ.forEach(o => {
+      const hours = (timeToMin(o.end) - timeToMin(o.start)) / 60;
+      const mon = getMonday(o.date);
+      const wKey = ymd(mon);
+      const wEnd = addDays(mon, 6);
+      const wLabel = `${mon.getMonth() + 1}/${mon.getDate()}〜${wEnd.getMonth() + 1}/${wEnd.getDate()}週`;
+      weekly.set(wKey, { label: wLabel, key: wKey, hours: (weekly.get(wKey)?.hours || 0) + hours });
+
+      const mKey = `${o.date.getFullYear()}-${pad2(o.date.getMonth() + 1)}`;
+      const mLabel = `${o.date.getFullYear()}年${o.date.getMonth() + 1}月`;
+      monthly.set(mKey, { label: mLabel, key: mKey, hours: (monthly.get(mKey)?.hours || 0) + hours });
+    });
+
+    const weeklyArr = [...weekly.values()].sort((a, b) => a.key.localeCompare(b.key));
+    const monthlyArr = [...monthly.values()].sort((a, b) => a.key.localeCompare(b.key));
+
+    weeklyEl.innerHTML = weeklyArr.map(w => `
+      <div class="agg-row"><span>${w.label}</span><span class="agg-hours">${w.hours.toFixed(1)}時間</span></div>
+    `).join('');
+    monthlyEl.innerHTML = monthlyArr.map(m => `
+      <div class="agg-row"><span>${m.label}</span><span class="agg-hours">${m.hours.toFixed(1)}時間</span></div>
+    `).join('');
+  }
+
+  // ── 表示切り替え ──
+  function setView(v) {
+    activeView = v;
+    document.getElementById('tabShift').classList.toggle('active', v === 'shift');
+    document.getElementById('tabList').classList.toggle('active', v === 'list');
+    document.getElementById('shiftView').style.display = v === 'shift' ? 'block' : 'none';
+    document.getElementById('listView').style.display = v === 'list' ? 'block' : 'none';
+    renderAll();
+  }
+
+  // ── 週ナビ ──
+  function shiftWeek(n) { currentWeekStart = addDays(currentWeekStart, 7 * n); renderShiftGrid(); }
+  function jumpToday() { currentWeekStart = getMonday(new Date()); renderShiftGrid(); }
+
+  // ── シフト表描画 ──
+  function layoutDayEvents(dayOcc) {
+    dayOcc.forEach(o => { o._start = timeToMin(o.start); o._end = timeToMin(o.end); });
+    dayOcc.sort((a, b) => a._start - b._start);
+    const lanesEnd = [];
+    dayOcc.forEach(o => {
+      let placed = false;
+      for (let L = 0; L < lanesEnd.length; L++) {
+        if (lanesEnd[L] <= o._start) { o._lane = L; lanesEnd[L] = o._end; placed = true; break; }
+      }
+      if (!placed) { o._lane = lanesEnd.length; lanesEnd.push(o._end); }
+    });
+    const totalLanes = Math.max(1, lanesEnd.length);
+    dayOcc.forEach(o => { o._lanes = totalLanes; });
+    return dayOcc;
+  }
+
+  function freeGaps(dayOcc) {
+    const merged = [];
+    [...dayOcc].sort((a, b) => a._start - b._start).forEach(o => {
+      if (merged.length && o._start <= merged[merged.length - 1].end) {
+        merged[merged.length - 1].end = Math.max(merged[merged.length - 1].end, o._end);
+      } else {
+        merged.push({ start: o._start, end: o._end });
+      }
+    });
+    const gaps = [];
+    let cursor = 0;
+    merged.forEach(m => {
+      if (m.start > cursor) gaps.push({ start: cursor, end: m.start });
+      cursor = Math.max(cursor, m.end);
+    });
+    if (cursor < 1440) gaps.push({ start: cursor, end: 1440 });
+    return gaps;
+  }
+
+  function renderShiftGrid() {
+    const weekDates = [...Array(7)].map((_, i) => addDays(currentWeekStart, i));
+    const weekEnd = weekDates[6];
+    document.getElementById('weekRangeLabel').textContent =
+      `${currentWeekStart.getFullYear()}/${currentWeekStart.getMonth() + 1}/${currentWeekStart.getDate()}(月) 〜 ${weekEnd.getMonth() + 1}/${weekEnd.getDate()}(日)`;
+
+    const occ = expandOccurrences(weekDates[0], weekDates[6]);
+    const today = new Date();
+
+    const headerHtml = `
+      <div class="grid-cols">
+        <div class="grid-corner"></div>
+        ${weekDates.map((d, i) => `<div class="daycol-header ${isSameDate(d, today) ? 'is-today' : ''}">${WD_LABELS[i]}<br>${d.getMonth() + 1}/${d.getDate()}</div>`).join('')}
+      </div>`;
+
+    const hourLabelsHtml = [...Array(12)].map((_, h2) => {
+      const h = h2 * 2;
+      return `<div class="hour-label" style="top:${h * ROW_H}px">${h}:00</div>`;
+    }).join('');
+
+    const gridLineBg = `repeating-linear-gradient(to bottom, transparent 0, transparent ${ROW_H - 1}px, #eef0f4 ${ROW_H - 1}px, #eef0f4 ${ROW_H}px)`;
+
+    const dayColsHtml = weekDates.map(d => {
+      const dayOcc = occ.filter(o => isSameDate(o.date, d));
+      layoutDayEvents(dayOcc);
+      const gaps = freeGaps(dayOcc);
+
+      const gapsHtml = gaps.map(g => {
+        const h = (g.end - g.start) * PX_PER_MIN;
+        const showLabel = h >= ROW_H * 2.2;
+        return `<div class="slot-free" style="top:${g.start * PX_PER_MIN}px;height:${h}px;">${showLabel ? '<span class="free-label">空き</span>' : ''}</div>`;
+      }).join('');
+
+      const eventsHtml = dayOcc.map(o => {
+        const cat = CATEGORIES[o.category];
+        const top = o._start * PX_PER_MIN;
+        const h = Math.max(15, (o._end - o._start) * PX_PER_MIN);
+        const widthPct = 100 / o._lanes;
+        const leftPct = o._lane * widthPct;
+        const showTime = h >= 24;
+        return `<div class="event-block" style="top:${top}px;height:${h}px;left:${leftPct}%;width:calc(${widthPct}% - 2px);background:${hexToRgba(cat.color, 0.88)};" title="${esc(o.title)} ${o.start}〜${o.end}">
+          <div class="eb-title">${esc(o.title)}</div>
+          ${showTime ? `<div class="eb-time">${o.start}〜${o.end}</div>` : ''}
+        </div>`;
+      }).join('');
+
+      return `<div class="day-col" style="height:${TOTAL_H}px;background-image:${gridLineBg}">${gapsHtml}${eventsHtml}</div>`;
+    }).join('');
+
+    const bodyHtml = `
+      <div class="grid-cols" style="align-items:stretch;">
+        <div class="hour-axis" style="height:${TOTAL_H}px">${hourLabelsHtml}</div>
+        ${dayColsHtml}
+      </div>`;
+
+    document.getElementById('shiftGridArea').innerHTML = headerHtml + bodyHtml;
+  }
+
+  // ── スケジュール帳（リスト）描画 ──
+  function renderScheduleList() {
+    const area = document.getElementById('scheduleListArea');
+    const range = getDataRange();
+    if (!range) {
+      area.innerHTML = '<div class="list-empty">まだ予定が登録されていません。上のフォームから予定を追加してください。</div>';
+      return;
+    }
+    const occ = expandOccurrences(range.min, range.max);
+    if (occ.length === 0) {
+      area.innerHTML = '<div class="list-empty">表示できる予定がありません</div>';
+      return;
+    }
+    const today = new Date();
+    const groups = new Map();
+    occ.forEach(o => {
+      const key = ymd(o.date);
+      if (!groups.has(key)) groups.set(key, { date: o.date, items: [] });
+      groups.get(key).items.push(o);
+    });
+    const sortedGroups = [...groups.values()].sort((a, b) => a.date - b.date);
+
+    area.innerHTML = sortedGroups.map(g => {
+      const wd = WD_LABELS[(g.date.getDay() + 6) % 7];
+      const isToday = isSameDate(g.date, today);
+      const itemsHtml = g.items.map(o => {
+        const cat = CATEGORIES[o.category];
+        return `
+          <div class="list-event-row">
+            <span class="list-event-time">${o.start}〜${o.end}</span>
+            <span class="list-event-dot" style="background:${cat.color}"></span>
+            <span class="list-event-title">${esc(o.title)}<span class="list-event-cat">（${cat.label}${o.recurring ? '・繰り返し' : ''}）</span></span>
+          </div>`;
+      }).join('');
+      return `
+        <div class="list-date-group">
+          <div class="list-date-head ${isToday ? 'is-today' : ''}">
+            ${g.date.getFullYear()}/${g.date.getMonth() + 1}/${g.date.getDate()}（${wd}）
+            ${isToday ? '<span class="today-chip">今日</span>' : ''}
+          </div>
+          ${itemsHtml}
+        </div>`;
+    }).join('');
+  }
+
+  function renderAll() {
+    renderEventList();
+    renderAggregation();
+    if (activeView === 'shift') renderShiftGrid();
+    else renderScheduleList();
+  }
+
+  // ── リセット ──
+  function resetAll() {
+    if (!confirm('登録した予定をすべてリセットしますか？')) return;
+    events = [];
+    renderAll();
+  }
+
+  // ── 初期化（デモ用のサンプル予定） ──
+  function initDefaults() {
+    document.getElementById('evDate').value = ymd(new Date());
+    const monday = getMonday(new Date());
+    events.push({ id: nextId++, type: 'recurring', title: 'オフィス勤務', category: 'work', anchorDate: ymd(monday), start: '09:00', end: '18:00', weekdays: [0, 1, 2, 3, 4], repeatUntil: ymd(addDays(monday, 56)) });
+    events.push({ id: nextId++, type: 'single', title: 'プロジェクト会議', category: 'important', date: ymd(addDays(monday, 1)), start: '14:00', end: '15:30' });
+    events.push({ id: nextId++, type: 'single', title: '歯医者', category: 'private', date: ymd(addDays(monday, 4)), start: '19:00', end: '20:00' });
+    renderAll();
+  }
+
+  initDefaults();
+</script>
+</body>
+</html>
