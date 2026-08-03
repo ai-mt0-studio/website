@@ -218,6 +218,9 @@
   /* 週ナビ */
   .week-nav { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.1rem; flex-wrap: wrap; }
   .week-nav .week-label { font-size: 0.92rem; font-weight: 700; color: #333; min-width: 190px; text-align: center; }
+  /* プレビュー（白背景）内のボタンは白背景でも読める配色に上書き */
+  .preview-wrap .btn-outline { background: #f4f5f8; border: 1px solid #d7dbe3; color: #333; }
+  .preview-wrap .btn-outline:hover { background: #e9ebf1; }
 
   /* シフト表グリッド */
   .grid-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0.25rem; }
@@ -290,6 +293,7 @@
     <h1>📅 スケジュール表作成ツール</h1>
     <p>予定を入力するだけで、シフト表形式・スケジュール帳形式を切り替えて表示できます</p>
     <div class="free-badge">✅ 完全無料 · 登録不要 · 外部AI API不要</div>
+    <div class="free-badge" style="background:rgba(96,165,250,0.12);border-color:rgba(96,165,250,0.35);color:var(--blue-300);margin-left:0.4rem;">💾 このブラウザに自動保存されます</div>
   </header>
 
   <!-- 予定を追加 -->
@@ -435,11 +439,33 @@
   const PX_PER_MIN = ROW_H / 60;
   const TOTAL_H = 24 * ROW_H;
 
+  const STORAGE_KEY = 'aimt0-schedule-builder-events';
+
   let events = [];
   let nextId = 1;
   let selectedWeekdays = new Set();
   let activeView = 'shift';
   let currentWeekStart = getMonday(new Date());
+
+  // ── ブラウザへの自動保存 ──
+  function saveToStorage() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ events, nextId }));
+    } catch (e) { /* 保存できない環境（プライベートモード等）では無視 */ }
+  }
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      const data = JSON.parse(raw);
+      if (!Array.isArray(data.events)) return false;
+      events = data.events.map(ev => ev.type === 'single'
+        ? ev
+        : { ...ev, weekdays: ev.weekdays || [] });
+      nextId = data.nextId || (events.reduce((m, e) => Math.max(m, e.id), 0) + 1);
+      return true;
+    } catch (e) { return false; }
+  }
 
   function esc(s) {
     return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -511,11 +537,13 @@
     document.querySelectorAll('.wd-pill').forEach(b => b.classList.remove('active'));
     document.getElementById('evRepeatUntil').value = '';
 
+    saveToStorage();
     renderAll();
   }
 
   function deleteEvent(id) {
     events = events.filter(e => e.id !== id);
+    saveToStorage();
     renderAll();
   }
 
@@ -809,18 +837,16 @@
 
   // ── リセット ──
   function resetAll() {
-    if (!confirm('登録した予定をすべてリセットしますか？')) return;
+    if (!confirm('登録した予定をすべてリセットしますか？（このブラウザの保存データも削除されます）')) return;
     events = [];
+    saveToStorage();
     renderAll();
   }
 
-  // ── 初期化（デモ用のサンプル予定） ──
+  // ── 初期化（保存データがあれば復元、なければ空の状態で開始） ──
   function initDefaults() {
     document.getElementById('evDate').value = ymd(new Date());
-    const monday = getMonday(new Date());
-    events.push({ id: nextId++, type: 'recurring', title: 'オフィス勤務', category: 'work', anchorDate: ymd(monday), start: '09:00', end: '18:00', weekdays: [0, 1, 2, 3, 4], repeatUntil: ymd(addDays(monday, 56)) });
-    events.push({ id: nextId++, type: 'single', title: 'プロジェクト会議', category: 'important', date: ymd(addDays(monday, 1)), start: '14:00', end: '15:30' });
-    events.push({ id: nextId++, type: 'single', title: '歯医者', category: 'private', date: ymd(addDays(monday, 4)), start: '19:00', end: '20:00' });
+    loadFromStorage();
     renderAll();
   }
 
