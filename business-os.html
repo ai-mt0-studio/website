@@ -284,7 +284,7 @@ td.wrap{white-space:normal;max-width:220px}
 .view-toggle button.active{background:var(--grad);color:#fff}
 .kanban{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px}
 .kanban-col{min-width:230px;flex:1;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:12px;min-height:200px}
-.kanban-col h4{margin:0 0 10px;font-size:12.5px;color:var(--text-dim);display:flex;justify-content:space-between}
+.kanban-col h3{margin:0 0 10px;font-size:12.5px;color:var(--text-dim);display:flex;justify-content:space-between}
 .kanban-card{
   background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;
   cursor:grab;font-size:12.5px;
@@ -362,7 +362,7 @@ textarea{resize:vertical;min-height:90px}
       <button class="nav-item" data-tab="analytics"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="20" x2="4" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg>分析</button>
       <button class="nav-item" data-tab="settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13a7.6 7.6 0 000-2l2-1.5-2-3.4-2.4.6a7.7 7.7 0 00-1.7-1L15 3h-6l-.3 2.7a7.7 7.7 0 00-1.7 1l-2.4-.6-2 3.4L4.6 11a7.6 7.6 0 000 2l-2 1.5 2 3.4 2.4-.6a7.7 7.7 0 001.7 1L9 21h6l.3-2.7a7.7 7.7 0 001.7-1l2.4.6 2-3.4z"/></svg>設定</button>
     </nav>
-    <div class="sidebar-foot"><a href="tools.html" style="color:inherit;text-decoration:none;">← ツール一覧へ戻る</a> ・ AI Business OS v1.0</div>
+    <div class="sidebar-foot"><a href="tools.html" style="color:inherit;text-decoration:none;">← ツール一覧へ戻る</a> ・ <a href="sales-mail-tool.html" style="color:inherit;">関連: AI営業文作成</a> ・ AI Business OS v1.0</div>
   </aside>
 
   <main class="main">
@@ -1290,7 +1290,7 @@ function renderKanban(){
   board.innerHTML = DEAL_STATUSES.map(st=>{
     const deals = state.deals.filter(d=>d.status===st);
     return `<div class="kanban-col" data-status="${st}">
-      <h4><span>${st}</span><span>${deals.length}</span></h4>
+      <h3><span>${st}</span><span>${deals.length}</span></h3>
       <div class="col-body">
         ${deals.map(d=>`
           <div class="kanban-card" draggable="true" data-deal="${d.id}">

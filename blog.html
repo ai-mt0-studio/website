@@ -96,6 +96,14 @@
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 28px;
     }
+    .blog-list-heading {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--c-blue);
+      margin-bottom: 20px;
+    }
 
     /* ローディング表示 */
     .blog-loading {
@@ -169,6 +177,7 @@
         <button class="cat-btn" data-cat="update">アップデート</button>
       </div>
 
+      <h2 class="blog-list-heading">記事一覧</h2>
       <div class="blog-page-grid blog-grid" id="blog-grid">
         <article class="blog-card glass-card" data-cat="tools">
           <div class="blog-cat-label">ツール紹介</div>
@@ -596,20 +605,20 @@
       </div>
       <div class="footer-links">
         <div class="footer-col">
-          <h4>サービス</h4>
+          <h3>サービス</h3>
           <a href="index.html#services">AIツール開発</a>
           <a href="index.html#services">業務効率化</a>
           <a href="index.html#services">経理サポート</a>
           <a href="index.html#tools">AIツール一覧</a>
         </div>
         <div class="footer-col">
-          <h4>コンテンツ</h4>
+          <h3>コンテンツ</h3>
           <a href="blog.html">ブログ</a>
           <a href="index.html#roadmap">開発ロードマップ</a>
           <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
         </div>
         <div class="footer-col">
-          <h4>サポート</h4>
+          <h3>サポート</h3>
           <a href="contact.html">お問い合わせ</a>
           <a href="consult.html">AI相談</a>
           <a href="faq.html">よくある質問</a>

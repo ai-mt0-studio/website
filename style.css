@@ -394,6 +394,46 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   max-width: 680px;
   margin: 0 auto;
 }
+.philosophy-profile {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 680px;
+  margin: 32px auto 0;
+  padding-top: 32px;
+  border-top: 1px solid var(--glass-border);
+  text-align: left;
+}
+.philosophy-profile-avatar {
+  flex-shrink: 0;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--grad-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #fff;
+}
+.philosophy-profile-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.philosophy-profile-name span {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--c-text-sub);
+  margin-top: 2px;
+}
+.philosophy-profile-bio {
+  font-size: 0.9rem;
+  color: var(--c-text-sub);
+  line-height: 1.8;
+}
 
 /* ============================================
    SERVICES
@@ -1125,7 +1165,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
 }
-.footer-col h4 {
+.footer-col h3 {
   font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: 600;
@@ -1200,6 +1240,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .hero-title { font-size: clamp(2rem, 8vw, 3rem); }
   .hero-stats { gap: 20px; }
   .philosophy-inner { padding: 32px 24px; }
+  .philosophy-profile { flex-direction: column; align-items: center; text-align: center; }
   .services-grid { grid-template-columns: 1fr; }
   .custom-dev-inner { padding: 32px 24px; }
   .custom-dev-examples { justify-content: flex-start; }
