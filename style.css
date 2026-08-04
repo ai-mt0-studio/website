@@ -566,6 +566,20 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-bottom: 16px;
   line-height: 1.7;
 }
+.tool-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.tool-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--c-text-sub);
+}
+.tool-meta-icon { flex-shrink: 0; }
 .tool-tags {
   display: flex;
   gap: 8px;

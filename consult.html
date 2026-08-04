@@ -56,6 +56,25 @@
       margin-bottom: 16px;
     }
     .auth-hero p { color: var(--c-text-sub); font-size: 1rem; }
+    .trust-badges {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--c-text);
+    }
+    .trust-badge-icon { font-size: 1rem; }
     .auth-section { padding: 0 0 120px; }
 
     .consult-card { max-width: 560px; margin: 0 auto; padding: 40px; }
@@ -157,6 +176,12 @@
       <span class="section-eyebrow">AI CONSULTATION</span>
       <h1>AI相談</h1>
       <p>「どこから始めればいい？」など、AIに関するお悩みをお気軽にご相談ください。</p>
+      <ul class="trust-badges">
+        <li class="trust-badge glass-card"><span class="trust-badge-icon">✅</span>初回相談無料</li>
+        <li class="trust-badge glass-card"><span class="trust-badge-icon">💻</span>オンライン対応</li>
+        <li class="trust-badge glass-card"><span class="trust-badge-icon">📝</span>見積無料</li>
+        <li class="trust-badge glass-card"><span class="trust-badge-icon">🙅</span>無理な営業なし</li>
+      </ul>
     </div>
   </section>
 
@@ -183,6 +208,8 @@
           <li>✅ 初回相談無料</li>
           <li>✅ 個人・法人どちらでも対応</li>
           <li>✅ オンライン対応可</li>
+          <li>✅ 見積無料</li>
+          <li>✅ 無理な営業なし</li>
         </ul>
 
         <div class="paid-notice" id="paid-notice"></div>
