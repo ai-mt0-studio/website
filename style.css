@@ -686,6 +686,61 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 /* ============================================
+   GETTING STARTED
+   ============================================ */
+.start-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.start-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 28px;
+  transition: var(--transition);
+}
+.start-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(79,142,247,0.35);
+  box-shadow: 0 20px 56px rgba(79,142,247,0.16);
+}
+.start-step {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--c-blue);
+  margin-bottom: 12px;
+}
+.start-icon { font-size: 2.8rem; margin-bottom: 16px; }
+.start-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.start-card p {
+  font-size: 0.9rem;
+  color: var(--c-text-sub);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.start-card-arrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--c-blue);
+  transition: var(--transition);
+}
+.start-card:hover .start-card-arrow {
+  color: #fff;
+  transform: translateX(4px);
+  display: inline-block;
+}
+
+/* ============================================
    MEMBER BENEFITS
    ============================================ */
 .benefit-grid {
@@ -1105,6 +1160,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .contact-inner { grid-template-columns: 1fr; }
   .footer-inner  { grid-template-columns: 1fr; gap: 40px; }
   .footer-links  { grid-template-columns: repeat(2, 1fr); }
+  .start-grid    { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
