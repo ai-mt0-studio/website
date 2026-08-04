@@ -108,6 +108,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transform: translateY(-2px);
 }
 .btn-sm { padding: 9px 18px; font-size: 0.85rem; }
+.btn-lg { padding: 18px 36px; font-size: 1.05rem; }
 .btn-full { width: 100%; justify-content: center; }
 
 /* --- SECTION HEADER --- */
@@ -717,6 +718,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   line-height: 1.7;
 }
 .member-benefits-cta { text-align: center; }
+.member-benefits-cta-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
 .member-benefits-note {
   margin-top: 14px;
   font-size: 0.82rem;
@@ -761,6 +769,36 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .cb-1 { transition-delay: 0.1s; }
 .cb-2 { transition-delay: 0.3s; }
 .cb-3 { transition-delay: 0.5s; }
+.chat-bubble-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+.chat-bubble-link .chat-bubble-arrow {
+  flex-shrink: 0;
+  color: var(--c-blue);
+  font-family: var(--font-display);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: var(--transition);
+}
+.chat-bubble-link:hover,
+.chat-bubble-link:focus-visible {
+  color: #fff;
+  border-color: rgba(79,142,247,0.35);
+  box-shadow: 0 12px 32px rgba(79,142,247,0.16);
+}
+.chat-bubble-link.visible:hover,
+.chat-bubble-link.visible:focus-visible {
+  transform: translateX(0) translateY(-3px);
+}
+.chat-bubble-link:hover .chat-bubble-arrow,
+.chat-bubble-link:focus-visible .chat-bubble-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
 
 /* ============================================
    BLOG
