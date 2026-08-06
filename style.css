@@ -847,6 +847,60 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 /* ============================================
+   NEWSLETTER
+   ============================================ */
+.newsletter-inner {
+  padding: 44px 48px;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.newsletter-text .section-title { margin-bottom: 12px; }
+.newsletter-text p {
+  color: var(--c-text-sub);
+  margin-bottom: 28px;
+}
+.newsletter-form {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.newsletter-input {
+  flex: 1 1 320px;
+  max-width: 380px;
+  padding: 12px 16px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--c-text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition);
+}
+.newsletter-input::placeholder { color: rgba(136,144,170,0.5); }
+.newsletter-input:focus {
+  border-color: var(--c-blue);
+  box-shadow: 0 0 0 3px rgba(79,142,247,0.12);
+  background: rgba(255,255,255,0.07);
+}
+.newsletter-msg {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #22c55e;
+  min-height: 1.2em;
+  display: none;
+}
+.newsletter-msg.visible { display: block; }
+.newsletter-msg.is-error { color: #f87171; }
+@media (max-width: 640px) {
+  .newsletter-inner { padding: 32px 20px; }
+  .newsletter-form { flex-direction: column; align-items: stretch; }
+  .newsletter-input { max-width: none; }
+}
+
+/* ============================================
    CONSULTATION
    ============================================ */
 .consult-inner {

@@ -188,22 +188,63 @@
 
   /* 総合スコア */
   .score-card {
-    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(29,78,216,0.15));
-    border: 1px solid rgba(124,58,237,0.3); border-radius: 18px; padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 26px;
+    padding: 2.5rem 1.75rem 2.1rem;
     text-align: center; margin-bottom: 1.25rem;
+    border: 2px solid transparent;
+    background:
+      radial-gradient(ellipse 120% 100% at 50% -10%, rgba(124,58,237,0.28), rgba(29,78,216,0.16) 55%, rgba(10,8,26,0.6) 100%) padding-box,
+      linear-gradient(135deg, var(--purple-400), var(--blue-400), var(--purple-700)) border-box;
+    box-shadow: 0 20px 60px rgba(76,29,149,0.25);
   }
-  .score-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.5rem; }
+  .score-card::before {
+    content: '';
+    position: absolute; top: -70px; right: -60px; width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(167,139,250,0.35), transparent 70%);
+    filter: blur(6px); pointer-events: none;
+  }
+  .score-card::after {
+    content: '';
+    position: absolute; bottom: -80px; left: -60px; width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(96,165,250,0.28), transparent 70%);
+    filter: blur(6px); pointer-events: none;
+  }
+  .score-label { position: relative; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 1rem; }
+  .score-ring {
+    --score-pct: 0%;
+    position: relative;
+    width: 176px; height: 176px; margin: 0 auto 0.6rem;
+    border-radius: 50%;
+    background: conic-gradient(var(--purple-400) var(--score-pct), rgba(255,255,255,0.08) 0);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .score-ring::before {
+    content: '';
+    position: absolute; inset: 9px; border-radius: 50%;
+    background: radial-gradient(circle at 32% 24%, rgba(45,30,90,0.95), rgba(8,7,22,0.97));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .score-ring-inner { position: relative; z-index: 1; }
   .score-value {
-    font-size: 3.2rem; font-weight: 900; letter-spacing: -0.03em;
+    font-size: 3.8rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1;
     background: linear-gradient(130deg, var(--blue-300), var(--purple-400));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 18px rgba(139,92,246,0.35));
   }
-  .score-value::after { content: ' 点'; font-size: 1.2rem; -webkit-text-fill-color: var(--muted); }
+  .score-value::after { content: ' 点'; font-size: 1.15rem; -webkit-text-fill-color: var(--muted); }
   .score-tier {
-    display: inline-block; margin: 0.6rem 0 0.9rem; font-size: 0.95rem; font-weight: 800;
-    padding: 0.3rem 1rem; border-radius: 999px;
+    position: relative;
+    display: inline-block; margin: 0.6rem 0 0.9rem; font-size: 1rem; font-weight: 800;
+    padding: 0.35rem 1.15rem; border-radius: 999px;
   }
-  .score-summary { font-size: 0.9rem; color: var(--text); line-height: 1.7; max-width: 500px; margin: 0 auto; }
+  .score-summary { position: relative; font-size: 0.9rem; color: var(--text); line-height: 1.7; max-width: 500px; margin: 0 auto; }
+  .score-card-brand {
+    position: relative; margin-top: 1.4rem; padding-top: 1.1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(226,232,240,0.4);
+  }
 
   .section-label {
     font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
@@ -292,9 +333,14 @@
     <!-- 総合スコア -->
     <div class="score-card">
       <div class="score-label">AI業務効率スコア</div>
-      <div class="score-value" id="scoreValue">0</div>
+      <div class="score-ring" id="scoreRing">
+        <div class="score-ring-inner">
+          <div class="score-value" id="scoreValue">0</div>
+        </div>
+      </div>
       <div><span class="score-tier" id="scoreTier"></span></div>
       <div class="score-summary" id="scoreSummary"></div>
+      <div class="score-card-brand">AI MT0 Studio ／ AI業務効率スコア診断</div>
     </div>
 
     <!-- タイプ解説 -->
@@ -524,6 +570,7 @@
 
   function renderResult(r) {
     document.getElementById('scoreValue').textContent = r.score;
+    document.getElementById('scoreRing').style.setProperty('--score-pct', r.score + '%');
 
     const tierEl = document.getElementById('scoreTier');
     tierEl.textContent = `${r.tierInfo.emoji} ${r.tierInfo.label}`;

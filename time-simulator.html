@@ -190,20 +190,31 @@
 
   /* ヒーロー（シェアしたくなる見た目） */
   .hero-card {
-    background: linear-gradient(150deg, rgba(14,165,233,0.16), rgba(52,211,153,0.14));
-    border: 1px solid rgba(34,211,238,0.32); border-radius: 20px; padding: 2rem 1.5rem;
-    text-align: center; margin-bottom: 1.25rem; position: relative; overflow: hidden;
+    position: relative; overflow: hidden;
+    border-radius: 26px; padding: 2.5rem 1.75rem 2.1rem;
+    text-align: center; margin-bottom: 1.25rem;
+    border: 2px solid transparent;
+    background:
+      radial-gradient(ellipse 120% 100% at 50% -10%, rgba(14,165,233,0.26), rgba(52,211,153,0.16) 55%, rgba(6,10,20,0.6) 100%) padding-box,
+      linear-gradient(135deg, var(--blue-300), var(--cyan-300), var(--emerald-400)) border-box;
+    box-shadow: 0 20px 60px rgba(14,116,144,0.25);
   }
   .hero-card::before {
     content: '⏳'; position: absolute; top: -30px; right: -10px; font-size: 8rem; opacity: 0.08; pointer-events: none;
   }
-  .hero-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 0.75rem; position: relative; }
+  .hero-card::after {
+    content: ''; position: absolute; bottom: -80px; left: -60px; width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(52,211,153,0.28), transparent 70%);
+    filter: blur(6px); pointer-events: none;
+  }
+  .hero-label { position: relative; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 0.85rem; }
   .hero-copy { font-size: 1rem; color: var(--text); position: relative; }
   .hero-value {
-    font-size: clamp(2.6rem, 9vw, 4.2rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1;
+    font-size: clamp(3rem, 10vw, 4.8rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1;
     background: linear-gradient(120deg, var(--blue-300), var(--cyan-300) 55%, var(--emerald-300) 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    position: relative; margin: 0.2rem 0;
+    filter: drop-shadow(0 0 18px rgba(52,211,153,0.3));
+    position: relative; margin: 0.25rem 0;
   }
   .hero-value .unit { font-size: 0.4em; -webkit-text-fill-color: var(--muted); margin-left: 0.2rem; }
 
@@ -213,7 +224,12 @@
   .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.35rem; }
   .stat-divider { width: 1px; height: 36px; background: var(--glass-border); }
 
-  .hero-note { margin-top: 1.25rem; font-size: 0.76rem; color: var(--muted); line-height: 1.6; position: relative; }
+  .hero-note { position: relative; margin-top: 1.25rem; font-size: 0.76rem; color: var(--muted); line-height: 1.6; }
+  .hero-card-brand {
+    position: relative; margin-top: 1.4rem; padding-top: 1.1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(226,232,240,0.4);
+  }
 
   .section-label {
     font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
@@ -320,6 +336,7 @@
         </div>
       </div>
       <div class="hero-note" id="heroNote"></div>
+      <div class="hero-card-brand">AI MT0 Studio ／ AI時短シミュレーター</div>
     </div>
 
     <!-- おすすめツール -->
