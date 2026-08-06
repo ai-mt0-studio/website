@@ -185,7 +185,7 @@
     <div class="container">
       <span class="section-eyebrow">AI CONSULTATION</span>
       <h1>AI相談</h1>
-      <p>「どこから始めればいい？」など、AIに関するお悩みをお気軽にご相談ください。</p>
+      <p id="hero-sub">「どこから始めればいい？」など、AIに関するお悩みをお気軽にご相談ください。</p>
       <ul class="trust-badges">
         <li class="trust-badge glass-card"><span class="trust-badge-icon">✅</span>初回相談無料</li>
         <li class="trust-badge glass-card"><span class="trust-badge-icon">💻</span>オンライン対応</li>
@@ -204,7 +204,7 @@
       <div class="login-required-card glass-card" id="login-required" style="display:none;">
         <div class="icon">🔒</div>
         <h2>ログインが必要です</h2>
-        <p>AI相談フォームのご利用には会員登録・ログインが必要です。</p>
+        <p id="login-required-sub">AI相談フォームのご利用には会員登録・ログインが必要です。</p>
         <a href="login.html" class="btn btn-primary">ログインする</a>
         <p style="margin-top:16px;font-size:0.82rem;">アカウントをお持ちでない方は <a href="register.html" style="color:var(--c-blue);">新規登録</a></p>
       </div>
@@ -212,7 +212,8 @@
       <!-- ログイン時：相談フォーム -->
       <div class="consult-card glass-card" id="consult-form-wrap" style="display:none;">
         <h2 class="consult-card-title">AI相談フォーム</h2>
-        <p class="consult-card-sub">送信いただいた内容は担当より折り返しご連絡します。</p>
+        <p class="consult-card-sub" id="consult-card-sub">送信いただいた内容は担当より折り返しご連絡します。</p>
+        <div class="paid-notice" id="topic-notice" style="background:rgba(79,142,247,0.06);border-color:rgba(79,142,247,0.2);"></div>
 
         <ul class="consult-perks">
           <li>✅ 初回相談無料</li>
@@ -310,6 +311,48 @@
 
     let currentSession = null;
 
+    const TOPIC_PRESETS = {
+      accounting: {
+        label: '経費の仕訳を自動化したい',
+        text: '経費の仕訳を自動化したいのですが、何から始めればよいですか？',
+      },
+      sns: {
+        label: 'SNS投稿を毎日自動で出したい',
+        text: 'SNS投稿を毎日自動で出したいのですが、どのように進めればよいですか？',
+      },
+      bot: {
+        label: '問い合わせ対応をボットにしたい',
+        text: '問い合わせ対応をボットにしたいのですが、どのように進めればよいですか？',
+      },
+    };
+
+    function getTopicPreset() {
+      const fromUrl = new URLSearchParams(window.location.search).get('topic');
+      if (fromUrl && TOPIC_PRESETS[fromUrl]) {
+        sessionStorage.setItem('consult_topic', fromUrl);
+        return TOPIC_PRESETS[fromUrl];
+      }
+      const fromSession = sessionStorage.getItem('consult_topic');
+      if (fromSession && TOPIC_PRESETS[fromSession]) return TOPIC_PRESETS[fromSession];
+      return null;
+    }
+
+    function applyTopicPreset() {
+      const preset = getTopicPreset();
+      if (!preset) return;
+      document.getElementById('hero-sub').textContent = `「${preset.label}」についてのご相談ですね。下記フォームからお気軽にご相談ください。`;
+      const loginSub = document.getElementById('login-required-sub');
+      if (loginSub) loginSub.textContent = `「${preset.label}」のご相談には会員登録・ログインが必要です。ログイン後、内容を入力した状態でフォームが開きます。`;
+      const question = document.getElementById('question');
+      if (question && !question.value) question.value = preset.text;
+      const noticeEl = document.getElementById('topic-notice');
+      if (noticeEl) {
+        noticeEl.innerHTML = `<strong>「${preset.label}」</strong>のご相談として内容を入力しています。必要に応じて自由に書き換えてください。`;
+        noticeEl.style.display = 'block';
+      }
+    }
+    applyTopicPreset();
+
     async function getPastConsultCount() {
       const { count, error } = await sbClient
         .from('ai_consultations')
@@ -375,6 +418,7 @@
       if (error) { showError(error.message); return; }
 
       document.getElementById('consult-form').reset();
+      sessionStorage.removeItem('consult_topic');
       showSuccess(
         isFirstTime
           ? '送信しました。担当より折り返しご連絡します。マイページの「AI相談履歴」からいつでも内容を確認できます。'
