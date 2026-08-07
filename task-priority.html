@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="タスク名と緊急度・重要度を選ぶだけで、やるべきことを「今すぐやる」「計画してやる」「人に任せる」「やらなくていい」の4象限に自動で振り分けるタスク優先順位付けツール。マトリクス表示と優先順位リスト表示を切り替え可能。ブラウザへの自動保存に対応した、登録不要・外部AI API不要の完全無料ツールです。" />
+  <link rel="canonical" href="https://ai-mt0-studio.netlify.app/task-priority.html" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%234f8ef7'%3E%F0%9F%8E%AF%3C/text%3E%3C/svg%3E" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AI MT0 Studio" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:title" content="タスク優先順位付けツール（緊急度×重要度マトリクス）| AI MT0 Studio" />
+  <meta property="og:description" content="タスクの緊急度・重要度を選ぶだけで4象限マトリクスに自動振り分け。優先順位リスト表示にも切り替え可能な完全無料ツールです。" />
+  <meta property="og:url" content="https://ai-mt0-studio.netlify.app/task-priority.html" />
+  <meta property="og:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="タスク優先順位付けツール（緊急度×重要度マトリクス）| AI MT0 Studio" />
+  <meta name="twitter:description" content="タスクの緊急度・重要度を選ぶだけで4象限マトリクスに自動振り分け。優先順位リスト表示にも切り替え可能な完全無料ツールです。" />
+  <meta name="twitter:image" content="https://ai-mt0-studio.netlify.app/images/og-default.png" />
+<title>タスク優先順位付けツール（緊急度×重要度マトリクス）【無料】| AI MT0 Studio</title>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://ai-mt0-studio.netlify.app/" },
+    { "@type": "ListItem", "position": 2, "name": "AIツール", "item": "https://ai-mt0-studio.netlify.app/tools.html" },
+    { "@type": "ListItem", "position": 3, "name": "タスク優先順位付けツール", "item": "https://ai-mt0-studio.netlify.app/task-priority.html" }
+  ]
+}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "タスク優先順位付けツール（緊急度×重要度マトリクス）",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "タスク名・緊急度・重要度を入力するだけで、緊急度×重要度の4象限マトリクスに自動で振り分けて表示するタスク管理ツール。優先順位付きのリスト表示にも切り替え可能で、ブラウザへの自動保存に対応した無料ツール。",
+  "url": "https://ai-mt0-studio.netlify.app/task-priority.html",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+  :root {
+    --bg: #06061a;
+    --purple-700: #7c3aed;
+    --purple-400: #a78bfa;
+    --blue-700: #1d4ed8;
+    --blue-400: #60a5fa;
+    --blue-300: #93c5fd;
+    --green-400: #34d399;
+    --red-400: #f87171;
+    --yellow-400: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
+    --input-bg: rgba(0,0,0,0.35);
+    /* 象限カラー */
+    --q-now: #ef4444;
+    --q-plan: #2a78d6;
+    --q-delegate: #eb9a34;
+    --q-drop: #6b7280;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(29,78,216,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 50% 90%, rgba(59,7,100,0.18) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 2rem 1rem 5rem;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 500px; height: 500px; background: var(--purple-700); top: -150px; right: -150px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--blue-700); bottom: 50px; left: -120px; }
+
+  .container { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  header h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(130deg, var(--blue-300) 0%, var(--purple-400) 60%, var(--blue-400) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  header p { color: var(--muted); font-size: 0.9rem; }
+  .free-badge {
+    display: inline-block; background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.4);
+    color: var(--green-400); font-size: 0.75rem; font-weight: 700;
+    padding: 0.2rem 0.85rem; border-radius: 999px; margin-top: 0.6rem;
+  }
+
+  /* カード */
+  .card {
+    background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border); border-radius: 18px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .label-bar { width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(var(--purple-700), var(--blue-700)); flex-shrink: 0; }
+
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group label { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+  input, select, textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 0.65rem 0.9rem; color: var(--text);
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--purple-700); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+  input::placeholder { color: rgba(148,163,184,0.45); }
+  select option { background: #12122a; color: var(--text); }
+
+  .btn-add {
+    width: 100%; margin-top: 1rem;
+    background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border: none; color: #fff;
+    padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 700; font-family: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+
+  /* 登録済みタスク一覧 */
+  .task-item {
+    display: flex; align-items: center; gap: 0.7rem; padding: 0.65rem 0.8rem;
+    border: 1px solid var(--glass-border); border-radius: 10px; margin-bottom: 0.5rem; background: rgba(255,255,255,0.02);
+  }
+  .task-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .task-item-body { flex: 1; min-width: 0; }
+  .task-item-title { font-size: 0.86rem; font-weight: 700; color: var(--text); }
+  .task-item-meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.15rem; display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .task-item-tag {
+    font-size: 0.66rem; font-weight: 700; padding: 0.1rem 0.5rem; border-radius: 999px;
+    background: rgba(124,58,237,0.15); color: var(--purple-400); flex-shrink: 0;
+  }
+  .btn-remove {
+    background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: var(--red-400);
+    width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 0.95rem;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s;
+  }
+  .btn-remove:hover { background: rgba(239,68,68,0.2); }
+  .empty-note { font-size: 0.82rem; color: var(--muted); text-align: center; padding: 0.75rem; }
+
+  /* タイプ切り替えタブ */
+  .view-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
+  .view-tab {
+    flex: 1; padding: 0.7rem 1rem; border-radius: 12px; cursor: pointer; font-size: 0.92rem; font-weight: 700;
+    border: 1px solid var(--glass-border); background: var(--glass); color: var(--muted);
+    transition: all 0.2s; font-family: inherit;
+  }
+  .view-tab.active { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); border-color: transparent; color: #fff; }
+
+  /* ボタン共通 */
+  .btn {
+    padding: 0.7rem 1.3rem; border-radius: 10px; cursor: pointer;
+    font-size: 0.88rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+  .btn-secondary { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
+  .btn-secondary:hover { background: rgba(96,165,250,0.2); }
+  .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: var(--text); }
+  .btn-outline:hover { background: rgba(255,255,255,0.06); }
+  .btn-danger { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
+  .btn-danger:hover { background: rgba(248,113,113,0.16); }
+  .btn-sm { padding: 0.5rem 0.9rem; font-size: 0.8rem; border-radius: 8px; }
+
+  .action-bar { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+
+  /* プレビュー（白背景） */
+  .preview-wrap {
+    background: #fff; color: #1a1a2e; border-radius: 14px; padding: 1.75rem 1.75rem 2rem;
+    font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; margin-bottom: 1.25rem;
+  }
+  .preview-badge {
+    display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.75rem;
+    border-radius: 999px; background: #ede9fe; color: #7c3aed; margin-bottom: 0.6rem;
+  }
+  .preview-title { font-size: 1.5rem; font-weight: 900; color: #1a1a2e; margin-bottom: 0.9rem; }
+
+  /* 4象限マトリクス */
+  .quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .quadrant-card {
+    position: relative; overflow: hidden; border-radius: 12px; padding: 1.1rem 1.1rem 1.3rem;
+    border: 1px solid #e5e7eb; background: #fafbfc;
+  }
+  .quadrant-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+  .quadrant-card.q-now::before { background: var(--q-now); }
+  .quadrant-card.q-plan::before { background: var(--q-plan); }
+  .quadrant-card.q-delegate::before { background: var(--q-delegate); }
+  .quadrant-card.q-drop::before { background: var(--q-drop); }
+  .quadrant-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.15rem; }
+  .quadrant-icon { font-size: 1.1rem; }
+  .quadrant-name { font-size: 0.95rem; font-weight: 800; color: #1a1a2e; }
+  .quadrant-count {
+    margin-left: auto; font-size: 0.68rem; font-weight: 700; color: #666;
+    background: #eee; padding: 0.1rem 0.55rem; border-radius: 999px;
+  }
+  .quadrant-sub { font-size: 0.72rem; color: #888; margin-bottom: 0.8rem; }
+  .quadrant-task {
+    display: flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.6rem;
+    border-radius: 8px; background: #fff; border: 1px solid #eef0f4; margin-bottom: 0.4rem; font-size: 0.82rem;
+  }
+  .quadrant-task-name { flex: 1; color: #222; font-weight: 600; }
+
+  /* 優先順位リスト表示 */
+  .priority-group { margin-bottom: 1.1rem; }
+  .priority-group-head {
+    display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 800; color: #1a1a2e;
+    padding-bottom: 0.4rem; margin-bottom: 0.5rem; border-bottom: 2px solid #ede9fe;
+  }
+  .priority-rank {
+    width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 0.72rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .priority-row {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.2rem; border-bottom: 1px solid #f3f4f6;
+  }
+  .priority-row:last-child { border-bottom: none; }
+  .priority-row-name { font-size: 0.85rem; color: #222; font-weight: 600; flex: 1; }
+  .priority-row-meta { font-size: 0.7rem; color: #999; }
+  .list-empty { text-align: center; color: #aaa; font-size: 0.85rem; padding: 3rem 1rem; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid #eef0f4; }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.76rem; color: #555; }
+  .legend-dot { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+
+  .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
+
+  @media(max-width:640px) {
+    .form-grid { grid-template-columns: 1fr 1fr; }
+    .preview-wrap { padding: 1.25rem 1rem 1.5rem; }
+    .quadrant-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <header>
+    <a href="tools.html" style="font-size:0.8rem;opacity:0.7;text-decoration:none;display:inline-block;margin-bottom:0.5rem;color:inherit;">← ツール一覧へ戻る</a>
+    <h1>🎯 タスク優先順位付けツール</h1>
+    <p>タスクの緊急度・重要度を選ぶだけで、何から手をつけるべきか自動で整理できます</p>
+    <div class="free-badge">✅ 完全無料 · 登録不要 · 外部AI API不要</div>
+    <div class="free-badge" style="background:rgba(96,165,250,0.12);border-color:rgba(96,165,250,0.35);color:var(--blue-300);margin-left:0.4rem;">💾 このブラウザに自動保存されます</div>
+  </header>
+
+  <!-- タスクを追加 -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>タスクを追加</div>
+    <div class="form-grid">
+      <div class="form-group" style="grid-column: 1 / -1;">
+        <label>タスク名</label>
+        <input type="text" id="taskName" placeholder="例：見積書の作成、来月の企画書、備品の発注" />
+      </div>
+      <div class="form-group">
+        <label>緊急度</label>
+        <select id="taskUrgent">
+          <option value="1">高い</option>
+          <option value="0">低い</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>重要度</label>
+        <select id="taskImportant">
+          <option value="1">高い</option>
+          <option value="0">低い</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-add" onclick="addTask()">＋ タスクを追加</button>
+  </div>
+
+  <!-- 登録済みタスク一覧 -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>登録済みのタスク（<span id="taskCount">0</span>件）</div>
+    <div id="taskListArea"></div>
+  </div>
+
+  <!-- 表示切り替えタブ -->
+  <div class="view-tabs">
+    <button type="button" class="view-tab active" id="tabMatrix" onclick="setView('matrix')">🧩 マトリクス表示</button>
+    <button type="button" class="view-tab" id="tabList" onclick="setView('list')">📋 優先順位リスト表示</button>
+  </div>
+
+  <!-- アクション -->
+  <div class="action-bar">
+    <button class="btn btn-danger btn-sm" onclick="resetAll()">🔄 すべてリセット</button>
+  </div>
+
+  <!-- マトリクスビュー -->
+  <div id="matrixView">
+    <div class="preview-wrap">
+      <span class="preview-badge">緊急度 × 重要度マトリクス</span>
+      <div class="preview-title">タスクの4象限マトリクス</div>
+      <div class="quadrant-grid" id="quadrantGridArea"></div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--q-now)"></span>今すぐやる</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--q-plan)"></span>計画してやる</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--q-delegate)"></span>人に任せる</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--q-drop)"></span>やらなくていい</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 優先順位リストビュー -->
+  <div id="listView" style="display:none;">
+    <div class="preview-wrap">
+      <span class="preview-badge">優先順位リスト</span>
+      <div class="preview-title">優先順位付きタスクリスト</div>
+      <div id="priorityListArea"></div>
+    </div>
+  </div>
+
+  <!-- 導線 -->
+  <div class="cta-row">
+    <a href="tools.html" class="btn btn-primary cta-btn">無料ツールを使う →</a>
+    <a href="schedule-builder.html" class="btn btn-outline cta-btn">スケジュール表作成ツールも試す →</a>
+    <a href="register.html" class="btn btn-secondary cta-btn">無料会員登録する →</a>
+    <a href="contact.html" class="btn btn-outline cta-btn">オーダーメイド相談する →</a>
+  </div>
+</div>
+
+<script>
+  // 4象限の定義（アイコン・色・見出し・優先順位）
+  const QUADRANTS = {
+    now:      { label: '今すぐやる',     sub: '緊急かつ重要',           icon: '🔥', color: '#ef4444', order: 1 },
+    plan:     { label: '計画してやる',   sub: '重要だが緊急でない',     icon: '📅', color: '#2a78d6', order: 2 },
+    delegate: { label: '人に任せる',     sub: '緊急だが重要でない',     icon: '🤝', color: '#eb9a34', order: 3 },
+    drop:     { label: 'やらなくていい', sub: '緊急でも重要でもない',   icon: '🗑', color: '#6b7280', order: 4 }
+  };
+
+  const STORAGE_KEY = 'aimt0-task-priority-tasks';
+
+  let tasks = [];
+  let nextId = 1;
+  let activeView = 'matrix';
+
+  // ── ブラウザへの自動保存 ──
+  // 将来的に会員登録アカウントとの連携保存に対応する場合は、
+  // この save/load の中身を API 呼び出しに差し替えるだけで済むようにしてある。
+  function saveToStorage() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ tasks, nextId }));
+    } catch (e) { /* 保存できない環境（プライベートモード等）では無視 */ }
+  }
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      const data = JSON.parse(raw);
+      if (!Array.isArray(data.tasks)) return false;
+      tasks = data.tasks;
+      nextId = data.nextId || (tasks.reduce((m, t) => Math.max(m, t.id), 0) + 1);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ── タスクがどの象限に属するかを判定 ──
+  function getQuadrantKey(task) {
+    if (task.urgent && task.important) return 'now';
+    if (!task.urgent && task.important) return 'plan';
+    if (task.urgent && !task.important) return 'delegate';
+    return 'drop';
+  }
+
+  // ── タスクの追加・削除 ──
+  function addTask() {
+    const nameEl = document.getElementById('taskName');
+    const name = nameEl.value.trim();
+    const urgent = document.getElementById('taskUrgent').value === '1';
+    const important = document.getElementById('taskImportant').value === '1';
+
+    if (!name) { alert('タスク名を入力してください'); return; }
+
+    tasks.push({ id: nextId++, name, urgent, important });
+    nameEl.value = '';
+    nameEl.focus();
+
+    saveToStorage();
+    renderAll();
+  }
+
+  function deleteTask(id) {
+    tasks = tasks.filter(t => t.id !== id);
+    saveToStorage();
+    renderAll();
+  }
+
+  // ── 登録済みタスク一覧 ──
+  function renderTaskList() {
+    const area = document.getElementById('taskListArea');
+    document.getElementById('taskCount').textContent = tasks.length;
+    if (tasks.length === 0) {
+      area.innerHTML = '<div class="empty-note">まだタスクが登録されていません</div>';
+      return;
+    }
+    area.innerHTML = tasks.map(t => {
+      const q = QUADRANTS[getQuadrantKey(t)];
+      return `
+        <div class="task-item">
+          <span class="task-dot" style="background:${q.color}"></span>
+          <div class="task-item-body">
+            <div class="task-item-title">${esc(t.name)}</div>
+            <div class="task-item-meta">
+              <span>緊急度：${t.urgent ? '高' : '低'}</span>
+              <span>重要度：${t.important ? '高' : '低'}</span>
+            </div>
+          </div>
+          <span class="task-item-tag">${q.icon} ${q.label}</span>
+          <button class="btn-remove" onclick="deleteTask(${t.id})" title="削除">×</button>
+        </div>`;
+    }).join('');
+  }
+
+  // ── 表示切り替え ──
+  function setView(v) {
+    activeView = v;
+    document.getElementById('tabMatrix').classList.toggle('active', v === 'matrix');
+    document.getElementById('tabList').classList.toggle('active', v === 'list');
+    document.getElementById('matrixView').style.display = v === 'matrix' ? 'block' : 'none';
+    document.getElementById('listView').style.display = v === 'list' ? 'block' : 'none';
+    renderAll();
+  }
+
+  // ── マトリクス描画 ──
+  function renderQuadrantGrid() {
+    const grouped = { now: [], plan: [], delegate: [], drop: [] };
+    tasks.forEach(t => grouped[getQuadrantKey(t)].push(t));
+
+    const html = Object.keys(QUADRANTS).map(key => {
+      const q = QUADRANTS[key];
+      const items = grouped[key];
+      const tasksHtml = items.length
+        ? items.map(t => `<div class="quadrant-task"><span class="quadrant-task-name">${esc(t.name)}</span></div>`).join('')
+        : '<div class="empty-note">タスクはありません</div>';
+      return `
+        <div class="quadrant-card q-${key}">
+          <div class="quadrant-head">
+            <span class="quadrant-icon">${q.icon}</span>
+            <span class="quadrant-name">${q.label}</span>
+            <span class="quadrant-count">${items.length}件</span>
+          </div>
+          <div class="quadrant-sub">${q.sub}</div>
+          ${tasksHtml}
+        </div>`;
+    }).join('');
+
+    document.getElementById('quadrantGridArea').innerHTML = html;
+  }
+
+  // ── 優先順位リスト描画 ──
+  function renderPriorityList() {
+    const area = document.getElementById('priorityListArea');
+    if (tasks.length === 0) {
+      area.innerHTML = '<div class="list-empty">まだタスクが登録されていません。上のフォームからタスクを追加してください。</div>';
+      return;
+    }
+
+    const grouped = { now: [], plan: [], delegate: [], drop: [] };
+    tasks.forEach(t => grouped[getQuadrantKey(t)].push(t));
+
+    const orderedKeys = Object.keys(QUADRANTS).sort((a, b) => QUADRANTS[a].order - QUADRANTS[b].order);
+
+    area.innerHTML = orderedKeys.map(key => {
+      const q = QUADRANTS[key];
+      const items = grouped[key];
+      if (items.length === 0) return '';
+      const rowsHtml = items.map(t => `
+        <div class="priority-row">
+          <span class="priority-row-name">${esc(t.name)}</span>
+          <span class="priority-row-meta">緊急度：${t.urgent ? '高' : '低'} ／ 重要度：${t.important ? '高' : '低'}</span>
+        </div>`).join('');
+      return `
+        <div class="priority-group">
+          <div class="priority-group-head">
+            <span class="priority-rank" style="background:${q.color}">${q.order}</span>
+            <span>${q.icon} ${q.label}（${q.sub}）</span>
+          </div>
+          ${rowsHtml}
+        </div>`;
+    }).join('');
+  }
+
+  function renderAll() {
+    renderTaskList();
+    if (activeView === 'matrix') renderQuadrantGrid();
+    else renderPriorityList();
+  }
+
+  // ── リセット ──
+  function resetAll() {
+    if (!confirm('登録したタスクをすべてリセットしますか？（このブラウザの保存データも削除されます）')) return;
+    tasks = [];
+    saveToStorage();
+    renderAll();
+  }
+
+  // ── 初期化（保存データがあれば復元、なければ空の状態で開始） ──
+  function initDefaults() {
+    loadFromStorage();
+    renderAll();
+  }
+
+  initDefaults();
+</script>
+</body>
+</html>
