@@ -58,7 +58,8 @@
       { "@type": "ListItem", "position": 11, "url": "https://ai-mt0-studio.netlify.app/report-tool.html", "name": "AI日報生成ツール" },
       { "@type": "ListItem", "position": 12, "url": "https://ai-mt0-studio.netlify.app/sns-tool.html", "name": "SNS投稿自動生成ツール" },
       { "@type": "ListItem", "position": 13, "url": "https://ai-mt0-studio.netlify.app/time-simulator.html", "name": "AI時短シミュレーター" },
-      { "@type": "ListItem", "position": 14, "url": "https://ai-mt0-studio.netlify.app/income-simulator.html", "name": "簡易収支シミュレーター" }
+      { "@type": "ListItem", "position": 14, "url": "https://ai-mt0-studio.netlify.app/income-simulator.html", "name": "簡易収支シミュレーター" },
+      { "@type": "ListItem", "position": 15, "url": "https://ai-mt0-studio.netlify.app/task-priority.html", "name": "タスク優先順位付けツール" }
     ]
   }
   </script>
@@ -105,6 +106,48 @@
 
     /* ========== BODY ========== */
     .tools-page-body { padding: 0 0 120px; }
+
+    /* ========== FILTER ========== */
+    .tools-filter-section { padding: 0 0 40px; }
+    .tools-filter { padding: 24px 28px; }
+    .tools-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .tools-filter-row + .tools-filter-row { margin-top: 14px; }
+    .tools-filter-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--c-text-sub);
+      flex-shrink: 0;
+      min-width: 72px;
+    }
+    .tools-filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tools-filter-count {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--glass-border);
+      font-size: 0.8rem;
+      color: var(--c-text-sub);
+    }
+    .tool-card.is-filtered-out { display: none; }
+    .tools-group.is-empty { display: none; }
+    .tools-empty-note {
+      text-align: center;
+      color: var(--c-text-sub);
+      font-size: 0.9rem;
+      padding: 40px 0;
+    }
+    @media (max-width: 640px) {
+      .tools-filter { padding: 20px; }
+      .tools-filter-label { min-width: auto; width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -144,9 +187,46 @@
     </div>
   </section>
 
+  <!-- ========== FILTER ========== -->
+  <section class="tools-filter-section">
+    <div class="container">
+      <div class="tools-filter glass-card">
+        <div class="tools-filter-row">
+          <span class="tools-filter-label">🏷 カテゴリ</span>
+          <div class="tools-filter-pills" id="categoryFilters">
+            <button type="button" class="cat-btn active" data-filter-cat="all">すべて</button>
+            <button type="button" class="cat-btn" data-filter-cat="業務効率化">業務効率化</button>
+            <button type="button" class="cat-btn" data-filter-cat="業務改善">業務改善</button>
+            <button type="button" class="cat-btn" data-filter-cat="営業">営業</button>
+            <button type="button" class="cat-btn" data-filter-cat="診断">診断</button>
+            <button type="button" class="cat-btn" data-filter-cat="シミュレーション">シミュレーション</button>
+            <button type="button" class="cat-btn" data-filter-cat="経理">経理</button>
+            <button type="button" class="cat-btn" data-filter-cat="資料作成">資料作成</button>
+            <button type="button" class="cat-btn" data-filter-cat="スケジュール管理">スケジュール管理</button>
+            <button type="button" class="cat-btn" data-filter-cat="タスク管理">タスク管理</button>
+            <button type="button" class="cat-btn" data-filter-cat="文書作成">文書作成</button>
+            <button type="button" class="cat-btn" data-filter-cat="データ分析">データ分析</button>
+            <button type="button" class="cat-btn" data-filter-cat="SNS">SNS</button>
+            <button type="button" class="cat-btn" data-filter-cat="自動化">自動化</button>
+          </div>
+        </div>
+        <div class="tools-filter-row">
+          <span class="tools-filter-label">💰 料金</span>
+          <div class="tools-filter-pills" id="priceFilters">
+            <button type="button" class="cat-btn active" data-filter-price="all">すべて</button>
+            <button type="button" class="cat-btn" data-filter-price="free">無料のみ表示</button>
+            <button type="button" class="cat-btn" data-filter-price="paid">有料のみ表示</button>
+          </div>
+        </div>
+        <p class="tools-filter-count" id="toolsFilterCount"></p>
+      </div>
+    </div>
+  </section>
+
   <!-- ========== MAIN CONTENT ========== -->
   <section class="tools-page-body">
     <div class="container">
+      <p class="tools-empty-note" id="toolsEmptyNote" style="display:none;">条件に一致するツールが見つかりませんでした。フィルターの条件を変えてお試しください。</p>
       <div class="tools-group">
         <div class="tools-group-header">
           <h2 class="tools-group-title">🟢 無料で今すぐ使えるツール</h2>
@@ -154,7 +234,7 @@
         </div>
         <div class="tools-grid">
 
-          <div class="tool-card glass-card" data-tool-slug="business-os">
+          <div class="tool-card glass-card" data-tool-slug="business-os" data-cat="業務効率化" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">🏢</div>
             <h3 class="tool-name">AI Business OS（無料）</h3>
@@ -170,7 +250,7 @@
             <a href="business-os.html" class="btn btn-glass btn-sm">無料で使う →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="advisor-tool">
+          <div class="tool-card glass-card" data-tool-slug="advisor-tool" data-cat="業務改善" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">🔍</div>
             <h3 class="tool-name">AI業務改善アドバイザー Pro Lite（無料）</h3>
@@ -186,7 +266,7 @@
             <a href="advisor-tool.html" class="btn btn-glass btn-sm">無料で診断する →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="sales-mail-tool">
+          <div class="tool-card glass-card" data-tool-slug="sales-mail-tool" data-cat="営業" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">✉️</div>
             <h3 class="tool-name">AI営業文作成 Pro Lite（無料）</h3>
@@ -202,7 +282,7 @@
             <a href="sales-mail-tool.html" class="btn btn-glass btn-sm">無料で使う →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="manual-tool">
+          <div class="tool-card glass-card" data-tool-slug="manual-tool" data-cat="業務効率化" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">📋</div>
             <h3 class="tool-name">AI業務マニュアル作成 Pro Lite（無料）</h3>
@@ -218,7 +298,7 @@
             <a href="manual-tool.html" class="btn btn-glass btn-sm">無料で使う →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="prompt-manager">
+          <div class="tool-card glass-card" data-tool-slug="prompt-manager" data-cat="業務効率化" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">✦</div>
             <h3 class="tool-name">AIプロンプト管理ツール Pro Lite（無料）</h3>
@@ -234,7 +314,7 @@
             <a href="prompt-manager.html" class="btn btn-glass btn-sm">無料で使う →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="score-diagnosis-tool">
+          <div class="tool-card glass-card" data-tool-slug="score-diagnosis-tool" data-cat="診断" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">🎯</div>
             <h3 class="tool-name">AI業務効率スコア診断（無料）</h3>
@@ -250,7 +330,7 @@
             <a href="diagnosis.html" class="btn btn-glass btn-sm">無料で診断する →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="time-simulator">
+          <div class="tool-card glass-card" data-tool-slug="time-simulator" data-cat="シミュレーション" data-price="free">
             <div class="tool-badge">無料</div>
             <div class="tool-icon">⏳</div>
             <h3 class="tool-name">AI時短シミュレーター</h3>
@@ -266,7 +346,7 @@
             <a href="time-simulator.html" class="btn btn-glass btn-sm">無料でシミュレーションする →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="income-simulator">
+          <div class="tool-card glass-card" data-tool-slug="income-simulator" data-cat="経理" data-price="free">
             <div class="tool-badge">無料</div>
             <div class="tool-icon">💰</div>
             <h3 class="tool-name">簡易収支シミュレーター</h3>
@@ -282,7 +362,7 @@
             <a href="income-simulator.html" class="btn btn-glass btn-sm">無料でシミュレーションする →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="report-builder">
+          <div class="tool-card glass-card" data-tool-slug="report-builder" data-cat="資料作成" data-price="free">
             <div class="tool-badge">無料</div>
             <div class="tool-icon">📊</div>
             <h3 class="tool-name">資料作成ツール（月次・週次レポート）</h3>
@@ -298,7 +378,7 @@
             <a href="report-builder.html" class="btn btn-glass btn-sm">無料で使う →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="schedule-builder">
+          <div class="tool-card glass-card" data-tool-slug="schedule-builder" data-cat="スケジュール管理" data-price="free">
             <div class="tool-badge">無料</div>
             <div class="tool-icon">📅</div>
             <h3 class="tool-name">スケジュール表作成ツール</h3>
@@ -314,6 +394,22 @@
             <a href="schedule-builder.html" class="btn btn-glass btn-sm">無料で使う →</a>
           </div>
 
+          <div class="tool-card glass-card" data-tool-slug="task-priority" data-cat="タスク管理" data-price="free">
+            <div class="tool-badge">無料</div>
+            <div class="tool-icon">🎯</div>
+            <h3 class="tool-name">タスク優先順位付けツール</h3>
+            <p class="tool-desc">タスク名と緊急度・重要度を選ぶだけで「今すぐやる」「計画してやる」などの4象限に自動振り分け。マトリクス表示とリスト表示を切り替え可能。API不要・完全無料。</p>
+            <div class="tool-meta">
+              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>やることが多くて優先順位に迷う方向け</p>
+              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>何から手をつけるべきか整理したいときに</p>
+            </div>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">タスク管理</span>
+            </div>
+            <a href="task-priority.html" class="btn btn-glass btn-sm">無料で使う →</a>
+          </div>
+
         </div>
       </div>
 
@@ -324,7 +420,7 @@
         </div>
         <div class="tools-grid">
 
-          <div class="tool-card glass-card" data-tool-slug="diagnosis-tool">
+          <div class="tool-card glass-card" data-tool-slug="diagnosis-tool" data-cat="業務改善 自動化" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">🏢</div>
             <h3 class="tool-name">AI業務改善診断ツール</h3>
@@ -340,7 +436,7 @@
             <a href="diagnosis-tool.html" class="btn btn-glass btn-sm">使ってみる →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="report-tool-app">
+          <div class="tool-card glass-card" data-tool-slug="report-tool-app" data-cat="文書作成 自動化" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">📝</div>
             <h3 class="tool-name">AI日報生成ツール</h3>
@@ -366,7 +462,7 @@
         </div>
         <div class="tools-grid">
 
-          <div class="tool-card glass-card" data-tool-slug="doc-tool">
+          <div class="tool-card glass-card" data-tool-slug="doc-tool" data-cat="文書作成 自動化" data-price="paid">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">✍️</div>
             <h3 class="tool-name">資料・文章作成ツール</h3>
@@ -387,7 +483,7 @@
             <a href="https://note.com/safe_acacia2730/n/nd306683712ee" target="_blank" class="btn btn-glass btn-sm">詳細・購入</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="invoice-tool">
+          <div class="tool-card glass-card" data-tool-slug="invoice-tool" data-cat="経理 自動化" data-price="paid">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">🧾</div>
             <h3 class="tool-name">AI見積書・請求書作成ツール</h3>
@@ -408,7 +504,7 @@
             <a href="https://note.com/safe_acacia2730/n/nbf795bc90581" target="_blank" class="btn btn-glass btn-sm">詳細・購入</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="graph-tool">
+          <div class="tool-card glass-card" data-tool-slug="graph-tool" data-cat="データ分析 自動化" data-price="paid">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">📊</div>
             <h3 class="tool-name">AIビジネスグラフ作成ツール</h3>
@@ -429,7 +525,7 @@
             <a href="https://note.com/safe_acacia2730/n/n56b5beb5470f" target="_blank" class="btn btn-glass btn-sm">詳細・購入</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="sns-tool">
+          <div class="tool-card glass-card" data-tool-slug="sns-tool" data-cat="SNS 自動化" data-price="paid">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">✦</div>
             <h3 class="tool-name">SNS投稿自動生成ツール</h3>
@@ -509,6 +605,61 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       syncAuthNav();
+    });
+  </script>
+
+  <!-- ========== TOOLS FILTER ========== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const cards = Array.from(document.querySelectorAll('.tool-card'));
+      const groups = Array.from(document.querySelectorAll('.tools-group'));
+      const categoryButtons = Array.from(document.querySelectorAll('#categoryFilters .cat-btn'));
+      const priceButtons = Array.from(document.querySelectorAll('#priceFilters .cat-btn'));
+      const countEl = document.getElementById('toolsFilterCount');
+      const emptyNoteEl = document.getElementById('toolsEmptyNote');
+
+      let activeCategory = 'all';
+      let activePrice = 'all';
+
+      function applyFilters() {
+        let visibleCount = 0;
+
+        cards.forEach(function (card) {
+          const cats = (card.dataset.cat || '').split(' ').filter(Boolean);
+          const price = card.dataset.price || 'free';
+          const matchesCategory = activeCategory === 'all' || cats.includes(activeCategory);
+          const matchesPrice = activePrice === 'all' || price === activePrice;
+          const visible = matchesCategory && matchesPrice;
+          card.classList.toggle('is-filtered-out', !visible);
+          if (visible) visibleCount++;
+        });
+
+        groups.forEach(function (group) {
+          const hasVisibleCard = group.querySelectorAll('.tool-card:not(.is-filtered-out)').length > 0;
+          group.classList.toggle('is-empty', !hasVisibleCard);
+        });
+
+        countEl.textContent = `全${cards.length}件中 ${visibleCount}件のツールを表示中`;
+        emptyNoteEl.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      categoryButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          activeCategory = btn.dataset.filterCat;
+          categoryButtons.forEach(function (b) { b.classList.toggle('active', b === btn); });
+          applyFilters();
+        });
+      });
+
+      priceButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          activePrice = btn.dataset.filterPrice;
+          priceButtons.forEach(function (b) { b.classList.toggle('active', b === btn); });
+          applyFilters();
+        });
+      });
+
+      applyFilters();
     });
   </script>
 </body>
