@@ -746,6 +746,140 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 /* ============================================
+   PAIN POINTS (悩み共感セクション)
+   ============================================ */
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.pain-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 26px;
+  transition: var(--transition);
+}
+.pain-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(79,142,247,0.3);
+  box-shadow: 0 16px 48px rgba(79,142,247,0.12);
+}
+.pain-icon {
+  flex-shrink: 0;
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+.pain-body { flex: 1; min-width: 0; }
+.pain-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.pain-card-arrow {
+  font-size: 0.78rem;
+  color: var(--c-blue);
+  transition: var(--transition);
+}
+.pain-card:hover .pain-card-arrow { color: #fff; transform: translateX(4px); display: inline-block; }
+
+/* ============================================
+   TIME COMPARE (Before / After)
+   ============================================ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+.compare-card {
+  padding: 28px;
+  position: relative;
+  transition: var(--transition);
+}
+.compare-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(155,89,245,0.3);
+  box-shadow: 0 16px 48px rgba(155,89,245,0.12);
+}
+.compare-badge {
+  position: absolute;
+  top: 20px; right: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 50px;
+  background: rgba(34,197,94,0.12);
+  border: 1px solid rgba(34,197,94,0.3);
+  color: #34d399;
+}
+.compare-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 20px;
+  padding-right: 90px;
+}
+.compare-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.compare-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.compare-label {
+  flex-shrink: 0;
+  width: 46px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--c-text-sub);
+}
+.compare-bar-track {
+  flex: 1;
+  height: 10px;
+  border-radius: 50px;
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+.compare-bar { height: 100%; border-radius: 50px; }
+.compare-bar-before { background: rgba(136,144,170,0.4); }
+.compare-bar-after { background: var(--grad-primary); }
+.compare-value {
+  flex-shrink: 0;
+  min-width: 52px;
+  text-align: right;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+}
+.compare-tool-link a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-blue);
+  transition: var(--transition);
+}
+.compare-tool-link a:hover { color: #fff; }
+.compare-note {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--c-text-sub);
+  opacity: 0.8;
+  margin-top: 28px;
+}
+
+/* ============================================
    GETTING STARTED
    ============================================ */
 .start-grid {
@@ -1305,6 +1439,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .custom-dev-inner { padding: 32px 24px; }
   .custom-dev-examples { justify-content: flex-start; }
   .tools-grid { grid-template-columns: 1fr; }
+  .pain-grid { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
   .benefit-grid { grid-template-columns: 1fr; }
   .roadmap-list::before { left: 22px; }
   .contact-form { padding: 28px 20px; }
