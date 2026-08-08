@@ -1528,17 +1528,33 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .nav-link-highlight { color: #34d399; font-weight: 600; }
 .nav-link-highlight:hover { color: #4ade80; }
 
-/* ========== 有料ツール: APIキー要件を購入ボタン付近で強調 ========== */
-.tool-api-warning {
+/* ========== 有料ツール: 購入前確認事項(Claude APIキー必須など)を統一表示 ========== */
+.tool-checklist {
   margin: 0 0 12px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   background: rgba(251,191,36,0.1);
   border: 1px solid rgba(251,191,36,0.3);
   border-radius: var(--radius-sm);
+}
+.tool-checklist-title {
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #fbbf24;
+  margin-bottom: 6px;
+}
+.tool-checklist-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tool-checklist-list li {
+  font-size: 0.76rem;
+  color: var(--c-text-sub);
   line-height: 1.5;
+}
+.tool-checklist-list li strong {
+  color: #fbbf24;
 }
 
 /* ========== 無料ツール利用と無料会員登録の違いを比較表示 ========== */
