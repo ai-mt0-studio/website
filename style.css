@@ -1515,3 +1515,74 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .blog-grid,
 .blog-page-grid { min-height: 480px; }
 .blog-loading { min-height: 480px; }
+
+/* ========== CTAカラールール（無料=緑 / 購入=オレンジ / 相談・開発=青） ========== */
+.btn-free { border-color: rgba(34,197,94,0.4); color: #34d399; }
+.btn-free:hover { border-color: #34d399; background: rgba(34,197,94,0.1); color: #fff; }
+.btn-buy { border-color: rgba(251,191,36,0.4); color: #fbbf24; }
+.btn-buy:hover { border-color: #fbbf24; background: rgba(251,191,36,0.1); color: #fff; }
+.btn-consult { border-color: rgba(79,142,247,0.45); color: #7ea8f7; }
+.btn-consult:hover { border-color: var(--c-blue); background: rgba(79,142,247,0.1); color: #fff; }
+
+/* ========== ヘッダー: 無料AIツール導線の優先度を可視化 ========== */
+.nav-link-highlight { color: #34d399; font-weight: 600; }
+.nav-link-highlight:hover { color: #4ade80; }
+
+/* ========== 有料ツール: APIキー要件を購入ボタン付近で強調 ========== */
+.tool-api-warning {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  background: rgba(251,191,36,0.1);
+  border: 1px solid rgba(251,191,36,0.3);
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fbbf24;
+  line-height: 1.5;
+}
+
+/* ========== 無料ツール利用と無料会員登録の違いを比較表示 ========== */
+.member-compare {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  max-width: 720px;
+  margin: 0 auto 40px;
+}
+.member-compare-col {
+  flex: 1;
+  padding: 20px 22px;
+  text-align: center;
+}
+.member-compare-col-highlight { border-color: rgba(79,142,247,0.35); }
+.member-compare-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.member-compare-desc { font-size: 0.85rem; color: var(--c-text-sub); }
+.member-compare-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--c-text-sub);
+  font-size: 0.9rem;
+}
+@media (max-width: 640px) {
+  .member-compare { flex-direction: column; }
+  .member-compare-vs { padding: 4px 0; }
+}
+
+/* ========== 人気コンテンツ: 前後セクションと視覚的に区別 ========== */
+.popular { background: var(--c-bg2); }
+
+/* ========== ロードマップ: 「今使えるもの」より優先度を下げて表示 ========== */
+#roadmap.section { padding: 64px 0; }
+#roadmap .section-title { font-size: clamp(1.4rem, 3vw, 2rem); opacity: 0.9; }
+#roadmap .roadmap-list { max-width: 640px; }
