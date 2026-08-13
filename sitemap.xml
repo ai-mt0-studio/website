@@ -123,6 +123,41 @@
 
   <!-- ===== ブログ記事 ===== -->
   <url>
+    <loc>https://ai-mt0-studio.netlify.app/blog-all-tools-guide-2026.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://ai-mt0-studio.netlify.app/blog-task-priority-tool-2026.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://ai-mt0-studio.netlify.app/blog-complaint-response-2026.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://ai-mt0-studio.netlify.app/blog-api-key-error-guide-2026.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://ai-mt0-studio.netlify.app/blog-site-trust-improvement-2026.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
     <loc>https://ai-mt0-studio.netlify.app/blog-excel-transcription-2026.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
