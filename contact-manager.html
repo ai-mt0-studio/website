@@ -354,10 +354,11 @@
 <body>
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
-<button class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-label="サイドバーを閉じる"></button>
 <div class="toast" id="toast">✓ 保存しました</div>
 
 <div class="app">
+
+  <button class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-label="サイドバーを閉じる"></button>
 
   <!-- ===== サイドバー ===== -->
   <aside class="sidebar" id="sidebar">
@@ -735,6 +736,7 @@
     currentId = c.id;
     renderList();
     renderDetail();
+    closeSidebar();
     const el = document.getElementById('fCompany');
     if (el) el.focus();
   }
