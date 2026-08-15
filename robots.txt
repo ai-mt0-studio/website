@@ -5,4 +5,4 @@ Disallow: /login.html
 Disallow: /register.html
 Disallow: /mypage.html
 
-Sitemap: https://ai-mt0-studio.netlify.app/sitemap.xml
+Sitemap: https://ai-mt0-studio.com/sitemap.xml
