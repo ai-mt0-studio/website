@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "https://ai-mt0-studio.netlify.app/*"
+  to = "https://ai-mt0-studio.com/:splat"
+  status = 301
+  force = true
