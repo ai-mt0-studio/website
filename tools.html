@@ -138,6 +138,7 @@
     }
     .tool-card.is-filtered-out { display: none; }
     .tools-group.is-empty { display: none; }
+    .tools-category.is-empty { display: none; }
     .tools-empty-note {
       text-align: center;
       color: var(--c-text-sub);
@@ -173,6 +174,7 @@
     </div>
   </header>
 
+  <main>
   <!-- ========== HERO ========== -->
   <section class="tools-page-hero">
     <div class="container">
@@ -198,6 +200,7 @@
             <button type="button" class="cat-btn" data-filter-cat="業務効率化">業務効率化</button>
             <button type="button" class="cat-btn" data-filter-cat="業務改善">業務改善</button>
             <button type="button" class="cat-btn" data-filter-cat="営業">営業</button>
+            <button type="button" class="cat-btn" data-filter-cat="顧客管理">顧客管理</button>
             <button type="button" class="cat-btn" data-filter-cat="診断">診断</button>
             <button type="button" class="cat-btn" data-filter-cat="シミュレーション">シミュレーション</button>
             <button type="button" class="cat-btn" data-filter-cat="経理">経理</button>
@@ -232,12 +235,14 @@
           <h2 class="tools-group-title">🟢 無料で今すぐ使えるツール</h2>
           <p class="tools-group-sub">会員登録・APIキーとも不要。ブラウザからすぐに使えます。</p>
         </div>
-        <div class="tools-grid">
+        <div class="tools-category">
+          <h3 class="tools-category-title" style="font-size:1rem;margin:0 0 16px;">👥 顧客・営業</h3>
+          <div class="tools-grid">
 
           <div class="tool-card glass-card" data-tool-slug="business-os" data-cat="業務効率化" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">🏢</div>
-            <h3 class="tool-name">AI Business OS（無料）</h3>
+            <h4 class="tool-name">AI Business OS（無料）</h4>
             <p class="tool-desc">見積書・顧客管理・営業管理・分析グラフまで全部入り。インストール不要・登録不要で今すぐ使える無料ツール。</p>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>個人事業主・中小企業向け</p>
@@ -250,26 +255,10 @@
             <a href="business-os.html" class="btn btn-glass btn-sm btn-free">無料で使う →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="advisor-tool" data-cat="業務改善" data-price="free">
-            <div class="tool-badge">NEW</div>
-            <div class="tool-icon">🔍</div>
-            <h3 class="tool-name">AI業務改善アドバイザー Pro Lite（無料）</h3>
-            <p class="tool-desc">業種・課題を入力するだけでAIが業務改善の優先順位・改善方法・今すぐできることを提案。API不要・完全無料。</p>
-            <div class="tool-meta">
-              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>業務改善に取り組む個人事業主・中小企業向け</p>
-              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>何から手をつけるべきか迷ったときの相談前に</p>
-            </div>
-            <div class="tool-tags">
-              <span class="tag">無料</span>
-              <span class="tag">業務改善</span>
-            </div>
-            <a href="advisor-tool.html" class="btn btn-glass btn-sm btn-free">無料で診断する →</a>
-          </div>
-
           <div class="tool-card glass-card" data-tool-slug="sales-mail-tool" data-cat="営業" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">✉️</div>
-            <h3 class="tool-name">AI営業文作成 Pro Lite（無料）</h3>
+            <h4 class="tool-name">AI営業文作成 Pro Lite（無料）</h4>
             <p class="tool-desc">会社名・業種・提案内容を入力するだけで、業種に合わせた営業メール・提案文を自動生成。API不要・完全無料。</p>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>個人事業主・営業担当者向け</p>
@@ -282,10 +271,72 @@
             <a href="sales-mail-tool.html" class="btn btn-glass btn-sm btn-free">無料で使う →</a>
           </div>
 
+          <div class="tool-card glass-card" data-tool-slug="contact-manager" data-cat="顧客管理" data-price="free">
+            <div class="tool-badge">無料</div>
+            <div class="tool-icon">📇</div>
+            <h4 class="tool-name">名刺・顧客管理ツール</h4>
+            <p class="tool-desc">名刺交換した相手や取引先を会社ごとに登録し、やり取りの履歴とフォローアップ予定日を一元管理。登録不要・ブラウザ保存だけで今すぐ使える無料ツール。</p>
+            <div class="tool-meta">
+              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>フリーランス・中小企業向け</p>
+              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>名刺交換した相手のフォロー漏れを防ぎたいときに</p>
+            </div>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">顧客管理</span>
+            </div>
+            <a href="contact-manager.html" class="btn btn-glass btn-sm btn-free">無料で使う →</a>
+          </div>
+
+          </div>
+        </div>
+
+        <div class="tools-category">
+          <h3 class="tools-category-title" style="font-size:1rem;margin:32px 0 16px;">🧾 業務・経理</h3>
+          <div class="tools-grid">
+
+          <div class="tool-card glass-card" data-tool-slug="income-simulator" data-cat="経理" data-price="free">
+            <div class="tool-badge">無料</div>
+            <div class="tool-icon">💰</div>
+            <h4 class="tool-name">簡易収支シミュレーター</h4>
+            <p class="tool-desc">月の売上・経費のおおまかな金額と申告方式を選ぶだけで、年間の概算利益と所得税・住民税の目安を自動シミュレーション。API不要・完全無料。</p>
+            <div class="tool-meta">
+              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>個人事業主・フリーランス向け</p>
+              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>確定申告前のおおよその税額を把握したいときに</p>
+            </div>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">経理</span>
+            </div>
+            <a href="income-simulator.html" class="btn btn-glass btn-sm btn-free">無料でシミュレーションする →</a>
+          </div>
+
+          <div class="tool-card glass-card" data-tool-slug="time-simulator" data-cat="シミュレーション" data-price="free">
+            <div class="tool-badge">無料</div>
+            <div class="tool-icon">⏳</div>
+            <h4 class="tool-name">AI時短シミュレーター</h4>
+            <p class="tool-desc">働き方やメール・SNS・繰り返し作業にかかる時間を選ぶだけで、AI活用による年間削減時間・日数換算・時給換算の金額を自動シミュレーション。API不要・完全無料。</p>
+            <div class="tool-meta">
+              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>業務効率化の効果を知りたい方向け</p>
+              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>AI導入の費用対効果を試算したいときに</p>
+            </div>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">シミュレーション</span>
+            </div>
+            <a href="time-simulator.html" class="btn btn-glass btn-sm btn-free">無料でシミュレーションする →</a>
+          </div>
+
+          </div>
+        </div>
+
+        <div class="tools-category">
+          <h3 class="tools-category-title" style="font-size:1rem;margin:32px 0 16px;">📄 文章・資料</h3>
+          <div class="tools-grid">
+
           <div class="tool-card glass-card" data-tool-slug="manual-tool" data-cat="業務効率化" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">📋</div>
-            <h3 class="tool-name">AI業務マニュアル作成 Pro Lite（無料）</h3>
+            <h4 class="tool-name">AI業務マニュアル作成 Pro Lite（無料）</h4>
             <p class="tool-desc">業種・業務内容を入力するだけで、誰でも使える本格的な業務マニュアルを自動作成。引き継ぎ・新人教育に最適。</p>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>中小企業の教育担当・管理者向け</p>
@@ -301,7 +352,7 @@
           <div class="tool-card glass-card" data-tool-slug="prompt-manager" data-cat="業務効率化" data-price="free">
             <div class="tool-badge">NEW</div>
             <div class="tool-icon">✦</div>
-            <h3 class="tool-name">AIプロンプト管理ツール Pro Lite（無料）</h3>
+            <h4 class="tool-name">AIプロンプト管理ツール Pro Lite（無料）</h4>
             <p class="tool-desc">よく使うAIプロンプトをフォルダ分け・お気に入り・検索機能で一元管理。ChatGPTやClaude利用者向け。</p>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>ChatGPT・Claudeをよく使う方向け</p>
@@ -314,58 +365,10 @@
             <a href="prompt-manager.html" class="btn btn-glass btn-sm btn-free">無料で使う →</a>
           </div>
 
-          <div class="tool-card glass-card" data-tool-slug="score-diagnosis-tool" data-cat="診断" data-price="free">
-            <div class="tool-badge">NEW</div>
-            <div class="tool-icon">🎯</div>
-            <h3 class="tool-name">AI業務効率スコア診断（無料）</h3>
-            <p class="tool-desc">全10問に答えるだけでAI活用度を0〜100点でスコア化。3段階のタイプ診断とおすすめツールがわかる。API不要・完全無料。</p>
-            <div class="tool-meta">
-              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>AI活用を始めたい個人事業主・中小企業向け</p>
-              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>自社のAI活用度をまず把握したいときに</p>
-            </div>
-            <div class="tool-tags">
-              <span class="tag">無料</span>
-              <span class="tag">診断</span>
-            </div>
-            <a href="diagnosis.html" class="btn btn-glass btn-sm btn-free">無料で診断する →</a>
-          </div>
-
-          <div class="tool-card glass-card" data-tool-slug="time-simulator" data-cat="シミュレーション" data-price="free">
-            <div class="tool-badge">無料</div>
-            <div class="tool-icon">⏳</div>
-            <h3 class="tool-name">AI時短シミュレーター</h3>
-            <p class="tool-desc">働き方やメール・SNS・繰り返し作業にかかる時間を選ぶだけで、AI活用による年間削減時間・日数換算・時給換算の金額を自動シミュレーション。API不要・完全無料。</p>
-            <div class="tool-meta">
-              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>業務効率化の効果を知りたい方向け</p>
-              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>AI導入の費用対効果を試算したいときに</p>
-            </div>
-            <div class="tool-tags">
-              <span class="tag">無料</span>
-              <span class="tag">シミュレーション</span>
-            </div>
-            <a href="time-simulator.html" class="btn btn-glass btn-sm btn-free">無料でシミュレーションする →</a>
-          </div>
-
-          <div class="tool-card glass-card" data-tool-slug="income-simulator" data-cat="経理" data-price="free">
-            <div class="tool-badge">無料</div>
-            <div class="tool-icon">💰</div>
-            <h3 class="tool-name">簡易収支シミュレーター</h3>
-            <p class="tool-desc">月の売上・経費のおおまかな金額と申告方式を選ぶだけで、年間の概算利益と所得税・住民税の目安を自動シミュレーション。API不要・完全無料。</p>
-            <div class="tool-meta">
-              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>個人事業主・フリーランス向け</p>
-              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>確定申告前のおおよその税額を把握したいときに</p>
-            </div>
-            <div class="tool-tags">
-              <span class="tag">無料</span>
-              <span class="tag">経理</span>
-            </div>
-            <a href="income-simulator.html" class="btn btn-glass btn-sm btn-free">無料でシミュレーションする →</a>
-          </div>
-
           <div class="tool-card glass-card" data-tool-slug="report-builder" data-cat="資料作成" data-price="free">
             <div class="tool-badge">無料</div>
             <div class="tool-icon">📊</div>
-            <h3 class="tool-name">資料作成ツール（月次・週次レポート）</h3>
+            <h4 class="tool-name">資料作成ツール（月次・週次レポート）</h4>
             <p class="tool-desc">レポートの種類・タイトル・数値項目・コメントを入力するだけで、グラフ付きの業務報告書を自動整形。印刷・PDF保存にも対応。API不要・完全無料。</p>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>週次・月次で報告書を作る方向け</p>
@@ -378,10 +381,56 @@
             <a href="report-builder.html" class="btn btn-glass btn-sm btn-free">無料で使う →</a>
           </div>
 
+          </div>
+        </div>
+
+        <div class="tools-category">
+          <h3 class="tools-category-title" style="font-size:1rem;margin:32px 0 16px;">🧭 診断・業務改善</h3>
+          <div class="tools-grid">
+
+          <div class="tool-card glass-card" data-tool-slug="advisor-tool" data-cat="業務改善" data-price="free">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">🔍</div>
+            <h4 class="tool-name">AI業務改善アドバイザー Pro Lite（無料）</h4>
+            <p class="tool-desc">業種・課題を入力するだけでAIが業務改善の優先順位・改善方法・今すぐできることを提案。API不要・完全無料。</p>
+            <div class="tool-meta">
+              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>業務改善に取り組む個人事業主・中小企業向け</p>
+              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>何から手をつけるべきか迷ったときの相談前に</p>
+            </div>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">業務改善</span>
+            </div>
+            <a href="advisor-tool.html" class="btn btn-glass btn-sm btn-free">無料で診断する →</a>
+          </div>
+
+          <div class="tool-card glass-card" data-tool-slug="score-diagnosis-tool" data-cat="診断" data-price="free">
+            <div class="tool-badge">NEW</div>
+            <div class="tool-icon">🎯</div>
+            <h4 class="tool-name">AI業務効率スコア診断（無料）</h4>
+            <p class="tool-desc">全10問に答えるだけでAI活用度を0〜100点でスコア化。3段階のタイプ診断とおすすめツールがわかる。API不要・完全無料。</p>
+            <div class="tool-meta">
+              <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>AI活用を始めたい個人事業主・中小企業向け</p>
+              <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>自社のAI活用度をまず把握したいときに</p>
+            </div>
+            <div class="tool-tags">
+              <span class="tag">無料</span>
+              <span class="tag">診断</span>
+            </div>
+            <a href="diagnosis.html" class="btn btn-glass btn-sm btn-free">無料で診断する →</a>
+          </div>
+
+          </div>
+        </div>
+
+        <div class="tools-category">
+          <h3 class="tools-category-title" style="font-size:1rem;margin:32px 0 16px;">📅 タスク・スケジュール管理</h3>
+          <div class="tools-grid">
+
           <div class="tool-card glass-card" data-tool-slug="schedule-builder" data-cat="スケジュール管理" data-price="free">
             <div class="tool-badge">無料</div>
             <div class="tool-icon">📅</div>
-            <h3 class="tool-name">スケジュール表作成ツール</h3>
+            <h4 class="tool-name">スケジュール表作成ツール</h4>
             <p class="tool-desc">予定を入力するだけでシフト表・スケジュール帳・月間カレンダーの3形式に切り替え可能。繰り返し予定の登録、仕事時間の自動集計、印刷・PDF保存にも対応。API不要・完全無料。</p>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>シフト管理をする個人事業主・店舗運営者向け</p>
@@ -397,7 +446,7 @@
           <div class="tool-card glass-card" data-tool-slug="task-priority" data-cat="タスク管理" data-price="free">
             <div class="tool-badge">無料</div>
             <div class="tool-icon">🎯</div>
-            <h3 class="tool-name">タスク優先順位付けツール</h3>
+            <h4 class="tool-name">タスク優先順位付けツール</h4>
             <p class="tool-desc">タスク名と緊急度・重要度を選ぶだけで「今すぐやる」「計画してやる」などの4象限に自動振り分け。マトリクス表示とリスト表示を切り替え可能。API不要・完全無料。</p>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>やることが多くて優先順位に迷う方向け</p>
@@ -410,6 +459,7 @@
             <a href="task-priority.html" class="btn btn-glass btn-sm btn-free">無料で使う →</a>
           </div>
 
+          </div>
         </div>
       </div>
 
@@ -583,6 +633,7 @@
       </div>
     </div>
   </section>
+  </main>
 
   <!-- ========== FOOTER ========== -->
   <footer class="footer">
@@ -644,6 +695,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       const cards = Array.from(document.querySelectorAll('.tool-card'));
       const groups = Array.from(document.querySelectorAll('.tools-group'));
+      const categories = Array.from(document.querySelectorAll('.tools-category'));
       const categoryButtons = Array.from(document.querySelectorAll('#categoryFilters .cat-btn'));
       const priceButtons = Array.from(document.querySelectorAll('#priceFilters .cat-btn'));
       const countEl = document.getElementById('toolsFilterCount');
@@ -663,6 +715,11 @@
           const visible = matchesCategory && matchesPrice;
           card.classList.toggle('is-filtered-out', !visible);
           if (visible) visibleCount++;
+        });
+
+        categories.forEach(function (category) {
+          const hasVisibleCard = category.querySelectorAll('.tool-card:not(.is-filtered-out)').length > 0;
+          category.classList.toggle('is-empty', !hasVisibleCard);
         });
 
         groups.forEach(function (group) {
