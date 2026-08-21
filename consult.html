@@ -192,6 +192,7 @@
         <li class="trust-badge glass-card"><span class="trust-badge-icon">📝</span>見積無料</li>
         <li class="trust-badge glass-card"><span class="trust-badge-icon">🙅</span>無理な営業なし</li>
       </ul>
+      <p style="font-size:0.85rem;color:var(--c-text-sub);margin-top:20px;">初回のご相談は無料です。ご利用には無料会員登録（1分程度・無料）が必要で、2回目以降の継続相談も会員登録済みの方はそのままご利用いただけます（2回目以降は有料）。</p>
     </div>
   </section>
 
@@ -204,7 +205,7 @@
       <div class="login-required-card glass-card" id="login-required" style="display:none;">
         <div class="icon">🔒</div>
         <h2>ログインが必要です</h2>
-        <p id="login-required-sub">AI相談フォームのご利用には会員登録・ログインが必要です。</p>
+        <p id="login-required-sub">初回のご相談は無料です。ご利用には無料会員登録（1分程度・無料）が必要で、2回目以降の継続相談も会員登録済みの方はそのままご利用いただけます（2回目以降は有料）。</p>
         <a href="login.html" class="btn btn-primary">ログインする</a>
         <p style="margin-top:16px;font-size:0.82rem;">アカウントをお持ちでない方は <a href="register.html" style="color:var(--c-blue);">新規登録</a></p>
       </div>
@@ -342,7 +343,7 @@
       if (!preset) return;
       document.getElementById('hero-sub').textContent = `「${preset.label}」についてのご相談ですね。下記フォームからお気軽にご相談ください。`;
       const loginSub = document.getElementById('login-required-sub');
-      if (loginSub) loginSub.textContent = `「${preset.label}」のご相談には会員登録・ログインが必要です。ログイン後、内容を入力した状態でフォームが開きます。`;
+      if (loginSub) loginSub.textContent = `「${preset.label}」のご相談には会員登録・ログインが必要です（初回相談は無料）。ログイン後、内容を入力した状態でフォームが開きます。`;
       const question = document.getElementById('question');
       if (question && !question.value) question.value = preset.text;
       const noticeEl = document.getElementById('topic-notice');
