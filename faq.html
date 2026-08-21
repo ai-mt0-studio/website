@@ -103,6 +103,31 @@
         "@type": "Question",
         "name": "お問い合わせの返信はどれくらいで届きますか?",
         "acceptedAnswer": { "@type": "Answer", "text": "できる限り当日中にご返信するよう努めておりますが、内容によっては1日程度お時間をいただく場合がございます。" }
+      },
+      {
+        "@type": "Question",
+        "name": "なぜClaude APIキーが必要なのですか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Claude APIキーが必要なツールは、文章の作成・分析・診断などの処理をAnthropic社のAI「Claude」が行う仕組みになっています。ツールはお客様のブラウザから、ご自身のAPIキーを使って直接Claudeを呼び出すため、ツールを動かすにはご自身のAPIキーが必須になります。" }
+      },
+      {
+        "@type": "Question",
+        "name": "Claude APIキーはどこで、どうやって取得しますか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Anthropic公式サイト（console.anthropic.com）でアカウントを作成し、「API Keys」のページから発行できます。取得したキーを、各ツールページの「Claude API設定」欄に貼り付けるだけで利用を開始できます。" }
+      },
+      {
+        "@type": "Question",
+        "name": "API利用にはどれくらいの実費がかかりますか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Claude APIの利用料は、ツールの購入費用とは別に、使った分だけAnthropic社へ支払う従量課金です。文章生成中心のライトなご利用であれば、目安として月数百円程度に収まることが多いですが、生成する分量や利用頻度によって変動します。" }
+      },
+      {
+        "@type": "Question",
+        "name": "無料ツールと有料ツールは何が違いますか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "無料ツールは、テンプレートやルールベースの処理で完結する内容が中心で、会員登録もAPIキーも不要ですぐお使いいただけます。有料ツールは、より複雑な文章生成や分析をAIに任せられる分、内容を考える時間や体裁を整える時間を大きく短縮できます。" }
+      },
+      {
+        "@type": "Question",
+        "name": "有料ツール（980円）を購入後、追加の料金はかかりますか?",
+        "acceptedAnswer": { "@type": "Answer", "text": "いいえ。ツール自体は980円の買い切りで、月額料金や購入後の追加課金は一切ありません。別途発生するのは、ご自身のClaude APIキーを使ってAIを呼び出す際の実費のみです。" }
       }
     ]
   }
@@ -334,6 +359,7 @@
         <a href="#cat-account">会員登録・料金</a>
         <a href="#cat-consult">AI相談</a>
         <a href="#cat-tools">AIツール</a>
+        <a href="#cat-apikey">Claude APIキーについて</a>
         <a href="#cat-other">その他</a>
       </nav>
 
@@ -493,6 +519,73 @@
               <div class="faq-answer">
                 <span class="faq-a-mark">A</span>
                 <p>はい、AIツールで作成した成果物は商用利用いただけます。</p>
+              </div>
+            </details>
+
+          </div>
+        </div>
+
+        <div class="faq-category" id="cat-apikey">
+          <h2 class="faq-category-title">Claude APIキーについて</h2>
+          <div class="faq-list">
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">なぜClaude APIキーが必要なのですか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>Claude APIキーが必要なツールは、文章の作成・分析・診断などの処理をAnthropic社のAI「Claude」が行う仕組みになっています。ツールはお客様のブラウザから、ご自身のAPIキーを使って直接Claudeを呼び出すため、ツールを動かすにはご自身のAPIキーが必須になります。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">Claude APIキーはどこで、どうやって取得しますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>Anthropic公式サイト（console.anthropic.com）でアカウントを作成し、「API Keys」のページから発行できます。取得したキー（sk-ant-...から始まる文字列）を、各ツールページの「Claude API設定」欄に貼り付けるだけで利用を開始できます。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">API利用にはどれくらいの実費がかかりますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>Claude APIの利用料は、ツールの購入費用とは別に、使った分だけAnthropic社へ支払う従量課金です。文章生成中心のライトなご利用であれば、目安として月数百円程度に収まることが多いですが、生成する分量や利用頻度によって変動します。正確な料金はAnthropic公式サイトの料金ページでご確認ください。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">無料ツールと有料ツールは何が違いますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>無料ツールは、テンプレートやルールベースの処理で完結する内容が中心で、会員登録もAPIキーも不要ですぐお使いいただけます。有料ツールは、より複雑な文章生成や分析をAIに任せられる分、ゼロから自分で作成・整形する場合と比べて、内容を考える時間や体裁を整える時間を大きく短縮できます。機能の多さよりも「その作業にかかる時間をどれだけ減らせるか」を基準に選んでいただくのがおすすめです。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>
+                <span class="faq-q-mark">Q</span>
+                <span class="faq-q-text">有料ツール（980円）を購入後、追加の料金はかかりますか?</span>
+                <span class="faq-arrow">▾</span>
+              </summary>
+              <div class="faq-answer">
+                <span class="faq-a-mark">A</span>
+                <p>いいえ。ツール自体は980円の買い切りで、月額料金や購入後の追加課金は一切ありません。別途発生するのは、ご自身のClaude APIキーを使ってAIを呼び出す際の実費（Anthropic社への支払い）のみです。なお、入力データの送信先・保存場所については<a href="privacy.html" style="color:var(--c-blue);">プライバシーポリシー</a>もあわせてご確認ください。</p>
               </div>
             </details>
 
