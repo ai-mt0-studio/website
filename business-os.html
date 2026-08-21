@@ -153,6 +153,17 @@ button{cursor:pointer;border:none}
 .card + .card{margin-top:16px}
 .card h3{margin:0 0 14px;font-size:15px;font-weight:700;color:var(--text)}
 .card h3 .sub{font-size:12px;color:var(--text-faint);font-weight:400;margin-left:8px}
+.promo-card{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.promo-card p{font-size:13px;color:var(--text-dim)}
+.promo-card a{font-size:13px;font-weight:700;color:var(--accent1);text-decoration:none;white-space:nowrap}
+.promo-card a:hover{text-decoration:underline}
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-item{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.faq-item summary{cursor:pointer;font-weight:700;font-size:13.5px;color:var(--text);list-style:none;display:flex;align-items:center;gap:8px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::before{content:'▸';color:var(--text-faint);transition:transform .2s;flex-shrink:0}
+.faq-item[open] summary::before{transform:rotate(90deg)}
+.faq-item p{margin-top:10px;font-size:13px;color:var(--text-dim);line-height:1.7}
 
 /* ---------- layout ---------- */
 .app{display:flex;min-height:100vh}
@@ -388,6 +399,29 @@ textarea{resize:vertical;min-height:90px}
       <div class="card">
         <h3>月間サマリー<span class="sub">直近6か月の売上・案件数</span></h3>
         <div class="chart-box"><canvas id="dashMonthlyChart"></canvas></div>
+      </div>
+
+      <div class="card promo-card">
+        <p>💡 もっと業務効率化を進めたい方へ</p>
+        <a href="tools.html">有料ツールを見る →</a>
+      </div>
+
+      <div class="card">
+        <h3>❓ よくある質問</h3>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Q. 入力したデータはどこに保存されますか？</summary>
+            <p>ご利用中のブラウザのlocalStorageに保存されます。他の端末やブラウザとは同期されないため、ブラウザのデータを消去すると内容も消えます。大切なデータは印刷・PDF保存などで別途バックアップすることをおすすめします。</p>
+          </details>
+          <details class="faq-item">
+            <summary>Q. 会員登録やAPIキーは必要ですか？</summary>
+            <p>会員登録は不要です。見積書・請求書作成、顧客管理、営業管理、分析グラフは登録・API不要でそのままお使いいただけます。「AIメール生成」機能のみ、ご自身のClaude APIキーを設定タブで登録すると利用できます（API呼び出し分の実費は別途かかります）。</p>
+          </details>
+          <details class="faq-item">
+            <summary>Q. 設定したAPIキーは保存されますか？</summary>
+            <p>はい、入力してブラウザのlocalStorageに保存されます。ご自身の端末・ブラウザ内にのみ保存され、当サイトのサーバーには送信されません。共有端末で使う場合は、利用後に設定タブから削除することをおすすめします。</p>
+          </details>
+        </div>
       </div>
     </section>
 

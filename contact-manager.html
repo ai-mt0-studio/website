@@ -261,6 +261,25 @@
   .recent-meta { font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
   .recent-sub { font-size: 0.72rem; color: var(--muted); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+  /* 導線バナー */
+  .promo-card {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px;
+    padding: 1rem 1.1rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;
+    gap: 0.75rem; flex-wrap: wrap;
+  }
+  .promo-card p { font-size: 0.82rem; color: var(--muted); }
+  .promo-card a { font-size: 0.82rem; font-weight: 700; color: var(--purple-400); text-decoration: none; white-space: nowrap; }
+  .promo-card a:hover { text-decoration: underline; }
+
+  /* FAQ */
+  .faq-list { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
+  .faq-item { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 10px; padding: 0.75rem 0.9rem; }
+  .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.85rem; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: '▸'; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item[open] summary::before { transform: rotate(90deg); }
+  .faq-item p { margin-top: 0.6rem; font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+
   .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
   .empty-icon { font-size: 3rem; margin-bottom: 0.75rem; opacity: 0.4; }
   .empty-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
@@ -584,6 +603,27 @@
 
       <div class="section-title"><div class="section-bar"></div>🕘 最近のやり取り</div>
       <div class="recent-list" id="recentHistoryList"></div>
+
+      <div class="promo-card">
+        <p>💡 見積書・案件管理までまとめて効率化したい方へ</p>
+        <a href="business-os.html">AI Business OSを見る →</a>
+      </div>
+
+      <div class="section-title"><div class="section-bar"></div>❓ よくある質問</div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Q. 登録した顧客データはどこに保存されますか？</summary>
+          <p>ご利用中のブラウザのlocalStorageに保存されます。他の端末やブラウザとは同期されないため、大切なデータは「インポート/エクスポート」からJSONファイルとしてバックアップすることをおすすめします。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 複数の端末で同じデータを見ることはできますか？</summary>
+          <p>そのままでは見られません。ブラウザ内保存の仕組みのため、別の端末で使う場合はエクスポートしたJSONファイルを、もう一方の端末でインポートしてください。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 会員登録やAPIキーは必要ですか？</summary>
+          <p>不要です。ブラウザだけで登録なし・API不要ですぐに使い始められます。</p>
+        </details>
+      </div>
     `;
 
     const upcomingEl = document.getElementById('upcomingList');

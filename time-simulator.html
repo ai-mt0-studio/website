@@ -264,6 +264,15 @@
   .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
   .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
 
+  /* FAQ */
+  .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .faq-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; padding: 0.75rem 0.9rem; }
+  .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.88rem; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: '▸'; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item[open] summary::before { transform: rotate(90deg); }
+  .faq-item p { margin-top: 0.6rem; font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+
   /* アクションバー */
   .action-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
   .act-btn {
@@ -363,6 +372,25 @@
 
     <div class="action-bar">
       <button class="act-btn act-btn-reset" onclick="resetAll()">🔄 もう一度シミュレーションする</button>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <div class="section-label"><div class="section-bar"></div>❓ よくある質問</div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Q. 削減時間はどうやって計算していますか？</summary>
+        <p>働き方や、メール・SNS・繰り返し作業にかかっている時間の回答をもとに、AI活用による削減見込みを概算換算しています。実際の削減効果は業務内容や導入するツールによって変わるため、あくまで目安としてご利用ください。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. 時給換算の金額も正確な数字ですか？</summary>
+        <p>入力いただいた条件から算出した参考値です。実際の収入・時給とは異なる場合がありますので、費用対効果を検討する際の目安としてご覧ください。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. 会員登録やAPIキーは必要ですか？</summary>
+        <p>不要です。質問に答えるだけで登録なし・API不要ですぐに結果を確認できます。</p>
+      </details>
     </div>
   </div>
 </div>

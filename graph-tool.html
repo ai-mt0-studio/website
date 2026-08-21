@@ -129,6 +129,14 @@
   }
   .card.api-card { border-color: rgba(124,58,237,0.2); background: rgba(124,58,237,0.05); }
 
+  .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .faq-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; padding: 0.75rem 0.9rem; }
+  .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.88rem; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: '▸'; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item[open] summary::before { transform: rotate(90deg); }
+  .faq-item p { margin-top: 0.6rem; font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+
   .label {
     font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
@@ -558,6 +566,25 @@
           <div id="presentQA"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>❓ よくある質問</div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Q. 対応しているグラフの種類は？</summary>
+        <p>棒グラフ・折れ線グラフ・円グラフに対応しています。「グラフ」タブでいつでも切り替えられます。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. Excelなどのデータをそのまま取り込めますか？</summary>
+        <p>対応しています。CSV・Excel（.xlsx/.xls）ファイルをアップロードしてそのままグラフ化できるほか、入力欄への直接入力にも対応しています。作成したグラフのデータはCSVとして保存することも可能です。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. 返金・返品はできますか？</summary>
+        <p>デジタルコンテンツの性質上、提供後の返品・キャンセルは原則お受けできません。不具合等がある場合は個別にご相談ください。詳しくは<a href="tokushoho.html" style="color:var(--blue-300)">特定商取引法に基づく表記</a>をご確認ください。</p>
+      </details>
     </div>
   </div>
 

@@ -293,6 +293,15 @@
   .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
   .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
 
+  /* FAQ */
+  .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .faq-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; padding: 0.75rem 0.9rem; }
+  .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.88rem; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: '▸'; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item[open] summary::before { transform: rotate(90deg); }
+  .faq-item p { margin-top: 0.6rem; font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+
   @media(max-width:640px) {
     .form-grid { grid-template-columns: 1fr 1fr; }
     .preview-wrap { padding: 1.25rem 1rem 1.5rem; }
@@ -475,6 +484,25 @@
     <a href="time-simulator.html" class="btn btn-outline cta-btn">AI時短シミュレーターも試す →</a>
     <a href="register.html" class="btn btn-secondary cta-btn">無料会員登録する →</a>
     <a href="contact.html" class="btn btn-outline cta-btn">オーダーメイド相談する →</a>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>❓ よくある質問</div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Q. 繰り返し予定はどこまで対応していますか？</summary>
+        <p>「毎週◯曜日」の繰り返し予定に対応しています。繰り返し終了日を指定すると、その日までの予定を自動的に展開して表示します。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. 入力したデータは保存されますか？</summary>
+        <p>ブラウザのlocalStorageに自動保存されるため、同じブラウザで開き直せば続きから編集できます。ただし他の端末やブラウザとは同期されず、ブラウザのデータを消去すると内容も消えます。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. 印刷やPDF保存はできますか？</summary>
+        <p>できます。「印刷 / PDF保存」ボタンから、シフト表・スケジュール帳・月間カレンダーいずれの表示形式でも印刷用レイアウトで出力できます。</p>
+      </details>
+    </div>
   </div>
 </div>
 

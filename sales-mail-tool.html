@@ -221,6 +221,24 @@
   .act-btn-reset { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red-400); }
   .act-btn-print { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); color: var(--blue-300); }
 
+  /* CTA */
+  .btn { padding: 0.75rem 1.5rem; border-radius: 12px; cursor: pointer; font-size: 0.9rem; font-weight: 700; font-family: inherit; border: none; transition: all 0.2s; text-decoration: none; display: inline-block; text-align: center; }
+  .btn-primary { background: linear-gradient(135deg, var(--purple-700), var(--blue-700)); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.35); }
+  .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: var(--text); }
+  .btn-outline:hover { background: rgba(255,255,255,0.06); }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .cta-btn { flex: 1; min-width: 200px; padding: 0.85rem; font-size: 0.88rem; }
+
+  /* FAQ */
+  .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .faq-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; padding: 0.75rem 0.9rem; }
+  .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.88rem; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: '▸'; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item[open] summary::before { transform: rotate(90deg); }
+  .faq-item p { margin-top: 0.6rem; font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+
   /* バリエーション */
   .variation-tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; flex-wrap: wrap; }
   .var-tab {
@@ -262,7 +280,7 @@
 
   @media print {
     body { background: #fff; color: #1a1a2e; padding: 0; }
-    .orb, header, .type-tabs, .card:not(.result-card), .action-bar, .variation-tabs { display: none !important; }
+    .orb, header, .type-tabs, .card:not(.result-card), .action-bar, .variation-tabs, .cta-row { display: none !important; }
     .result-section { display: block !important; }
     .result-block { border: 1px solid #e5e7eb; box-shadow: none; }
     .result-text { color: #1a1a2e; }
@@ -402,6 +420,31 @@
     </div>
 
     <div id="varContent"></div>
+
+    <!-- 導線 -->
+    <div class="cta-row">
+      <a href="tools.html" class="btn btn-primary cta-btn">有料ツールも見てみる →</a>
+      <a href="consult.html" class="btn btn-outline cta-btn">AI相談する →</a>
+    </div>
+
+    <!-- FAQ -->
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>❓ よくある質問</div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Q. Claude APIキーは必要ですか？</summary>
+          <p>不要です。業種・提案内容などの入力項目をもとに、あらかじめ用意されたテンプレートから文章を自動生成する仕組みのため、外部AI APIキーなしでご利用いただけます。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 生成された文章はそのまま送信してよいですか？</summary>
+          <p>そのまま使える文面を目指していますが、宛名や固有の実績・数値など、実際の取引先に合わせた部分は送信前にご自身で確認・修正することをおすすめします。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 生成した文章は保存されますか？</summary>
+          <p>ブラウザには自動保存されません。「全文コピー」ボタンでコピーするか、「印刷・PDF」で書き出してご利用ください。</p>
+        </details>
+      </div>
+    </div>
 
   </div>
 </div>

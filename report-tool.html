@@ -144,6 +144,14 @@
     .card:hover { border-color: rgba(124,58,237,0.28); }
     .card.api-card { border-color: rgba(124,58,237,0.2); background: rgba(124,58,237,0.05); }
 
+    .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .faq-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; padding: 0.75rem 0.9rem; }
+    .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.88rem; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::before { content: '▸'; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+    .faq-item[open] summary::before { transform: rotate(90deg); }
+    .faq-item p { margin-top: 0.6rem; font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+
     /* ── section label ── */
     .label {
       font-size: 0.78rem; font-weight: 600;
@@ -386,6 +394,25 @@
         <button class="btn-copy" id="copyBtn" onclick="copyReport()">📋 コピー</button>
       </div>
       <div class="result-body" id="resultBody"></div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="card">
+      <div class="label"><div class="label-bar"></div>❓ よくある質問</div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Q. Claude APIキーは必須ですか？</summary>
+          <p>はい、必須です。ツール自体の利用料は無料ですが、日報生成にはご自身のClaude APIキー（Anthropic公式サイトで取得）が必要で、AI呼び出し分の実費が別途かかります。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 日報以外（週報など）にも使えますか？</summary>
+          <p>今日の業務内容・作業時間・明日の予定・課題を入力する日報向けの構成になっています。週次の内容をまとめて入力すれば週報としても応用可能ですが、専用の週次レポートを作りたい場合は資料作成ツール（report-builder.html）もご検討ください。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 入力したAPIキーは保存されますか？</summary>
+          <p>保存されません。ブラウザからAnthropic社のAPIへ直接送信されるのみで、当サイトのサーバーには送信・保存されず、ページを閉じると消えます。</p>
+        </details>
+      </div>
     </div>
   </div>
 

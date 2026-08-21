@@ -280,6 +280,15 @@
   .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
   .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
 
+  /* FAQ */
+  .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .faq-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; padding: 0.75rem 0.9rem; }
+  .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.88rem; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: '▸'; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item[open] summary::before { transform: rotate(90deg); }
+  .faq-item p { margin-top: 0.6rem; font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+
   /* アクションバー */
   .action-bar { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
   .act-btn {
@@ -373,6 +382,25 @@
 
     <div class="action-bar">
       <button class="act-btn act-btn-reset" onclick="resetAll()">🔄 もう一度診断する</button>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <div class="section-label"><div class="section-bar"></div>❓ よくある質問</div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Q. スコアはどうやって算出していますか？</summary>
+        <p>全10問の回答内容から、あらかじめ用意された診断ロジックでAI活用度を0〜100点にスコア化しています。専門家による個別評価ではなく、あくまで自己診断の目安としてご活用ください。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. 質問に途中まで答えても結果は見られますか？</summary>
+        <p>全10問すべてに回答いただく必要があります。1問あたり数秒で回答できる内容なので、最後まで進めていただくと結果を確認できます。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. 会員登録やAPIキーは必要ですか？</summary>
+        <p>不要です。登録なし・API不要でその場ですぐに診断結果を確認できます。</p>
+      </details>
     </div>
   </div>
 </div>

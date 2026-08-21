@@ -247,6 +247,15 @@
   .cta-row { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
   .cta-btn { width: 100%; padding: 0.95rem; font-size: 0.92rem; }
 
+  /* FAQ */
+  .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .faq-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 10px; padding: 0.75rem 0.9rem; }
+  .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.88rem; color: var(--text); list-style: none; display: flex; align-items: center; gap: 0.5rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: '▸'; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item[open] summary::before { transform: rotate(90deg); }
+  .faq-item p { margin-top: 0.6rem; font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+
   @media(max-width:640px) {
     .form-grid { grid-template-columns: 1fr 1fr; }
     .preview-wrap { padding: 1.25rem 1rem 1.5rem; }
@@ -340,6 +349,25 @@
     <a href="schedule-builder.html" class="btn btn-outline cta-btn">スケジュール表作成ツールも試す →</a>
     <a href="register.html" class="btn btn-secondary cta-btn">無料会員登録する →</a>
     <a href="contact.html" class="btn btn-outline cta-btn">オーダーメイド相談する →</a>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <div class="label"><div class="label-bar"></div>❓ よくある質問</div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Q. マトリクス表示とリスト表示の違いは何ですか？</summary>
+        <p>マトリクス表示は緊急度×重要度の4象限で全体像を俯瞰できます。リスト表示は優先順位順に並べ替えた一覧で、上から順にこなしていきたいときに便利です。画面上部のタブでいつでも切り替えられます。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. 登録したタスクは保存されますか？</summary>
+        <p>ブラウザのlocalStorageに自動保存されます。同じブラウザで開き直せば続きから使えますが、他の端末とは同期されず、ブラウザのデータを消去すると内容も消えます。</p>
+      </details>
+      <details class="faq-item">
+        <summary>Q. 会員登録やAPIキーは必要ですか？</summary>
+        <p>不要です。ブラウザだけで登録なし・外部AI API不要ですぐに使えます。</p>
+      </details>
+    </div>
   </div>
 </div>
 
