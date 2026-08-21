@@ -12,21 +12,21 @@
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AI活用や業務効率化のご相談は初回無料。個人・法人どちらも対応、オンライン相談も可能です。会員登録の上、フォームからお気軽にどうぞ。" />
+  <meta name="description" content="AI活用や業務効率化のご相談は初回無料。無料会員登録をすれば2回目以降も追加料金なしでご相談いただけます。個人・法人どちらも対応、オンライン相談も可能です。" />
   <link rel="canonical" href="https://ai-mt0-studio.com/consult.html" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%234f8ef7'%3E%E2%AC%A1%3C/text%3E%3C/svg%3E" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="AI MT0 Studio" />
   <meta property="og:locale" content="ja_JP" />
   <meta property="og:title" content="AI相談は初回無料 | AI MT0 Studio" />
-  <meta property="og:description" content="AI活用や業務効率化のご相談は初回無料。個人・法人どちらも対応、オンライン相談も可能です。会員登録の上、フォームからお気軽にどうぞ。" />
+  <meta property="og:description" content="AI活用や業務効率化のご相談は初回無料。無料会員登録をすれば2回目以降も追加料金なしでご相談いただけます。個人・法人どちらも対応、オンライン相談も可能です。" />
   <meta property="og:url" content="https://ai-mt0-studio.com/consult.html" />
   <meta property="og:image" content="https://ai-mt0-studio.com/images/og-default.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AI相談は初回無料 | AI MT0 Studio" />
-  <meta name="twitter:description" content="AI活用や業務効率化のご相談は初回無料。個人・法人どちらも対応、オンライン相談も可能です。会員登録の上、フォームからお気軽にどうぞ。" />
+  <meta name="twitter:description" content="AI活用や業務効率化のご相談は初回無料。無料会員登録をすれば2回目以降も追加料金なしでご相談いただけます。個人・法人どちらも対応、オンライン相談も可能です。" />
   <meta name="twitter:image" content="https://ai-mt0-studio.com/images/og-default.png" />
   <title>AI相談は初回無料 | AI MT0 Studio</title>
   <script type="application/ld+json">
@@ -192,7 +192,7 @@
         <li class="trust-badge glass-card"><span class="trust-badge-icon">📝</span>見積無料</li>
         <li class="trust-badge glass-card"><span class="trust-badge-icon">🙅</span>無理な営業なし</li>
       </ul>
-      <p style="font-size:0.85rem;color:var(--c-text-sub);margin-top:20px;">初回のご相談は無料です。ご利用には無料会員登録（1分程度・無料）が必要で、2回目以降の継続相談も会員登録済みの方はそのままご利用いただけます（2回目以降は有料）。</p>
+      <p style="font-size:0.85rem;color:var(--c-text-sub);margin-top:20px;">初回のご相談は無料です。2回目以降も継続してご相談いただくには、無料会員登録（1分程度）をお願いしております。会員登録後は追加料金なしで何度でもご相談いただけます。</p>
     </div>
   </section>
 
@@ -201,20 +201,11 @@
 
       <div id="loading-state">読み込み中...</div>
 
-      <!-- 未ログイン時 -->
-      <div class="login-required-card glass-card" id="login-required" style="display:none;">
-        <div class="icon">🔒</div>
-        <h2>ログインが必要です</h2>
-        <p id="login-required-sub">初回のご相談は無料です。ご利用には無料会員登録（1分程度・無料）が必要で、2回目以降の継続相談も会員登録済みの方はそのままご利用いただけます（2回目以降は有料）。</p>
-        <a href="login.html" class="btn btn-primary">ログインする</a>
-        <p style="margin-top:16px;font-size:0.82rem;">アカウントをお持ちでない方は <a href="register.html" style="color:var(--c-blue);">新規登録</a></p>
-      </div>
-
-      <!-- ログイン時：相談フォーム -->
-      <div class="consult-card glass-card" id="consult-form-wrap" style="display:none;">
-        <h2 class="consult-card-title">AI相談フォーム</h2>
-        <p class="consult-card-sub" id="consult-card-sub">送信いただいた内容は担当より折り返しご連絡します。</p>
-        <div class="paid-notice" id="topic-notice" style="background:rgba(79,142,247,0.06);border-color:rgba(79,142,247,0.2);"></div>
+      <!-- 未登録：初回無料相談フォーム -->
+      <div class="consult-card glass-card" id="anon-form-wrap" style="display:none;">
+        <h2 class="consult-card-title">AI相談フォーム（初回無料）</h2>
+        <p class="consult-card-sub">初回のご相談は無料です。送信いただいた内容は担当より折り返しご連絡します。</p>
+        <div class="paid-notice" id="anon-topic-notice" style="background:rgba(79,142,247,0.06);border-color:rgba(79,142,247,0.2);"></div>
 
         <ul class="consult-perks">
           <li>✅ 初回相談無料</li>
@@ -224,7 +215,59 @@
           <li>✅ 無理な営業なし</li>
         </ul>
 
-        <div class="paid-notice" id="paid-notice"></div>
+        <div class="paid-notice" style="display:block;">2回目以降も継続してご相談いただくには、<a href="register.html" style="color:#fff;text-decoration:underline;">無料会員登録</a>（1分程度）をお願いしております。会員登録後は追加料金なしで何度でもご相談いただけます。</div>
+
+        <div class="auth-error" id="anon-error"></div>
+        <div class="auth-success" id="anon-success"></div>
+
+        <form id="anon-consult-form">
+          <input type="text" id="anon-honeypot" name="company_website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" />
+          <div class="type-row">
+            <label class="type-option">
+              <input type="radio" name="anon-consultation-type" value="個人" checked /> 個人
+            </label>
+            <label class="type-option">
+              <input type="radio" name="anon-consultation-type" value="法人" /> 法人
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="anon-name">お名前 <span class="required">*</span></label>
+            <input type="text" id="anon-name" required />
+          </div>
+          <div class="form-group">
+            <label for="anon-email">メールアドレス <span class="required">*</span></label>
+            <input type="email" id="anon-email" required />
+          </div>
+          <div class="form-group">
+            <label for="anon-question">相談内容 <span class="required">*</span></label>
+            <textarea id="anon-question" rows="6" placeholder="例：経費の仕訳を自動化したいのですが、何から始めればよいですか？" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="anon-consult-submit">無料で相談する</button>
+        </form>
+      </div>
+
+      <!-- 未登録：無料枠を使い切った場合 -->
+      <div class="login-required-card glass-card" id="anon-limit-wrap" style="display:none;">
+        <div class="icon">💬</div>
+        <h2>無料相談は1回のみご利用いただけます</h2>
+        <p>2回目以降も継続してご相談いただくには、無料会員登録（1分程度）をお願いしております。会員登録後は追加料金なしで何度でもご相談いただけます。</p>
+        <a href="register.html" class="btn btn-primary">無料会員登録する</a>
+        <p style="margin-top:16px;font-size:0.82rem;">すでにアカウントをお持ちの方は <a href="login.html" style="color:var(--c-blue);">ログイン</a></p>
+      </div>
+
+      <!-- 会員登録済み：相談フォーム（何度でも無料） -->
+      <div class="consult-card glass-card" id="consult-form-wrap" style="display:none;">
+        <h2 class="consult-card-title">AI相談フォーム</h2>
+        <p class="consult-card-sub" id="consult-card-sub">会員登録済みの方は、何度でも追加料金なしでご相談いただけます。送信いただいた内容は担当より折り返しご連絡します。</p>
+        <div class="paid-notice" id="topic-notice" style="background:rgba(79,142,247,0.06);border-color:rgba(79,142,247,0.2);"></div>
+
+        <ul class="consult-perks">
+          <li>✅ 何度でも無料</li>
+          <li>✅ 個人・法人どちらでも対応</li>
+          <li>✅ オンライン対応可</li>
+          <li>✅ 見積無料</li>
+          <li>✅ 無理な営業なし</li>
+        </ul>
 
         <div class="auth-error" id="consult-error"></div>
         <div class="auth-success" id="consult-success"></div>
@@ -342,55 +385,91 @@
       const preset = getTopicPreset();
       if (!preset) return;
       document.getElementById('hero-sub').textContent = `「${preset.label}」についてのご相談ですね。下記フォームからお気軽にご相談ください。`;
-      const loginSub = document.getElementById('login-required-sub');
-      if (loginSub) loginSub.textContent = `「${preset.label}」のご相談には会員登録・ログインが必要です（初回相談は無料）。ログイン後、内容を入力した状態でフォームが開きます。`;
+      const anonQuestion = document.getElementById('anon-question');
+      if (anonQuestion && !anonQuestion.value) anonQuestion.value = preset.text;
       const question = document.getElementById('question');
       if (question && !question.value) question.value = preset.text;
-      const noticeEl = document.getElementById('topic-notice');
-      if (noticeEl) {
-        noticeEl.innerHTML = `<strong>「${preset.label}」</strong>のご相談として内容を入力しています。必要に応じて自由に書き換えてください。`;
-        noticeEl.style.display = 'block';
-      }
+      ['anon-topic-notice', 'topic-notice'].forEach((id) => {
+        const noticeEl = document.getElementById(id);
+        if (noticeEl) {
+          noticeEl.innerHTML = `<strong>「${preset.label}」</strong>のご相談として内容を入力しています。必要に応じて自由に書き換えてください。`;
+          noticeEl.style.display = 'block';
+        }
+      });
     }
     applyTopicPreset();
 
-    async function getPastConsultCount() {
-      const { count, error } = await sbClient
-        .from('ai_consultations')
-        .select('id', { count: 'exact', head: true })
-        .eq('user_id', currentSession.user.id);
-      if (error) { console.error(error); return 0; }
-      return count || 0;
-    }
-
-    function renderPaidNotice(pastCount) {
-      const noticeEl = document.getElementById('paid-notice');
-      if (pastCount === 0) {
-        noticeEl.style.display = 'none';
-        return;
-      }
-      noticeEl.innerHTML = `2回目以降のご相談は有料となります(<strong>${CONSULT_PAID_PRICE.toLocaleString('ja-JP')}円/回</strong>)。送信後、お支払い方法について担当よりメールでご案内します。`;
-      noticeEl.style.display = 'block';
-    }
+    // 未登録ユーザーの無料相談は、ブラウザ単位（localStorage）で1回のみに制限。
+    // アカウントに紐づく厳密な制限ではなく、別ブラウザ等では回避できる簡易的な制限です。
+    const FREE_CONSULT_KEY = 'ai_mt0_free_consult_used';
 
     async function init() {
       const { data: { session } } = await sbClient.auth.getSession();
       document.getElementById('loading-state').style.display = 'none';
 
-      if (!session) {
-        document.getElementById('login-required').style.display = 'block';
+      if (session) {
+        currentSession = session;
+        document.getElementById('nav-cta-btn').style.display = 'none';
+        document.getElementById('nav-mypage-link').style.display = 'inline-flex';
+        document.getElementById('consult-form-wrap').style.display = 'block';
         return;
       }
 
-      currentSession = session;
-      document.getElementById('nav-cta-btn').style.display = 'none';
-      document.getElementById('nav-mypage-link').style.display = 'inline-flex';
-      document.getElementById('consult-form-wrap').style.display = 'block';
-
-      renderPaidNotice(await getPastConsultCount());
+      if (localStorage.getItem(FREE_CONSULT_KEY)) {
+        document.getElementById('anon-limit-wrap').style.display = 'block';
+      } else {
+        document.getElementById('anon-form-wrap').style.display = 'block';
+      }
     }
     init();
 
+    // ── 未登録ユーザー：初回無料相談（ログイン不要） ──
+    const anonErrorEl = document.getElementById('anon-error');
+    const anonSuccessEl = document.getElementById('anon-success');
+    function showAnonError(msg) {
+      anonErrorEl.textContent = msg;
+      anonErrorEl.style.display = 'block';
+      anonSuccessEl.style.display = 'none';
+    }
+    function showAnonSuccess(msg) {
+      anonSuccessEl.textContent = msg;
+      anonSuccessEl.style.display = 'block';
+      anonErrorEl.style.display = 'none';
+    }
+
+    document.getElementById('anon-consult-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (document.getElementById('anon-honeypot').value) return; // ボット対策
+
+      const submitBtn = document.getElementById('anon-consult-submit');
+      const name = document.getElementById('anon-name').value.trim();
+      const email = document.getElementById('anon-email').value.trim();
+      const type = document.querySelector('input[name="anon-consultation-type"]:checked').value;
+      const question = document.getElementById('anon-question').value.trim();
+
+      if (!name || !email || !question) { showAnonError('お名前・メールアドレス・相談内容を入力してください。'); return; }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = '送信中...';
+
+      const { error } = await sbClient.from('inquiries').insert({
+        name,
+        email,
+        message: `【AI相談・${type}（初回無料相談）】\n${question}`,
+      });
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = '無料で相談する';
+
+      if (error) { showAnonError('送信に失敗しました。時間をおいて再度お試しください。'); console.error(error); return; }
+
+      localStorage.setItem(FREE_CONSULT_KEY, '1');
+      sessionStorage.removeItem('consult_topic');
+      document.getElementById('anon-consult-form').reset();
+      showAnonSuccess('送信しました。担当より折り返しご連絡します。2回目以降も継続してご相談いただく場合は、無料会員登録をお願いします。');
+    });
+
+    // ── 会員登録済みユーザー：何度でも無料 ──
     document.getElementById('consult-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = document.getElementById('consult-submit');
@@ -402,15 +481,11 @@
       submitBtn.disabled = true;
       submitBtn.textContent = '送信中...';
 
-      const pastCount = await getPastConsultCount();
-      const isFirstTime = pastCount === 0;
-
       const { error } = await sbClient.from('ai_consultations').insert({
         user_id: currentSession.user.id,
         email: currentSession.user.email,
         consultation_type: type,
         question,
-        is_first_time: isFirstTime,
       });
 
       submitBtn.disabled = false;
@@ -420,12 +495,7 @@
 
       document.getElementById('consult-form').reset();
       sessionStorage.removeItem('consult_topic');
-      showSuccess(
-        isFirstTime
-          ? '送信しました。担当より折り返しご連絡します。マイページの「AI相談履歴」からいつでも内容を確認できます。'
-          : `送信しました。今回のご相談は有料(${CONSULT_PAID_PRICE.toLocaleString('ja-JP')}円)となります。お支払い方法について担当よりメールでご案内します。`
-      );
-      renderPaidNotice(await getPastConsultCount());
+      showSuccess('送信しました。担当より折り返しご連絡します。マイページの「AI相談履歴」からいつでも内容を確認できます。');
     });
   </script>
 </body>
