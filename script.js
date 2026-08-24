@@ -127,6 +127,37 @@ if (form) {
   });
 }
 
+// ---- GA4: 有料ツール購入クリック計測 ----
+// note.com上で決済が完結するため、このサイトからは購入完了を直接検知できない。
+// 「詳細・購入」リンクのクリックをpurchaseの近似指標として計測する。
+const NOTE_TOOL_CATALOG = {
+  'nab7079d5e690': 'AI収益管理ツール',
+  'nd10e39a5b1a9': 'AI議事録ツール',
+  'n05f9e8b2ead1': '業務報告書自動作成ツール',
+  'n974e7530893c': '経理・帳簿ツール',
+  'n3c74c5eb1bb2': 'SNS投稿自動生成ツール',
+  'nd306683712ee': '資料・文章作成ツール',
+  'nbf795bc90581': 'AI見積書・請求書作成ツール',
+  'n56b5beb5470f': 'AIビジネスグラフ作成ツール',
+};
+const NOTE_TOOL_PRICE_JPY = 980;
+
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href*="note.com/safe_acacia2730/n/"]');
+  if (!link || typeof gtag !== 'function') return;
+
+  const match = link.href.match(/\/n\/(n[0-9a-f]+)/);
+  const noteId = match ? match[1] : 'unknown';
+  const itemName = NOTE_TOOL_CATALOG[noteId] || link.textContent.trim();
+
+  gtag('event', 'purchase', {
+    transaction_id: `${noteId}_${Date.now()}`,
+    currency: 'JPY',
+    value: NOTE_TOOL_PRICE_JPY,
+    items: [{ item_id: noteId, item_name: itemName }],
+  });
+});
+
 // ---- SMOOTH ACTIVE NAV ----
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');

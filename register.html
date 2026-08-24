@@ -248,6 +248,7 @@
 
       if (typeof gtag === 'function') {
         gtag('event', 'sign_up', { method: 'email' });
+        gtag('event', 'qualify_lead', { method: 'email' });
       }
 
       submitBtn.textContent = '登録完了。移動しています...';

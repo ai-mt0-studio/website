@@ -450,6 +450,10 @@
 
       showContactSuccess('お問い合わせを受け付けました。通常24時間以内にご返信します。');
       document.getElementById('contact-form').reset();
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'close_convert_lead');
+      }
     });
   </script>
 </body>
