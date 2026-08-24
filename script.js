@@ -39,18 +39,6 @@ const observer = new IntersectionObserver((entries) => {
 
 revealEls.forEach(el => observer.observe(el));
 
-// ---- CHAT BUBBLES ANIMATION ----
-const chatBubbles = document.querySelectorAll('.chat-bubble');
-const consultSection = document.getElementById('consult');
-const consultObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      chatBubbles.forEach(b => b.classList.add('visible'));
-    }
-  });
-}, { threshold: 0.3 });
-if (consultSection) consultObserver.observe(consultSection);
-
 // ---- PARTICLE CANVAS ----
 (function () {
   const canvas = document.getElementById('particles');

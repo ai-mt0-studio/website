@@ -12,7 +12,7 @@
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AI MT0 Studioのマイページです。プロフィールの確認・編集、お気に入り登録したAIツールの一覧、AI相談の履歴確認など、会員限定の機能をまとめてご利用いただけます。" />
+  <meta name="description" content="AI MT0 Studioのマイページです。プロフィールの確認・編集、お気に入り登録したAIツールの一覧など、会員限定の機能をまとめてご利用いただけます。" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%234f8ef7'%3E%E2%AC%A1%3C/text%3E%3C/svg%3E" />
   <title>マイページ | AI MT0 Studio</title>
   <link rel="stylesheet" href="style.css" />
@@ -195,40 +195,6 @@
     .action-btn.danger { color: #f87171; }
     .action-btn.danger:hover { border-color: #f87171; }
 
-    /* ===== AI相談履歴 ===== */
-    .consult-history-list { display: flex; flex-direction: column; gap: 12px; }
-    .consult-history-card { padding: 20px 24px; }
-    .consult-history-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .consult-history-date { font-size: 0.78rem; color: var(--c-text-sub); }
-    .consult-history-question { font-size: 0.9rem; color: var(--c-text); white-space: pre-wrap; line-height: 1.7; }
-    .status-pill {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 50px;
-    }
-    .status-pill.pending  { color: var(--c-text-sub); background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); }
-    .status-pill.progress { color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); }
-    .status-pill.done     { color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
-
-    .pill-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-    .fee-pill {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 50px;
-    }
-    .fee-pill.free { color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
-
     .upcoming-section { max-width: 900px; margin: 40px auto 0; }
     .upcoming-title {
       font-family: var(--font-display);
@@ -308,7 +274,6 @@
         <div class="mypage-tabs">
           <button class="cat-btn mypage-tab-btn active" data-tab="profile">プロフィール</button>
           <button class="cat-btn mypage-tab-btn" data-tab="favorites">お気に入り</button>
-          <button class="cat-btn mypage-tab-btn" data-tab="consultations">AI相談履歴</button>
         </div>
 
         <!-- ===== プロフィール ===== -->
@@ -371,12 +336,6 @@
                 <p>購入・利用中のツールを一覧で確認できるようになります。</p>
                 <span class="soon-badge">準備中</span>
               </div>
-              <div class="upcoming-card glass-card">
-                <div class="icon">💬</div>
-                <h3>AI相談履歴</h3>
-                <p>過去のAI相談内容を振り返れるようになります。</p>
-                <span class="soon-badge">準備中</span>
-              </div>
             </div>
           </div>
         </div>
@@ -384,11 +343,6 @@
         <!-- ===== お気に入り ===== -->
         <div class="mypage-panel" id="panel-favorites">
           <div class="fav-grid" id="favorites-list"></div>
-        </div>
-
-        <!-- ===== AI相談履歴 ===== -->
-        <div class="mypage-panel" id="panel-consultations">
-          <div class="consult-history-list" id="consultations-list"></div>
         </div>
 
       </div>
@@ -427,7 +381,6 @@
         <div class="footer-col">
           <h3>サポート</h3>
           <a href="contact.html">お問い合わせ</a>
-          <a href="consult.html">AI相談</a>
           <a href="faq.html">よくある質問</a>
           <a href="terms.html">利用規約</a>
           <a href="privacy.html">プライバシーポリシー</a>
@@ -565,43 +518,6 @@
       });
     }
 
-    function statusClass(status) {
-      if (status === '完了') return 'done';
-      if (status === '対応中') return 'progress';
-      return 'pending';
-    }
-
-    async function loadConsultations() {
-      const listEl = document.getElementById('consultations-list');
-      const { data: items, error } = await sbClient
-        .from('ai_consultations')
-        .select('*')
-        .eq('user_id', currentSession.user.id)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        listEl.innerHTML = `<div class="empty-state">読み込みに失敗しました。</div>`;
-        return;
-      }
-      if (!items.length) {
-        listEl.innerHTML = `<div class="empty-state">まだAI相談の送信履歴はありません。<a href="consult.html" style="color:var(--c-blue);">AI相談フォームはこちら</a></div>`;
-        return;
-      }
-
-      listEl.innerHTML = items.map(c => `
-        <div class="consult-history-card glass-card">
-          <div class="consult-history-head">
-            <span class="consult-history-date">${fmtDate(c.created_at)}${c.consultation_type ? ' ・ ' + escHtml(c.consultation_type) : ''}</span>
-            <div class="pill-group">
-              <span class="fee-pill free">無料</span>
-              <span class="status-pill ${statusClass(c.status)}">${escHtml(c.status || '未対応')}</span>
-            </div>
-          </div>
-          <div class="consult-history-question">${escHtml(c.question)}</div>
-        </div>
-      `).join('');
-    }
-
     async function init() {
       const session = await requireLogin();
       if (!session) return;
@@ -630,7 +546,6 @@
       document.getElementById('mypage-body').style.display = 'block';
 
       loadFavorites();
-      loadConsultations();
     }
     init();
 

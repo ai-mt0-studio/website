@@ -149,7 +149,7 @@
     /* ===== SEARCH ===== */
     .admin-search { margin-bottom: 20px; max-width: 320px; }
 
-    /* ===== AI相談管理 ===== */
+    /* ===== 検索・フィルター ===== */
     .consult-filters { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
     .consult-filters .admin-search { margin-bottom: 0; }
     .consult-filters select {
@@ -163,9 +163,9 @@
     }
     .consult-filters select option { background: #0a0d1a; color: var(--c-text); }
 
-    .admin-consult-list, .admin-inquiry-list { display: flex; flex-direction: column; gap: 12px; }
-    .admin-consult-card, .admin-inquiry-card { padding: 20px 24px; }
-    .admin-consult-head, .admin-inquiry-head {
+    .admin-inquiry-list { display: flex; flex-direction: column; gap: 12px; }
+    .admin-inquiry-card { padding: 20px 24px; }
+    .admin-inquiry-head {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -173,9 +173,9 @@
       margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .admin-consult-meta, .admin-inquiry-meta { font-size: 0.78rem; color: var(--c-text-sub); }
-    .admin-consult-meta strong, .admin-inquiry-meta strong { color: #fff; font-weight: 600; }
-    .admin-consult-question, .admin-inquiry-message { font-size: 0.9rem; color: var(--c-text); white-space: pre-wrap; line-height: 1.7; margin-bottom: 14px; }
+    .admin-inquiry-meta { font-size: 0.78rem; color: var(--c-text-sub); }
+    .admin-inquiry-meta strong { color: #fff; font-weight: 600; }
+    .admin-inquiry-message { font-size: 0.9rem; color: var(--c-text); white-space: pre-wrap; line-height: 1.7; margin-bottom: 14px; }
     .admin-inquiry-status-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
     .admin-inquiry-status-row select {
       padding: 8px 12px;
@@ -187,16 +187,6 @@
     }
     .admin-inquiry-status-row select option { background: #0a0d1a; color: var(--c-text); }
     .sort-toggle-btn { display: inline-flex; align-items: center; gap: 6px; }
-    .admin-consult-status-row { display: flex; align-items: center; gap: 10px; }
-    .admin-consult-status-row select {
-      padding: 8px 12px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-sm);
-      color: var(--c-text);
-      font-size: 0.85rem;
-    }
-    .admin-consult-status-row select option { background: #0a0d1a; color: var(--c-text); }
     .status-pill {
       display: inline-block;
       font-size: 0.72rem;
@@ -208,16 +198,6 @@
     .status-pill.pending  { color: var(--c-text-sub); background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); }
     .status-pill.progress { color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); }
     .status-pill.done     { color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
-
-    .pill-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-    .fee-pill {
-      display: inline-block;
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 50px;
-    }
-    .fee-pill.free { color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
 
     /* ===== CRUD FORM ===== */
     .crud-card { padding: 28px; margin-bottom: 24px; }
@@ -437,7 +417,6 @@
           <button class="cat-btn admin-tab-btn" data-tab="tools">ツール管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="blog">ブログ管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="announcements">お知らせ管理</button>
-          <button class="cat-btn admin-tab-btn" data-tab="ai-consult">AI相談管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="inquiries">お問い合わせ管理</button>
           <button class="cat-btn admin-tab-btn" data-tab="sales">売上管理</button>
         </div>
@@ -460,10 +439,6 @@
             <div class="admin-stat glass-card">
               <div class="admin-stat-num" id="stat-month">0</div>
               <div class="admin-stat-label">今月の新規登録</div>
-            </div>
-            <div class="admin-stat glass-card">
-              <div class="admin-stat-num" id="stat-consultations">0</div>
-              <div class="admin-stat-label">AI相談件数</div>
             </div>
             <div class="admin-stat glass-card">
               <div class="admin-stat-num" id="stat-inquiries">0</div>
@@ -679,20 +654,6 @@
           </div>
         </div>
 
-        <!-- ===== AI相談管理 ===== -->
-        <div class="admin-panel" id="panel-ai-consult">
-          <div class="consult-filters">
-            <input type="text" class="admin-search" id="consult-search" placeholder="メールアドレス・相談内容で検索" />
-            <select id="consult-status-filter">
-              <option value="">すべてのステータス</option>
-              <option value="未対応">未対応</option>
-              <option value="対応中">対応中</option>
-              <option value="完了">完了</option>
-            </select>
-          </div>
-          <div class="admin-consult-list" id="admin-consult-list"></div>
-        </div>
-
         <!-- ===== お問い合わせ管理 ===== -->
         <div class="admin-panel" id="panel-inquiries">
           <div class="consult-filters">
@@ -814,7 +775,6 @@
         <div class="footer-col">
           <h3>サポート</h3>
           <a href="contact.html">お問い合わせ</a>
-          <a href="consult.html">AI相談</a>
           <a href="faq.html">よくある質問</a>
           <a href="terms.html">利用規約</a>
           <a href="privacy.html">プライバシーポリシー</a>
@@ -876,7 +836,6 @@
       document.getElementById('stat-admins').textContent = allMembers.filter(m => m.is_admin).length;
       document.getElementById('stat-today').textContent = allMembers.filter(m => ymd(new Date(m.created_at)) === todayStr).length;
       document.getElementById('stat-month').textContent = allMembers.filter(m => ymd(new Date(m.created_at)).startsWith(monthPrefix)).length;
-      document.getElementById('stat-consultations').textContent = allConsultations.length;
       document.getElementById('stat-inquiries').textContent = allInquiries.length;
       document.getElementById('stat-blog-posts').textContent = allBlogPosts.length;
       document.getElementById('stat-active-tools').textContent = allTools.filter(t => t.is_active).length;
@@ -914,16 +873,14 @@
     // ===== 最新アクティビティ =====
     async function loadActivity() {
       const listEl = document.getElementById('activity-list');
-      const [membersRes, consultRes, inquiryRes, blogRes] = await Promise.all([
+      const [membersRes, inquiryRes, blogRes] = await Promise.all([
         sbClient.from('profiles').select('email, display_name, created_at').order('created_at', { ascending: false }).limit(10),
-        sbClient.from('ai_consultations').select('email, question, created_at').order('created_at', { ascending: false }).limit(10),
         sbClient.from('inquiries').select('name, created_at').order('created_at', { ascending: false }).limit(10),
         sbClient.from('blog_posts').select('title, published_at').eq('status', 'published').order('published_at', { ascending: false }).limit(10),
       ]);
 
       const events = [];
       (membersRes.data || []).forEach(m => events.push({ icon: '👤', time: m.created_at, text: `<strong>${escHtml(m.display_name || m.email)}</strong> さんが新規登録しました` }));
-      (consultRes.data || []).forEach(c => events.push({ icon: '💬', time: c.created_at, text: `<strong>${escHtml(c.email || '匿名')}</strong> さんからAI相談が届きました` }));
       (inquiryRes.data || []).forEach(i => events.push({ icon: '📩', time: i.created_at, text: `<strong>${escHtml(i.name)}</strong> さんからお問い合わせが届きました` }));
       (blogRes.data || []).forEach(b => events.push({ icon: '📝', time: b.published_at, text: `ブログ記事 <strong>${escHtml(b.title)}</strong> を公開しました` }));
 
@@ -1428,85 +1385,10 @@
       });
     }
 
-    // ===== AI相談管理 =====
-    let allConsultations = [];
-
     function statusClass(status) {
       if (status === '完了') return 'done';
       if (status === '対応中') return 'progress';
       return 'pending';
-    }
-
-    function renderAiConsultations(items) {
-      const listEl = document.getElementById('admin-consult-list');
-      if (!items.length) {
-        listEl.innerHTML = `<div class="placeholder-card glass-card"><p style="color:var(--c-text-sub);">該当する相談はありません。</p></div>`;
-        return;
-      }
-
-      listEl.innerHTML = items.map(c => `
-        <div class="admin-consult-card glass-card">
-          <div class="admin-consult-head">
-            <div class="admin-consult-meta">
-              <strong>${escHtml(c.email || '-')}</strong>
-              　${fmtDate(c.created_at)}${c.consultation_type ? ' ・ ' + escHtml(c.consultation_type) : ''}
-            </div>
-            <div class="pill-group">
-              <span class="fee-pill free">無料</span>
-              <span class="status-pill ${statusClass(c.status)}">${escHtml(c.status || '未対応')}</span>
-            </div>
-          </div>
-          <div class="admin-consult-question">${escHtml(c.question)}</div>
-          <div class="admin-consult-status-row">
-            <label style="font-size:0.82rem;color:var(--c-text-sub);">ステータス</label>
-            <select data-consult-id="${c.id}">
-              <option value="未対応" ${c.status === '未対応' ? 'selected' : ''}>未対応</option>
-              <option value="対応中" ${c.status === '対応中' ? 'selected' : ''}>対応中</option>
-              <option value="完了" ${c.status === '完了' ? 'selected' : ''}>完了</option>
-            </select>
-          </div>
-        </div>
-      `).join('');
-
-      listEl.querySelectorAll('[data-consult-id]').forEach(sel => {
-        sel.addEventListener('change', () => updateConsultationStatus(sel.dataset.consultId, sel.value));
-      });
-    }
-
-    function applyConsultFilters() {
-      const q = document.getElementById('consult-search').value.trim().toLowerCase();
-      const statusFilter = document.getElementById('consult-status-filter').value;
-      const filtered = allConsultations.filter(c => {
-        const matchesQuery = !q || (c.email || '').toLowerCase().includes(q) || (c.question || '').toLowerCase().includes(q);
-        const matchesStatus = !statusFilter || c.status === statusFilter;
-        return matchesQuery && matchesStatus;
-      });
-      renderAiConsultations(filtered);
-    }
-
-    document.getElementById('consult-search').addEventListener('input', applyConsultFilters);
-    document.getElementById('consult-status-filter').addEventListener('change', applyConsultFilters);
-
-    async function updateConsultationStatus(id, status) {
-      const { error } = await sbClient
-        .from('ai_consultations')
-        .update({ status, updated_at: new Date().toISOString() })
-        .eq('id', id);
-      if (error) { showError(error.message); return; }
-      showSuccess('ステータスを更新しました。');
-      await loadAiConsultations();
-    }
-
-    async function loadAiConsultations() {
-      const { data: items, error } = await sbClient
-        .from('ai_consultations')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) { showError(error.message); return; }
-      allConsultations = items;
-      renderDashboardStats();
-      applyConsultFilters();
     }
 
     // ===== お問い合わせ管理 =====
@@ -1720,7 +1602,6 @@
 
     function notifIcon(type) {
       if (type === 'signup') return '👤';
-      if (type === 'ai_consult') return '💬';
       if (type === 'inquiry') return '📩';
       if (type === 'blog_published') return '📝';
       return '📌';
@@ -1865,7 +1746,7 @@
 
       document.getElementById('sale-date').value = ymd(new Date());
 
-      await Promise.all([loadMembers(), loadTools(), loadBlogPosts(), loadAnnouncements(), loadAiConsultations(), loadInquiries(), loadSales(), loadNotifications(), loadToolRanking(), loadActivity()]);
+      await Promise.all([loadMembers(), loadTools(), loadBlogPosts(), loadAnnouncements(), loadInquiries(), loadSales(), loadNotifications(), loadToolRanking(), loadActivity()]);
       subscribeNotifications();
     }
     init();

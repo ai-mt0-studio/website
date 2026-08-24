@@ -3,3 +3,13 @@
   to = "https://ai-mt0-studio.com/:splat"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/consult.html"
+  to = "/contact.html"
+  status = 301
+
+[[redirects]]
+  from = "/consult"
+  to = "/contact.html"
+  status = 301
