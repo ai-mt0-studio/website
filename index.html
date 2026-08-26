@@ -69,7 +69,7 @@
         <a href="#services" class="nav-link">サービス</a>
         <a href="#tools" class="nav-link nav-link-highlight">AIツール</a>
         <a href="#blog" class="nav-link">ブログ</a>
-        <a href="#roadmap" class="nav-link">開発予定</a>
+        <a href="roadmap.html" class="nav-link">開発予定</a>
         <a href="faq.html" class="nav-link">FAQ</a>
         <a href="login.html" class="nav-link" id="nav-auth-link">ログイン</a>
         <a href="register.html" class="nav-btn" id="nav-cta-btn">無料会員登録</a>
@@ -167,13 +167,6 @@
             <span class="pain-card-arrow">AI業務改善アドバイザーに聞く →</span>
           </div>
         </a>
-        <a href="time-simulator.html" class="pain-card glass-card">
-          <div class="pain-icon">⏳</div>
-          <div class="pain-body">
-            <p class="pain-text">AI導入でどれくらい時短できるのか知りたい</p>
-            <span class="pain-card-arrow">AI時短シミュレーターで試算する →</span>
-          </div>
-        </a>
       </div>
       <div style="text-align:center;margin-top:32px;">
         <a href="tools.html" class="btn btn-glass">無料・有料あわせて21種類以上のツールを見る →</a>
@@ -204,6 +197,13 @@
           <p>AIの活用法・ツールの使い方・業務効率化のヒントを発信中。導入前の疑問もブログで解決できます。</p>
           <span class="start-card-arrow">ブログを読む →</span>
         </a>
+        <a href="contact.html" class="start-card glass-card">
+          <span class="start-step">STEP 3</span>
+          <div class="start-icon">🛠️</div>
+          <h3>困りごとを相談する</h3>
+          <p>無料ツールで物足りない場合は、オーダーメイド開発のご相談も承っています。業務にぴったり合うAIツールをご提案します。</p>
+          <span class="start-card-arrow">オーダーメイド開発を相談する →</span>
+        </a>
       </div>
     </div>
   </section>
@@ -215,7 +215,7 @@
         <span class="section-eyebrow">導入効果（目安）</span>
         <h2 class="section-title">AIツールで、どれくらい時短できる?</h2>
         <p class="section-sub">手作業でかかる一般的な時間と、AIツール利用時の目安時間を比較したシミュレーションです（実測データではありません）</p>
-        <p style="font-size:0.85rem;color:var(--c-text-sub);margin-top:8px;">📌 代表的な3つの業務例をピックアップ。ご自身の場合の削減効果を計算したい方は<a href="time-simulator.html" style="color:var(--c-purple2);">AI時短シミュレーター</a>もあわせてご活用ください。</p>
+        <p style="font-size:0.85rem;color:var(--c-text-sub);margin-top:8px;">📌 代表的な4つの業務例をピックアップ。ご自身の場合の削減効果を計算したい方は<a href="time-simulator.html" style="color:var(--c-purple2);">AI時短シミュレーター</a>もあわせてご活用ください。</p>
       </div>
       <div class="compare-grid">
         <div class="compare-card glass-card">
@@ -252,6 +252,24 @@
             </div>
           </div>
           <p class="compare-tool-link"><a href="sns-tool.html">SNS投稿自動生成ツールで試す →</a></p>
+        </div>
+
+        <div class="compare-card glass-card">
+          <span class="compare-badge">約90%削減</span>
+          <h3 class="compare-title">経理・収支の概算計算</h3>
+          <div class="compare-bars">
+            <div class="compare-row">
+              <span class="compare-label">Before</span>
+              <div class="compare-bar-track"><div class="compare-bar compare-bar-before" style="width:100%"></div></div>
+              <span class="compare-value">30分</span>
+            </div>
+            <div class="compare-row">
+              <span class="compare-label">After</span>
+              <div class="compare-bar-track"><div class="compare-bar compare-bar-after" style="width:10%"></div></div>
+              <span class="compare-value">約3分</span>
+            </div>
+          </div>
+          <p class="compare-tool-link"><a href="income-simulator.html">簡易収支シミュレーターで試す →</a></p>
         </div>
 
         <div class="compare-card glass-card">
@@ -325,24 +343,6 @@
       </div>
       <div style="text-align:center;margin-top:40px;">
         <a href="blog.html" class="btn btn-glass">すべての記事を見る →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== NEWSLETTER ========== -->
-  <section class="newsletter section" id="newsletter">
-    <div class="container">
-      <div class="newsletter-inner glass-card">
-        <div class="newsletter-text">
-          <span class="section-eyebrow">メルマガ登録</span>
-          <h2 class="section-title">新着ツール・お知らせをメールで受け取る</h2>
-          <p>新しい無料AIツールの公開・機能アップデート・AI活用に役立つ記事などをお届けします。メールアドレスの登録だけで完了し、会員登録は不要です（マイページ機能を使う「無料会員登録」とは別の、お知らせメールのみの仕組みです）。</p>
-        </div>
-        <form class="newsletter-form" id="newsletter-form">
-          <input type="email" id="newsletter-email" class="newsletter-input" placeholder="メールアドレス" required autocomplete="email">
-          <button type="submit" class="btn btn-primary" id="newsletter-submit">登録する</button>
-        </form>
-        <p class="newsletter-msg" id="newsletter-msg"></p>
       </div>
     </div>
   </section>
@@ -469,43 +469,6 @@
     </div>
   </section>
 
-  <!-- ========== ROADMAP ========== -->
-  <section class="roadmap section" id="roadmap">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow">開発ロードマップ（参考情報）</span>
-        <h2 class="section-title">今後の開発予定</h2>
-        <p class="section-sub">現在利用できるサービスはここまでの内容です。以下は今後の開発予定の参考情報です。</p>
-      </div>
-      <div class="roadmap-list">
-        <div class="roadmap-item glass-card done">
-          <div class="roadmap-dot"></div>
-          <div class="roadmap-content">
-            <span class="roadmap-phase">Phase 1〜2 ✅ 完了</span>
-            <h3>サービスサイト公開〜AI相談プラットフォーム構築</h3>
-            <p>noteでのツール販売開始、会員登録・相談履歴・マイページ機能の追加まで完了</p>
-          </div>
-        </div>
-        <div class="roadmap-item glass-card">
-          <div class="roadmap-dot"></div>
-          <div class="roadmap-content">
-            <span class="roadmap-phase">Phase 3</span>
-            <h3>AIチャット・通知機能</h3>
-            <p>よりインタラクティブな体験を提供</p>
-          </div>
-        </div>
-        <div class="roadmap-item glass-card">
-          <div class="roadmap-dot"></div>
-          <div class="roadmap-content">
-            <span class="roadmap-phase">Phase 4</span>
-            <h3>AIツール検索・管理画面・多言語対応</h3>
-            <p>カテゴリ検索・ダッシュボード・英語対応でグローバル展開</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ========== CONTACT ========== -->
   <section class="contact section" id="contact">
     <div class="container">
@@ -571,7 +534,7 @@
         <div class="footer-col">
           <h3>コンテンツ</h3>
           <a href="#blog">ブログ</a>
-          <a href="#roadmap">開発ロードマップ</a>
+          <a href="roadmap.html">開発ロードマップ</a>
           <a href="https://note.com/safe_acacia2730/portal" target="_blank">note</a>
         </div>
         <div class="footer-col">
