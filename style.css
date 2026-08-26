@@ -300,6 +300,20 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-bottom: 40px;
   animation: fadeInUp 0.8s 0.2s ease both;
 }
+.hero-principle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: var(--c-text);
+  border-left: 3px solid var(--c-purple2);
+  padding: 8px 16px;
+  margin-bottom: 24px;
+  background: rgba(155,89,245,0.06);
+  border-radius: 0 8px 8px 0;
+  animation: fadeInUp 0.8s 0.18s ease both;
+}
+.hero-principle strong { color: var(--c-purple2); font-weight: 600; }
 .hero-benefits {
   display: flex;
   flex-wrap: wrap;
@@ -549,6 +563,25 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 10px;
   justify-content: center;
 }
+
+/* ============================================
+   TOOLS BRIDGE (free -> paid -> custom dev)
+   ============================================ */
+.tools-bridge { background: var(--c-bg2); }
+.tools-bridge-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.tools-bridge-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--c-text-sub);
+  margin-top: 20px;
+}
+.tools-bridge-note a { color: var(--c-purple2); }
 
 /* ============================================
    TOOLS
