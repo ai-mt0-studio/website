@@ -116,6 +116,13 @@
 
   <!-- ===== ブログ記事 ===== -->
   <url>
+    <loc>https://ai-mt0-studio.com/blog-site-update-2026.html</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
     <loc>https://ai-mt0-studio.com/blog-hidden-bug-2026.html</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
