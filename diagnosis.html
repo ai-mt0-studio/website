@@ -619,7 +619,7 @@
           <div class="recommend-name">${esc(r.tool.name)}</div>
           ${r.freeText ? `<div class="recommend-reason">「${esc(r.freeText.slice(0, 40))}${r.freeText.length > 40 ? '…' : ''}」の内容から診断</div>` : ''}
           <div class="recommend-desc">${esc(r.tool.desc)}</div>
-          <a href="${r.tool.url}" class="btn btn-primary"${isExternal ? ' target="_blank" rel="noopener"' : ''}>詳しく見る →</a>
+          <a href="${r.tool.url}" class="btn btn-primary"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ''}>詳しく見る →</a>
         </div>
       </div>`;
   }
