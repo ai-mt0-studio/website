@@ -169,6 +169,30 @@
     .tool-screenshot-text { font-size: 0.74rem; color: var(--c-text-sub); line-height: 1.5; margin: 0; }
     .tool-screenshot-img { width: 100%; border-radius: var(--radius-sm); margin-bottom: 16px; display: block; }
 
+    /* ========== FREE TOOL SCREENSHOT PAIRS (input / result) ========== */
+    .tool-shot-pair, .tool-shot-single {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .tool-shot-pair figure, .tool-shot-single figure {
+      flex: 1;
+      margin: 0;
+      min-width: 0;
+    }
+    .tool-shot-pair img, .tool-shot-single img {
+      width: 100%;
+      display: block;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--glass-border);
+    }
+    .tool-shot-pair figcaption, .tool-shot-single figcaption {
+      font-size: 0.68rem;
+      color: var(--c-text-sub);
+      text-align: center;
+      margin-top: 4px;
+    }
+
     /* ========== NOTE TOOLS -> CUSTOM DEV CTA ========== */
     .custom-dev-note-cta {
       max-width: 720px;
@@ -322,6 +346,10 @@
             <div class="tool-icon">🏢</div>
             <h4 class="tool-name">AI Business OS（無料）</h4>
             <p class="tool-desc">見積書・顧客管理・営業管理・分析グラフまで全部入り。インストール不要・登録不要で今すぐ使える無料ツール。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/business-os-input.png" alt="AI Business OSの入力画面（見積書フォーム）" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/business-os-result.png" alt="AI Business OSの結果画面（見積書プレビュー自動反映）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>個人事業主・中小企業向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>見積書作成から顧客管理までまとめて効率化したいときに</p>
@@ -338,6 +366,10 @@
             <div class="tool-icon">✉️</div>
             <h4 class="tool-name">AI営業文作成 Pro Lite（無料）</h4>
             <p class="tool-desc">会社名・業種・提案内容を入力するだけで、業種に合わせた営業メール・提案文を自動生成。API不要・完全無料。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/sales-mail-tool-input.png" alt="AI営業文作成 Pro Liteの入力画面" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/sales-mail-tool-result.png" alt="AI営業文作成 Pro Liteの結果画面（自動生成された営業文）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>個人事業主・営業担当者向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>毎週の営業メール・提案文の作成に</p>
@@ -354,6 +386,10 @@
             <div class="tool-icon">📇</div>
             <h4 class="tool-name">名刺・顧客管理ツール</h4>
             <p class="tool-desc">名刺交換した相手や取引先を会社ごとに登録し、やり取りの履歴とフォローアップ予定日を一元管理。登録不要・ブラウザ保存だけで今すぐ使える無料ツール。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/contact-manager-input.png" alt="名刺・顧客管理ツールの入力画面（新規登録）" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/contact-manager-result.png" alt="名刺・顧客管理ツールの結果画面（登録済み一覧に反映）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>フリーランス・中小企業向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>名刺交換した相手のフォロー漏れを防ぎたいときに</p>
@@ -377,6 +413,10 @@
             <div class="tool-icon">💰</div>
             <h4 class="tool-name">簡易収支シミュレーター</h4>
             <p class="tool-desc">月の売上・経費のおおまかな金額と申告方式を選ぶだけで、年間の概算利益と所得税・住民税の目安を自動シミュレーション。API不要・完全無料。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/income-simulator-input.png" alt="簡易収支シミュレーターの入力画面（質問への回答）" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/income-simulator-result.png" alt="簡易収支シミュレーターの結果画面（概算利益・税額を自動算出）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>個人事業主・フリーランス向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>確定申告前のおおよその税額を把握したいときに</p>
@@ -393,6 +433,10 @@
             <div class="tool-icon">⏳</div>
             <h4 class="tool-name">AI時短シミュレーター</h4>
             <p class="tool-desc">働き方やメール・SNS・繰り返し作業にかかる時間を選ぶだけで、AI活用による年間削減時間・日数換算・時給換算の金額を自動シミュレーション。API不要・完全無料。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/time-simulator-input.png" alt="AI時短シミュレーターの入力画面（質問への回答）" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/time-simulator-result.png" alt="AI時短シミュレーターの結果画面（年間削減時間を自動算出）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>業務効率化の効果を知りたい方向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>AI導入の費用対効果を試算したいときに</p>
@@ -416,6 +460,10 @@
             <div class="tool-icon">📋</div>
             <h4 class="tool-name">AI業務マニュアル作成 Pro Lite（無料）</h4>
             <p class="tool-desc">業種・業務内容を入力するだけで、誰でも使える本格的な業務マニュアルを自動作成。引き継ぎ・新人教育に最適。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/manual-tool-input.png" alt="AI業務マニュアル作成 Pro Liteの入力画面" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/manual-tool-result.png" alt="AI業務マニュアル作成 Pro Liteの結果画面（自動生成されたマニュアル）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>中小企業の教育担当・管理者向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>新人教育や業務引き継ぎのマニュアル作成に</p>
@@ -432,6 +480,10 @@
             <div class="tool-icon">✦</div>
             <h4 class="tool-name">AIプロンプト管理ツール Pro Lite（無料）</h4>
             <p class="tool-desc">よく使うAIプロンプトをフォルダ分け・お気に入り・検索機能で一元管理。ChatGPTやClaude利用者向け。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/prompt-manager-input.png" alt="AIプロンプト管理ツール Pro Liteの入力画面（新規プロンプト登録）" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/prompt-manager-result.png" alt="AIプロンプト管理ツール Pro Liteの結果画面（ダッシュボードに反映）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>ChatGPT・Claudeをよく使う方向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>よく使うプロンプトを整理・使い回したいときに</p>
@@ -448,6 +500,10 @@
             <div class="tool-icon">📊</div>
             <h4 class="tool-name">資料作成ツール（月次・週次レポート）</h4>
             <p class="tool-desc">レポートの種類・タイトル・数値項目・コメントを入力するだけで、グラフ付きの業務報告書を自動整形。印刷・PDF保存にも対応。API不要・完全無料。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/report-builder-input.png" alt="資料作成ツールの入力画面" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/report-builder-result.png" alt="資料作成ツールの結果画面（グラフ付きレポートに自動反映）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>週次・月次で報告書を作る方向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>グラフ付きの業務報告書をすぐ作りたいときに</p>
@@ -471,6 +527,10 @@
             <div class="tool-icon">🔍</div>
             <h4 class="tool-name">AI業務改善アドバイザー Pro Lite（無料）</h4>
             <p class="tool-desc">業種・課題を入力するだけでAIが業務改善の優先順位・改善方法・今すぐできることを提案。API不要・完全無料。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/advisor-tool-input.png" alt="AI業務改善アドバイザー Pro Liteの入力画面" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/advisor-tool-result.png" alt="AI業務改善アドバイザー Pro Liteの結果画面（改善提案を自動生成）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>業務改善に取り組む個人事業主・中小企業向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>何から手をつけるべきか迷ったときの相談前に</p>
@@ -487,6 +547,10 @@
             <div class="tool-icon">🎯</div>
             <h4 class="tool-name">AI業務効率スコア診断（無料）</h4>
             <p class="tool-desc">全10問に答えるだけでAI活用度を0〜100点でスコア化。3段階のタイプ診断とおすすめツールがわかる。API不要・完全無料。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/score-diagnosis-tool-input.png" alt="AI業務効率スコア診断の入力画面（質問への回答）" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/score-diagnosis-tool-result.png" alt="AI業務効率スコア診断の結果画面（スコア自動算出）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>AI活用を始めたい個人事業主・中小企業向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>自社のAI活用度をまず把握したいときに</p>
@@ -510,6 +574,10 @@
             <div class="tool-icon">📅</div>
             <h4 class="tool-name">スケジュール表作成ツール</h4>
             <p class="tool-desc">予定を入力するだけでシフト表・スケジュール帳・月間カレンダーの3形式に切り替え可能。繰り返し予定の登録、仕事時間の自動集計、印刷・PDF保存にも対応。API不要・完全無料。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/schedule-builder-input.png" alt="スケジュール表作成ツールの入力画面（予定の追加）" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/schedule-builder-result.png" alt="スケジュール表作成ツールの結果画面（一覧・集計に自動反映）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>シフト管理をする個人事業主・店舗運営者向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>スタッフのシフト表・スケジュール帳を作るときに</p>
@@ -526,6 +594,10 @@
             <div class="tool-icon">🎯</div>
             <h4 class="tool-name">タスク優先順位付けツール</h4>
             <p class="tool-desc">タスク名と緊急度・重要度を選ぶだけで「今すぐやる」「計画してやる」などの4象限に自動振り分け。マトリクス表示とリスト表示を切り替え可能。API不要・完全無料。</p>
+            <div class="tool-shot-pair">
+              <figure><img src="images/screenshots/task-priority-input.png" alt="タスク優先順位付けツールの入力画面" loading="lazy" /><figcaption>入力画面</figcaption></figure>
+              <figure><img src="images/screenshots/task-priority-result.png" alt="タスク優先順位付けツールの結果画面（マトリクスに自動反映）" loading="lazy" /><figcaption>結果画面</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>やることが多くて優先順位に迷う方向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>何から手をつけるべきか整理したいときに</p>
@@ -553,6 +625,10 @@
             <div class="tool-icon">🏢</div>
             <h3 class="tool-name">AI業務改善診断ツール</h3>
             <p class="tool-desc">質問に答えるだけでAIが業務課題を分析し、改善提案レポートとおすすめツールを自動生成。Claude APIキーで利用。</p>
+            <!-- Claude APIキー必須のため、実際の生成結果は撮影不可。サンプルデータ入力済みの画面のみ掲載 -->
+            <div class="tool-shot-single">
+              <figure><img src="images/screenshots/diagnosis-tool-input.png" alt="AI業務改善診断ツールの入力画面（サンプルデータ入力済み）" loading="lazy" /><figcaption>入力画面（Claude APIキーで診断結果を生成）</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>業務課題を整理したい中小企業向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>改善提案レポートを作りたいときに</p>
@@ -569,6 +645,10 @@
             <div class="tool-icon">📝</div>
             <h3 class="tool-name">AI日報生成ツール</h3>
             <p class="tool-desc">業務内容を入力するだけでAIが日報をビジネス文章に整形。Claude APIキーで利用できます。</p>
+            <!-- Claude APIキー必須のため、実際の生成結果は撮影不可。サンプルデータ入力済みの画面のみ掲載 -->
+            <div class="tool-shot-single">
+              <figure><img src="images/screenshots/report-tool-app-input.png" alt="AI日報生成ツールの入力画面（サンプルデータ入力済み）" loading="lazy" /><figcaption>入力画面（Claude APIキーで日報を自動生成）</figcaption></figure>
+            </div>
             <div class="tool-meta">
               <p class="tool-meta-item"><span class="tool-meta-icon">👤</span>日々の業務報告が必要な方向け</p>
               <p class="tool-meta-item"><span class="tool-meta-icon">💡</span>毎日の日報をサッと整えたいときに</p>
