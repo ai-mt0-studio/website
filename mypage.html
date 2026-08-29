@@ -518,6 +518,23 @@
       });
     }
 
+    // ===== ツール結果画面バナーからの登録直後、そのツールをお気に入りに自動保存 =====
+    async function applyPendingFavorite() {
+      let pending = null;
+      try { pending = JSON.parse(localStorage.getItem('rf_pending_favorite') || 'null'); } catch (e) {}
+      if (!pending || !pending.slug) return;
+      try { localStorage.removeItem('rf_pending_favorite'); } catch (e) {}
+
+      const { error } = await sbClient
+        .from('favorites')
+        .upsert({ user_id: currentSession.user.id, tool_slug: pending.slug }, { onConflict: 'user_id,tool_slug', ignoreDuplicates: true });
+      if (error) { console.error('pending favorite save error', error); return; }
+
+      const info = TOOL_CATALOG[pending.slug];
+      const name = info ? info.name : 'ツール';
+      showSuccess(`「${name}」の結果を保存しました。「お気に入り」タブからいつでも呼び出せます。`);
+    }
+
     async function init() {
       const session = await requireLogin();
       if (!session) return;
@@ -545,6 +562,7 @@
       document.getElementById('loading-state').style.display = 'none';
       document.getElementById('mypage-body').style.display = 'block';
 
+      await applyPendingFavorite();
       loadFavorites();
     }
     init();
