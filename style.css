@@ -301,10 +301,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   animation: fadeInUp 0.8s 0.2s ease both;
 }
 .hero-principle {
-  display: inline-flex;
-  align-items: center;
+  display: flex;
+  align-items: flex-start;
   gap: 10px;
   font-size: 0.92rem;
+  line-height: 1.6;
   color: var(--c-text);
   border-left: 3px solid var(--c-purple2);
   padding: 8px 16px;
@@ -313,7 +314,40 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   border-radius: 0 8px 8px 0;
   animation: fadeInUp 0.8s 0.18s ease both;
 }
+.hero-principle-icon { flex-shrink: 0; }
+.hero-principle-text { flex: 1 1 auto; min-width: 0; }
 .hero-principle strong { color: var(--c-purple2); font-weight: 600; }
+.hero-cases {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  max-width: 720px;
+  animation: fadeInUp 0.8s 0.13s ease both;
+}
+.hero-cases-label {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--c-blue);
+  background: rgba(79,142,247,0.12);
+  border-radius: 50px;
+  padding: 3px 12px;
+  margin-bottom: 8px;
+}
+.hero-cases-list {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.6;
+}
+.hero-cases-note {
+  font-size: 0.8rem;
+  color: var(--c-text-sub);
+  margin-top: 8px;
+}
 .hero-benefits {
   display: flex;
   flex-wrap: wrap;
@@ -363,6 +397,32 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   width: 1px;
   height: 40px;
   background: var(--glass-border);
+}
+.hero-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  animation: fadeInUp 0.8s 0.4s ease both;
+}
+.hero-fact {
+  flex: 1 1 200px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+}
+.hero-fact-label {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--c-text-sub);
+  margin-bottom: 6px;
+}
+.hero-fact-value {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.5;
 }
 .scroll-indicator {
   position: absolute;
@@ -1577,6 +1637,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .hero-title { font-size: clamp(2rem, 8vw, 3rem); }
   .hero-stats { gap: 20px; }
+  .hero-facts { flex-direction: column; }
+  .hero-cases { padding: 14px 16px; }
   .philosophy-inner { padding: 32px 24px; }
   .philosophy-profile { flex-direction: column; align-items: center; text-align: center; }
   .services-grid { grid-template-columns: 1fr; }

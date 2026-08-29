@@ -349,6 +349,28 @@
                 <input type="email" id="contact-email" required />
               </div>
               <div class="form-group">
+                <label for="contact-task">今、困っている作業の内容</label>
+                <textarea id="contact-task" rows="3" placeholder="例：毎月の請求書作成に時間がかかっている、シフト表をExcelで手作業で組んでいる、など"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="contact-current-tool">現在使用しているツール</label>
+                <input type="text" id="contact-current-tool" placeholder="例：Excel、紙、スプレッドシート、その他" />
+              </div>
+              <div class="form-group">
+                <label for="contact-deadline">希望納期</label>
+                <input type="text" id="contact-deadline" placeholder="例：1ヶ月以内、特になし、など" />
+              </div>
+              <div class="form-group">
+                <label for="contact-budget">予算感</label>
+                <select id="contact-budget">
+                  <option value="">選択してください</option>
+                  <option value="〜10万円">〜10万円</option>
+                  <option value="10〜30万円">10〜30万円</option>
+                  <option value="30万円〜">30万円〜</option>
+                  <option value="要相談">要相談</option>
+                </select>
+              </div>
+              <div class="form-group">
                 <label for="contact-message">お問い合わせ内容 <span class="required">*</span></label>
                 <textarea id="contact-message" rows="6" required></textarea>
               </div>
@@ -432,14 +454,27 @@
       if (document.getElementById('contact-honeypot').value) return; // ボット対策
 
       const submitBtn = document.getElementById('contact-submit');
+      const task = document.getElementById('contact-task').value.trim();
+      const currentTool = document.getElementById('contact-current-tool').value.trim();
+      const deadline = document.getElementById('contact-deadline').value.trim();
+      const budget = document.getElementById('contact-budget').value;
+      const message = document.getElementById('contact-message').value.trim();
+
+      const detailLines = [];
+      if (task) detailLines.push(`【今困っている作業】\n${task}`);
+      if (currentTool) detailLines.push(`【現在使用しているツール】${currentTool}`);
+      if (deadline) detailLines.push(`【希望納期】${deadline}`);
+      if (budget) detailLines.push(`【予算感】${budget}`);
+      detailLines.push(`【お問い合わせ内容】\n${message}`);
+
       const payload = {
         name: document.getElementById('contact-name').value.trim(),
         company: document.getElementById('contact-company').value.trim() || null,
         email: document.getElementById('contact-email').value.trim(),
-        message: document.getElementById('contact-message').value.trim(),
+        message: detailLines.join('\n\n'),
       };
 
-      if (!payload.name || !payload.email || !payload.message) {
+      if (!payload.name || !payload.email || !message) {
         showContactError('お名前・メールアドレス・お問い合わせ内容は必須です。');
         return;
       }
