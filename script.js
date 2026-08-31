@@ -14,11 +14,13 @@ const nav = document.getElementById('nav');
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('open');
   nav.classList.toggle('open');
+  header.classList.toggle('menu-open');
 });
 nav.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
     hamburger.classList.remove('open');
     nav.classList.remove('open');
+    header.classList.remove('menu-open');
   });
 });
 

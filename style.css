@@ -1632,6 +1632,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .nav.open { display: flex; }
   .nav-link { font-size: 1.2rem; color: var(--c-text); }
   .hamburger { display: flex; z-index: 101; }
+  .header.scrolled.menu-open { backdrop-filter: none; -webkit-backdrop-filter: none; }
   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
