@@ -1124,6 +1124,39 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transform: translateX(4px);
   display: inline-block;
 }
+.flow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.flow-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 28px 20px;
+  transition: var(--transition);
+}
+.flow-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(79,142,247,0.35);
+  box-shadow: 0 16px 40px rgba(79,142,247,0.14);
+}
+.flow-card .start-step { margin-bottom: 8px; }
+.flow-card .start-icon { font-size: 2rem; margin-bottom: 10px; }
+.flow-card h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.flow-card p {
+  font-size: 0.82rem;
+  color: var(--c-text-sub);
+  line-height: 1.65;
+  margin-bottom: 0;
+}
 
 /* ============================================
    MEMBER BENEFITS
@@ -1614,6 +1647,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .footer-inner  { grid-template-columns: 1fr; gap: 40px; }
   .footer-links  { grid-template-columns: repeat(2, 1fr); }
   .start-grid    { grid-template-columns: 1fr; }
+  .flow-grid     { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
