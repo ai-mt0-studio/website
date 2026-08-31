@@ -13,3 +13,8 @@
   from = "/consult"
   to = "/contact.html"
   status = 301
+
+[[redirects]]
+  from = "/tools"
+  to = "/tools.html"
+  status = 301
