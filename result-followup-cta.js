@@ -11,6 +11,11 @@
    自動でお気に入り（favoritesテーブル）に追加され、マイページで
    「保存しました」の案内が表示される（tools-catalog.js の slug と一致させること）。
    data-tool-slug を省略した場合、登録導線は表示されるが自動お気に入り追加は行われない。
+
+   data-skip="save-banner,save-note,related" のようにカンマ区切りで指定すると、
+   ツール自身の画面に同等の表示（会員登録CTA・保存に関する注意書き・関連ツール推薦）が
+   既にある場合に、この共通コンポーネント側の重複ブロックだけを出さないようにできる。
+   （rf-cta＝オーダーメイド開発への導線は、どのツールページにも独自表示がないため常に表示）
    ============================================ */
 (function () {
   var scriptEl = document.currentScript;
@@ -148,14 +153,17 @@
     var toolSlug = (scriptEl && scriptEl.getAttribute('data-tool-slug')) || '';
     var relatedAttr = (scriptEl && scriptEl.getAttribute('data-related-tools')) || '';
     var relatedSlugs = relatedAttr.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    var skipAttr = (scriptEl && scriptEl.getAttribute('data-skip')) || '';
+    var skip = {};
+    skipAttr.split(',').forEach(function (s) { s = s.trim(); if (s) skip[s] = true; });
     injectStyle();
     targets.forEach(function (id) {
       var el = document.getElementById(id);
-      if (!el || el.querySelector('.rf-save-banner')) return;
-      el.appendChild(buildSaveBanner(toolSlug));
-      el.appendChild(buildSaveNote());
+      if (!el || el.querySelector('.rf-save-banner') || el.querySelector('.rf-cta')) return;
+      if (!skip['save-banner']) el.appendChild(buildSaveBanner(toolSlug));
+      if (!skip['save-note']) el.appendChild(buildSaveNote());
       el.appendChild(buildCTA());
-      if (relatedSlugs.length) {
+      if (relatedSlugs.length && !skip['related']) {
         var relatedEl = buildRelatedTools(relatedSlugs);
         if (relatedEl) el.appendChild(relatedEl);
       }
