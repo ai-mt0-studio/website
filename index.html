@@ -264,7 +264,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   color: var(--c-text-sub);
   margin-bottom: 28px;
   backdrop-filter: var(--glass-blur);
-  animation: fadeInUp 0.8s ease both;
 }
 .badge-dot {
   width: 8px; height: 8px;
@@ -280,7 +279,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   line-height: 1.2;
   color: #fff;
   margin-bottom: 24px;
-  animation: fadeInUp 0.8s 0.1s ease both;
 }
 .hero-audience {
   font-size: 0.85rem;
@@ -288,13 +286,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   letter-spacing: 0.02em;
   margin-top: -12px;
   margin-bottom: 20px;
-  animation: fadeInUp 0.8s 0.15s ease both;
 }
 .hero-sub {
   font-size: clamp(1rem, 2vw, 1.2rem);
   color: var(--c-text-sub);
   margin-bottom: 40px;
-  animation: fadeInUp 0.8s 0.2s ease both;
 }
 .hero-principle {
   display: flex;
@@ -308,7 +304,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-bottom: 24px;
   background: rgba(155,89,245,0.06);
   border-radius: 0 8px 8px 0;
-  animation: fadeInUp 0.8s 0.18s ease both;
 }
 .hero-principle-icon { flex-shrink: 0; }
 .hero-principle-text { flex: 1 1 auto; min-width: 0; }
@@ -318,13 +313,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 60px;
-  animation: fadeInUp 0.8s 0.3s ease both;
 }
 .hero-facts {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  animation: fadeInUp 0.8s 0.4s ease both;
 }
 .hero-fact {
   flex: 1 1 200px;
@@ -365,10 +358,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 ::-webkit-scrollbar-thumb:hover { background: var(--c-blue); }
 .nav-link-highlight { color: #34d399; font-weight: 600; }
 .nav-link-highlight:hover { color: #4ade80; }
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
 @keyframes orbFloat {
   0%, 100% { transform: translateY(0) scale(1); }
   50%       { transform: translateY(-30px) scale(1.05); }
@@ -411,9 +400,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" /></noscript>
   <link rel="preload" as="style" href="index.css" />
   <link rel="stylesheet" href="index.css" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="index.css" /></noscript>
@@ -907,15 +896,36 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="supabase-client.js" defer></script>
   <script src="script.js" defer></script>
   <script src="blog.js" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       initIndexBlog();
-      syncAuthNav();
     });
+
+    // ログイン状態の表示（ヘッダーの「ログイン/マイページ」出し分け）はクリティカルな
+    // 描画に不要なため、Supabase SDK(重量級)はload後まで遅延してTBTへの影響を避ける。
+    function loadAuthNav() {
+      var sdk = document.createElement('script');
+      sdk.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      sdk.onload = function() {
+        var client = document.createElement('script');
+        client.src = 'supabase-client.js';
+        client.onload = function() {
+          syncAuthNav();
+          // sbClient未定義のままDOMContentLoaded時に呼ばれたinitIndexBlog()では
+          // 管理画面作成記事(Supabase)を拾えないため、ここで再実行して補完する
+          initIndexBlog();
+        };
+        document.body.appendChild(client);
+      };
+      document.body.appendChild(sdk);
+    }
+    if (document.readyState === 'complete') {
+      loadAuthNav();
+    } else {
+      window.addEventListener('load', loadAuthNav);
+    }
   </script>
 </body>
 </html>
