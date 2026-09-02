@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FPMB04F29Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FPMB04F29Q');
+  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="アプリストア掲載文・ASOキーワード生成ツールは、アプリ名・ジャンル・主な機能を入力するだけで、App Store用の詳細説明文とGoogle Play用の簡単な説明、検索されやすいASOキーワード案をAIが自動生成する無料ツールです。個人開発者・エンジニア向け、会員登録不要ですぐに使えます。" />
+  <link rel="canonical" href="https://ai-mt0-studio.com/app-store-listing-generator.html" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' fill='%234f8ef7'%3E%E2%AC%A1%3C/text%3E%3C/svg%3E" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AI MT0 Studio" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:title" content="アプリストア掲載文・ASOキーワード生成ツール | AI MT0 Studio" />
+  <meta property="og:description" content="アプリ名・ジャンル・主な機能を入力するだけで、App Store詳細説明文／Google Play簡単な説明／ASOキーワード案をAIが自動生成。個人開発者向け無料ツールです。" />
+  <meta property="og:url" content="https://ai-mt0-studio.com/app-store-listing-generator.html" />
+  <meta property="og:image" content="https://ai-mt0-studio.com/images/og-default.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="アプリストア掲載文・ASOキーワード生成ツール | AI MT0 Studio" />
+  <meta name="twitter:description" content="アプリ名・ジャンル・主な機能を入力するだけで、ストア掲載文とASOキーワード案をAIが自動生成する個人開発者向け無料ツールです。" />
+  <meta name="twitter:image" content="https://ai-mt0-studio.com/images/og-default.png" />
+<title>アプリストア掲載文・ASOキーワード生成ツール|個人開発者向け無料AIツール</title>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://ai-mt0-studio.com/" },
+    { "@type": "ListItem", "position": 2, "name": "AIツール", "item": "https://ai-mt0-studio.com/tools.html" },
+    { "@type": "ListItem", "position": 3, "name": "アプリストア掲載文・ASOキーワード生成ツール", "item": "https://ai-mt0-studio.com/app-store-listing-generator.html" }
+  ]
+}
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "アプリストア掲載文・ASOキーワード生成ツール",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "description": "アプリ名・ジャンル・主な機能を入力するだけで、App Store用の詳細説明文、Google Play用の簡単な説明、ASOキーワード案をAIが自動生成する個人開発者向け無料ツール。",
+  "url": "https://ai-mt0-studio.com/app-store-listing-generator.html",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" />
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet" /></noscript>
+<style>
+  :root {
+    --bg: #0d0221;
+    --panel: #1a0d3a;
+    --panel-2: #140930;
+    --pixel-blue: #4f8ef7;
+    --pixel-blue-dark: #2a5cc4;
+    --pixel-magenta: #ff3d81;
+    --pixel-yellow: #ffd23f;
+    --pixel-green: #39ff88;
+    --pixel-red: #ff5c5c;
+    --ink: #08122a;
+    --text: #f4f1ff;
+    --muted: #a89bd1;
+    --border: #000;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 24px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 24px),
+      radial-gradient(ellipse 60% 45% at 15% 10%, rgba(79,142,247,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 55% 45% at 90% 85%, rgba(255,61,129,0.14) 0%, transparent 70%);
+    min-height: 100vh; color: var(--text);
+    font-family: 'DotGothic16', 'MS Gothic', monospace;
+    font-size: 16px;
+    padding: 2rem 1rem 5rem;
+  }
+  .container { max-width: 780px; margin: 0 auto; }
+
+  a { color: inherit; }
+  .back-link {
+    display: inline-block; font-size: 0.78rem; text-decoration: none; margin-bottom: 0.75rem;
+    color: var(--pixel-yellow); opacity: 0.85;
+  }
+  .back-link:hover { opacity: 1; }
+
+  header { text-align: center; margin-bottom: 1.75rem; }
+  header h1 {
+    font-size: clamp(1.3rem, 4.2vw, 2rem); line-height: 1.5; letter-spacing: 0.02em;
+    color: #fff; text-shadow: 3px 3px 0 var(--pixel-blue-dark);
+    margin-bottom: 0.6rem;
+  }
+  header p {
+    color: var(--muted); font-size: 0.82rem; line-height: 1.9; max-width: 560px; margin: 0 auto;
+  }
+  .free-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--pixel-green); color: var(--ink);
+    font-size: 0.72rem; font-weight: 700;
+    padding: 0.35rem 0.9rem; margin-top: 0.85rem;
+    border: 3px solid var(--border); box-shadow: 4px 4px 0 var(--border);
+  }
+
+  /* ── ピクセルカード ── */
+  .pixel-card {
+    background: var(--panel); border: 3px solid var(--border);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.55);
+    padding: 1.4rem 1.3rem; margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .pixel-titlebar {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: var(--pixel-blue); color: var(--ink);
+    margin: -1.4rem -1.3rem 1.2rem; padding: 0.6rem 0.9rem;
+    border-bottom: 3px solid var(--border);
+    font-size: 0.88rem; font-weight: 700;
+  }
+  .pixel-titlebar .dots { display: flex; gap: 5px; margin-left: auto; }
+  .pixel-titlebar .dots span { width: 9px; height: 9px; background: var(--ink); display: inline-block; }
+
+  /* ── フォーム要素 ── */
+  .field { margin-bottom: 1.15rem; }
+  .field label {
+    display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--pixel-yellow);
+  }
+  .field .hint { display: block; font-weight: 400; color: var(--muted); font-size: 0.7rem; margin-top: 0.35rem; }
+  .pixel-input, .pixel-select, .pixel-textarea {
+    width: 100%; background: var(--panel-2); border: 3px solid var(--border); color: var(--text);
+    font-family: inherit; font-size: 0.88rem; padding: 0.7rem 0.8rem;
+    box-shadow: inset 3px 3px 0 rgba(0,0,0,0.4);
+  }
+  .pixel-input:focus, .pixel-select:focus, .pixel-textarea:focus {
+    outline: none; border-color: var(--pixel-blue);
+  }
+  .pixel-textarea { resize: vertical; min-height: 76px; line-height: 1.7; }
+  .pixel-select { appearance: none; cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, var(--pixel-yellow) 50%), linear-gradient(135deg, var(--pixel-yellow) 50%, transparent 50%);
+    background-position: calc(100% - 18px) center, calc(100% - 12px) center; background-size: 6px 6px; background-repeat: no-repeat;
+  }
+
+  /* ── 主な機能 動的リスト ── */
+  .feature-row { display: flex; gap: 0.5rem; margin-bottom: 0.55rem; }
+  .feature-row .pixel-input { flex: 1; }
+  .feature-remove {
+    flex-shrink: 0; width: 42px; background: var(--pixel-red); color: var(--ink); border: 3px solid var(--border);
+    font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 3px 3px 0 var(--border);
+  }
+  .feature-remove:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--border); }
+  .feature-remove:disabled { opacity: 0.3; cursor: not-allowed; }
+  .feature-add {
+    background: var(--panel-2); color: var(--pixel-green); border: 3px dashed var(--pixel-green);
+    font-family: inherit; font-size: 0.8rem; font-weight: 700; padding: 0.55rem 1rem; cursor: pointer; width: 100%;
+  }
+  .feature-add:hover { background: rgba(57,255,136,0.08); }
+  .feature-add:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* ── ピクセルボタン ── */
+  .pixel-btn {
+    font-family: inherit; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+    border: 3px solid var(--border); padding: 0.85rem 1.3rem;
+    background: var(--pixel-blue); color: var(--ink);
+    box-shadow: 5px 5px 0 var(--border); transition: transform .06s, box-shadow .06s;
+    width: 100%; text-align: center;
+  }
+  .pixel-btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--border); }
+  .pixel-btn:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 var(--border); }
+  .pixel-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: 5px 5px 0 var(--border); }
+  .pixel-btn-yellow { background: var(--pixel-yellow); }
+  .pixel-btn-magenta { background: var(--pixel-magenta); color: #fff; }
+  .pixel-btn-outline { background: var(--panel-2); color: var(--text); }
+  .pixel-btn-sm { width: auto; font-size: 0.72rem; padding: 0.5rem 0.8rem; box-shadow: 3px 3px 0 var(--border); }
+  .pixel-btn-sm:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--border); }
+  .pixel-btn-sm:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--border); }
+  .pixel-btn.copied { background: var(--pixel-green) !important; }
+
+  /* ── エラー ── */
+  .pixel-error {
+    display: none; background: var(--pixel-red); color: var(--ink); border: 3px solid var(--border);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.5); padding: 0.9rem 1rem; margin-bottom: 1.25rem;
+    font-size: 0.82rem; line-height: 1.7; font-weight: 700; white-space: pre-line;
+  }
+
+  /* ── ローディング ── */
+  .pixel-loading { display: none; text-align: center; padding: 2.5rem 1rem; }
+  .pixel-loading-bar {
+    width: 220px; height: 22px; margin: 0 auto 1.1rem; border: 3px solid var(--border); background: var(--panel-2);
+    position: relative; overflow: hidden;
+  }
+  .pixel-loading-bar::after {
+    content: ''; position: absolute; top: 0; left: -40%; width: 40%; height: 100%;
+    background: repeating-linear-gradient(90deg, var(--pixel-blue) 0 8px, var(--pixel-yellow) 8px 16px);
+    animation: pixelload 1s steps(8) infinite;
+  }
+  @keyframes pixelload { to { left: 100%; } }
+  .pixel-loading-text { font-size: 0.85rem; color: var(--muted); }
+  .pixel-loading-text::after { content: ''; display: inline-block; width: 1ch; animation: dots 1.2s steps(4) infinite; }
+  @keyframes dots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75%, 100% { content: '...'; } }
+
+  /* ── 結果 ── */
+  .result-section { display: none; }
+  .result-block-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+    margin-bottom: 0.75rem; flex-wrap: wrap;
+  }
+  .result-block-title { font-size: 0.86rem; font-weight: 700; color: var(--pixel-yellow); }
+  .result-text {
+    background: var(--panel-2); border: 3px solid var(--border); padding: 0.9rem 1rem;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 0.86rem; line-height: 1.85;
+    color: var(--text); white-space: pre-wrap; word-break: break-word;
+  }
+  .keyword-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .keyword-chip {
+    background: var(--pixel-blue); color: var(--ink); font-size: 0.78rem; font-weight: 700;
+    padding: 0.45rem 0.75rem; border: 3px solid var(--border); box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  .char-count { font-size: 0.68rem; color: var(--muted); margin-top: 0.4rem; text-align: right; }
+
+  .action-row { display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .action-row .pixel-btn { flex: 1; min-width: 180px; }
+
+  /* ── FAQ ── */
+  .faq-item { border: 3px solid var(--border); background: var(--panel-2); padding: 0.75rem 0.9rem; margin-bottom: 0.6rem; }
+  .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.85rem; list-style: none; display: flex; align-items: center; gap: 0.5rem; color: var(--text); }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: '▶'; color: var(--pixel-yellow); font-size: 0.7rem; transition: transform 0.15s; }
+  .faq-item[open] summary::before { transform: rotate(90deg); }
+  .faq-item p { margin-top: 0.65rem; font-size: 0.8rem; color: var(--muted); line-height: 1.8; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+  @media (max-width: 560px) {
+    .action-row { flex-direction: column; }
+    .action-row .pixel-btn { width: 100%; }
+    .result-block-head { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="tools.html" class="back-link">← ツール一覧へ戻る</a>
+
+  <header>
+    <h1>👾 アプリストア掲載文・ASOキーワード生成ツール</h1>
+    <p>アプリ名・ジャンル・主な機能を入力するだけで、App Store用の詳細説明文、Google Play用の簡単な説明、検索されやすいASOキーワード案をAIが自動生成します。個人開発者・エンジニア向けの無料ツールです。</p>
+    <div class="free-badge">💾 完全無料 ・ 登録不要 ・ APIキー不要</div>
+  </header>
+
+  <!-- 入力フォーム -->
+  <div class="pixel-card" id="formSection">
+    <div class="pixel-titlebar">🕹️ APP INFO INPUT<div class="dots"><span></span><span></span><span></span></div></div>
+
+    <div class="field">
+      <label for="appName">アプリ名 <span style="color:var(--pixel-red)">*</span></label>
+      <input type="text" id="appName" class="pixel-input" maxlength="60" placeholder="例: シンプルToDo" />
+    </div>
+
+    <div class="field">
+      <label for="genreSelect">ジャンル <span style="color:var(--pixel-red)">*</span></label>
+      <select id="genreSelect" class="pixel-select" onchange="onGenreChange()">
+        <option value="ToDo管理">ToDo管理</option>
+        <option value="SNS">SNS</option>
+        <option value="ゲーム">ゲーム</option>
+        <option value="写真編集">写真編集</option>
+        <option value="健康管理・フィットネス">健康管理・フィットネス</option>
+        <option value="学習・教育">学習・教育</option>
+        <option value="音楽・エンタメ">音楽・エンタメ</option>
+        <option value="仕事効率化">仕事効率化</option>
+        <option value="ライフスタイル">ライフスタイル</option>
+        <option value="金融・家計簿">金融・家計簿</option>
+        <option value="other">その他（自由入力）</option>
+      </select>
+      <input type="text" id="genreCustom" class="pixel-input" style="display:none;margin-top:0.6rem;" maxlength="60" placeholder="例: 天気予報アプリ" />
+    </div>
+
+    <div class="field">
+      <label>主な機能（1〜10個） <span style="color:var(--pixel-red)">*</span></label>
+      <div id="featureList"></div>
+      <button type="button" class="feature-add" id="featureAddBtn" onclick="addFeatureRow()">＋ 機能を追加</button>
+    </div>
+
+    <div class="field">
+      <label for="targetUsers">ターゲットユーザー</label>
+      <textarea id="targetUsers" class="pixel-textarea" maxlength="300" placeholder="例: 忙しい社会人で、シンプルな操作でタスク管理したい人"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="differentiator">一番の特徴・差別化ポイント</label>
+      <textarea id="differentiator" class="pixel-textarea" maxlength="300" placeholder="例: 広告なし・オフラインでも完全に使える"></textarea>
+    </div>
+
+    <div class="pixel-error" id="errorBox"></div>
+
+    <button type="button" class="pixel-btn pixel-btn-yellow" id="generateBtn" onclick="generateCopy()">👾 掲載文を生成する</button>
+  </div>
+
+  <!-- ローディング -->
+  <div class="pixel-loading" id="loadingSection">
+    <div class="pixel-loading-bar"></div>
+    <div class="pixel-loading-text">AIが掲載文を生成しています</div>
+  </div>
+
+  <!-- 結果 -->
+  <div class="result-section" id="resultSection">
+    <div class="pixel-card">
+      <div class="pixel-titlebar">📱 APP STORE 詳細説明文<div class="dots"><span></span><span></span><span></span></div></div>
+      <div class="result-block-head">
+        <span class="result-block-title">箇条書き形式・300〜500文字目安</span>
+        <button type="button" class="pixel-btn pixel-btn-outline pixel-btn-sm" onclick="copyBlock('appStoreText', this)">📋 コピー</button>
+      </div>
+      <div class="result-text" id="appStoreText"></div>
+      <div class="char-count" id="appStoreCount"></div>
+    </div>
+
+    <div class="pixel-card">
+      <div class="pixel-titlebar">🤖 GOOGLE PLAY 簡単な説明<div class="dots"><span></span><span></span><span></span></div></div>
+      <div class="result-block-head">
+        <span class="result-block-title">80文字以内・パッと見で惹きつける一文</span>
+        <button type="button" class="pixel-btn pixel-btn-outline pixel-btn-sm" onclick="copyBlock('googlePlayText', this)">📋 コピー</button>
+      </div>
+      <div class="result-text" id="googlePlayText"></div>
+      <div class="char-count" id="googlePlayCount"></div>
+    </div>
+
+    <div class="pixel-card">
+      <div class="pixel-titlebar">🏆 ASOキーワード案<div class="dots"><span></span><span></span><span></span></div></div>
+      <div class="result-block-head">
+        <span class="result-block-title">検索されやすいキーワード5〜10個</span>
+        <button type="button" class="pixel-btn pixel-btn-outline pixel-btn-sm" onclick="copyKeywords(this)">📋 全てコピー</button>
+      </div>
+      <div class="keyword-chips" id="keywordChips"></div>
+    </div>
+
+    <div class="action-row">
+      <button type="button" class="pixel-btn pixel-btn-magenta" onclick="resetForm()">🔄 もう一度作成する</button>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="pixel-card">
+    <div class="pixel-titlebar">❓ FAQ<div class="dots"><span></span><span></span><span></span></div></div>
+    <details class="faq-item">
+      <summary>Q. 生成された文章はそのままストアに提出できますか？</summary>
+      <p>AIが生成した文章はたたき台としてご活用ください。アプリの実際の仕様と齟齬がないか、各ストアの審査ガイドライン（誇大表現の禁止など）に沿っているかをご自身で確認のうえ、必要に応じて調整してからご提出ください。</p>
+    </details>
+    <details class="faq-item">
+      <summary>Q. 会員登録やAPIキーは必要ですか？</summary>
+      <p>不要です。アプリ情報を入力するだけで、登録なし・APIキー不要ですぐに結果を確認できます。AIの呼び出しにはAI MT0 Studio自社のAPIキーを使用しています。</p>
+    </details>
+    <details class="faq-item">
+      <summary>Q. 入力した内容は保存されますか？</summary>
+      <p>入力内容や生成結果はサーバーに保存されません。ページを閉じると内容は失われるため、必要な場合はコピーボタンで保存先に貼り付けてください。</p>
+    </details>
+  </div>
+</div>
+
+<script>
+  const MAX_FEATURES = 10;
+  const MIN_FEATURES = 1;
+  let featureCount = 0;
+  let lastResult = null;
+
+  function addFeatureRow(prefill) {
+    if (featureCount >= MAX_FEATURES) return;
+    featureCount++;
+    const wrap = document.createElement('div');
+    wrap.className = 'feature-row';
+    wrap.innerHTML =
+      '<input type="text" class="pixel-input feature-input" maxlength="100" placeholder="例: リマインダー通知機能" />' +
+      '<button type="button" class="feature-remove" onclick="removeFeatureRow(this)">×</button>';
+    document.getElementById('featureList').appendChild(wrap);
+    if (prefill) wrap.querySelector('.feature-input').value = prefill;
+    updateFeatureButtons();
+  }
+
+  function removeFeatureRow(btn) {
+    if (featureCount <= MIN_FEATURES) return;
+    btn.closest('.feature-row').remove();
+    featureCount--;
+    updateFeatureButtons();
+  }
+
+  function updateFeatureButtons() {
+    const removeButtons = document.querySelectorAll('.feature-remove');
+    removeButtons.forEach(b => { b.disabled = featureCount <= MIN_FEATURES; });
+    document.getElementById('featureAddBtn').disabled = featureCount >= MAX_FEATURES;
+  }
+
+  function onGenreChange() {
+    const sel = document.getElementById('genreSelect');
+    const custom = document.getElementById('genreCustom');
+    custom.style.display = sel.value === 'other' ? 'block' : 'none';
+  }
+
+  function getGenre() {
+    const sel = document.getElementById('genreSelect');
+    if (sel.value === 'other') return document.getElementById('genreCustom').value.trim();
+    return sel.value;
+  }
+
+  function getFeatures() {
+    return Array.from(document.querySelectorAll('.feature-input'))
+      .map(el => el.value.trim())
+      .filter(Boolean);
+  }
+
+  function showError(msg) {
+    const box = document.getElementById('errorBox');
+    box.textContent = '⚠ ' + msg;
+    box.style.display = 'block';
+  }
+
+  function hideError() {
+    document.getElementById('errorBox').style.display = 'none';
+  }
+
+  async function generateCopy() {
+    hideError();
+    const appName = document.getElementById('appName').value.trim();
+    const genre = getGenre();
+    const features = getFeatures();
+    const targetUsers = document.getElementById('targetUsers').value.trim();
+    const differentiator = document.getElementById('differentiator').value.trim();
+
+    if (!appName) { showError('アプリ名を入力してください。'); return; }
+    if (!genre) { showError('ジャンルを選択（または入力）してください。'); return; }
+    if (features.length === 0) { showError('主な機能を1つ以上入力してください。'); return; }
+
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('loadingSection').style.display = 'block';
+    document.getElementById('resultSection').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    try {
+      const { data, error } = await sbClient.functions.invoke('generate-aso-copy', {
+        body: { appName, genre, features, targetUsers, differentiator },
+      });
+
+      if (error) throw error;
+      if (data && data.error) throw new Error(data.error);
+
+      lastResult = data;
+      renderResult(data);
+      document.getElementById('resultSection').style.display = 'block';
+    } catch (e) {
+      document.getElementById('formSection').style.display = 'block';
+      showError((e && e.message) || 'エラーが発生しました。しばらくしてから再度お試しください。');
+    } finally {
+      document.getElementById('loadingSection').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function renderResult(d) {
+    const appStoreEl = document.getElementById('appStoreText');
+    appStoreEl.textContent = d.appStoreDescription || '';
+    document.getElementById('appStoreCount').textContent = (d.appStoreDescription || '').length + ' 文字';
+
+    const gpEl = document.getElementById('googlePlayText');
+    gpEl.textContent = d.googlePlayShortDescription || '';
+    document.getElementById('googlePlayCount').textContent = (d.googlePlayShortDescription || '').length + ' / 80 文字';
+
+    const keywords = Array.isArray(d.keywords) ? d.keywords : [];
+    document.getElementById('keywordChips').innerHTML = keywords.map(k => '<span class="keyword-chip">' + esc(k) + '</span>').join('');
+  }
+
+  function copyBlock(elId, btn) {
+    const text = document.getElementById(elId).textContent;
+    copyToClipboard(text, btn);
+  }
+
+  function copyKeywords(btn) {
+    if (!lastResult || !Array.isArray(lastResult.keywords)) return;
+    copyToClipboard(lastResult.keywords.join(', '), btn);
+  }
+
+  function copyToClipboard(text, btn) {
+    const done = () => {
+      const original = btn.textContent;
+      btn.textContent = '✅ コピー済み';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  }
+
+  function fallbackCopy(text, done) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { /* noop */ }
+    document.body.removeChild(ta);
+  }
+
+  function resetForm() {
+    document.getElementById('appName').value = '';
+    document.getElementById('genreSelect').value = 'ToDo管理';
+    document.getElementById('genreCustom').value = '';
+    document.getElementById('genreCustom').style.display = 'none';
+    document.getElementById('targetUsers').value = '';
+    document.getElementById('differentiator').value = '';
+    document.getElementById('featureList').innerHTML = '';
+    featureCount = 0;
+    for (let i = 0; i < 3; i++) addFeatureRow();
+    hideError();
+    lastResult = null;
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('formSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  addFeatureRow(); addFeatureRow(); addFeatureRow();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="tools-catalog.js"></script>
+<script src="result-followup-cta.js" data-target="resultSection" data-tool-slug="app-store-listing-generator"></script>
+</body>
+</html>

@@ -23,4 +23,5 @@ const TOOL_CATALOG = {
   'diagnosis-tool':  { name: 'AI業務改善診断ツール',             icon: '🏢', url: 'diagnosis-tool.html' },
   'report-tool-app': { name: 'AI日報生成ツール',                 icon: '📝', url: 'report-tool.html' },
   'sns-tool-app':    { name: 'SNS投稿自動生成ツール',            icon: '✦', url: 'sns-tool.html' },
+  'app-store-listing-generator': { name: 'アプリストア掲載文・ASOキーワード生成ツール（無料）', icon: '👾', url: 'app-store-listing-generator.html' },
 };
