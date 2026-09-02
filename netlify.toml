@@ -18,3 +18,24 @@
   from = "/tools"
   to = "/tools.html"
   status = 301
+
+[[redirects]]
+  from = "/blog-post.html"
+  query = {id = "chatgpt-vs-claude-2026"}
+  to = "/blog-chatgpt-vs-claude-2026.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog-post.html"
+  query = {id = "ai-side-job-roadmap"}
+  to = "/blog-ai-side-job-roadmap-2026.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog-post.html"
+  query = {id = "ai-revenue-tool-v1"}
+  to = "/blog-ai-revenue-tool-v1-2026.html"
+  status = 301
+  force = true
