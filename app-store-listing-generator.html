@@ -137,8 +137,17 @@
   .field .hint { display: block; font-weight: 400; color: var(--muted); font-size: 0.7rem; margin-top: 0.35rem; }
   .pixel-input, .pixel-select, .pixel-textarea {
     width: 100%; background: var(--panel-2); border: 3px solid var(--border); color: var(--text);
-    font-family: inherit; font-size: 0.88rem; padding: 0.7rem 0.8rem;
+    /* 入力欄はドット絵フォントではなく通常フォントで描画する。
+       DotGothic16は非同期読み込み（font-display:swap）のため、
+       入力中にフォールバックフォント→Webフォントへ差し替わるタイミングで
+       一部ブラウザが再描画に失敗し、旧フォントの文字が残像として
+       プレースホルダーと重なって見える不具合があったための対策。 */
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 0.88rem; padding: 0.7rem 0.8rem;
     box-shadow: inset 3px 3px 0 rgba(0,0,0,0.4);
+  }
+  .pixel-input::placeholder, .pixel-textarea::placeholder {
+    color: rgba(244,241,255,0.38); opacity: 1;
   }
   .pixel-input:focus, .pixel-select:focus, .pixel-textarea:focus {
     outline: none; border-color: var(--pixel-blue);
@@ -375,7 +384,7 @@
     const wrap = document.createElement('div');
     wrap.className = 'feature-row';
     wrap.innerHTML =
-      '<input type="text" class="pixel-input feature-input" maxlength="100" placeholder="例: リマインダー通知機能" />' +
+      '<input type="text" class="pixel-input feature-input" maxlength="100" autocomplete="off" placeholder="例: リマインダー通知機能" />' +
       '<button type="button" class="feature-remove" onclick="removeFeatureRow(this)">×</button>';
     document.getElementById('featureList').appendChild(wrap);
     if (prefill) wrap.querySelector('.feature-input').value = prefill;
@@ -440,12 +449,28 @@
     document.getElementById('resultSection').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
+    const GENERIC_ERROR = '生成に失敗しました。時間をおいて再度お試しください。';
+
     try {
       const { data, error } = await sbClient.functions.invoke('generate-aso-copy', {
         body: { appName, genre, features, targetUsers, differentiator },
       });
 
-      if (error) throw error;
+      if (error) {
+        // サーバー側がエラーレスポンス（4xx/5xx）を返した場合、本文のJSONに
+        // 日本語のエラーメッセージが入っていればそれを優先して表示する。
+        // ネットワーク断・デプロイ未完了などfetch自体が失敗した場合は
+        // error.contextが存在しないため、GENERIC_ERRORにフォールバックする。
+        let serverMessage = null;
+        if (error.context && typeof error.context.json === 'function') {
+          try {
+            const errBody = await error.context.json();
+            serverMessage = errBody && errBody.error;
+          } catch (_) { /* レスポンス本文がJSONでない場合は無視 */ }
+        }
+        console.error('generate-aso-copy invoke error:', error);
+        throw new Error(serverMessage || GENERIC_ERROR);
+      }
       if (data && data.error) throw new Error(data.error);
 
       lastResult = data;
@@ -453,7 +478,8 @@
       document.getElementById('resultSection').style.display = 'block';
     } catch (e) {
       document.getElementById('formSection').style.display = 'block';
-      showError((e && e.message) || 'エラーが発生しました。しばらくしてから再度お試しください。');
+      console.error('generate-aso-copy failed:', e);
+      showError((e && e.message) || GENERIC_ERROR);
     } finally {
       document.getElementById('loadingSection').style.display = 'none';
       window.scrollTo({ top: 0, behavior: 'smooth' });
