@@ -1808,11 +1808,30 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin: 0 auto 40px;
 }
 .member-compare-col {
-  flex: 1;
+  flex: 0.92;
   padding: 20px 22px;
   text-align: center;
+  opacity: 0.82;
 }
-.member-compare-col-highlight { border-color: rgba(79,142,247,0.35); }
+.member-compare-col-highlight {
+  flex: 1.18;
+  opacity: 1;
+  position: relative;
+  border-color: rgba(79,142,247,0.45);
+  background: linear-gradient(135deg, rgba(79,142,247,0.10), rgba(155,89,245,0.08));
+}
+.member-compare-badge {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--c-blue), var(--c-purple2));
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
 .member-compare-label {
   display: block;
   font-family: var(--font-display);
